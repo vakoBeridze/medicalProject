@@ -18,7 +18,28 @@
         <!-- GWT needs at least java 1.5 -->
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <version.org.jboss.bom>1.0.4.Final-redhat-4</version.org.jboss.bom>
     </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- JBoss distributes a complete set of Java EE 6 APIs including a Bill
+                of Materials (BOM). A BOM specifies the versions of a "stack" (or a collection)
+                of artifacts. We use this here so that we always get the correct versions
+                of artifacts. Here we use the jboss-javaee-6.0-with tools stack (you can read this as
+                the JBoss stack of the Java EE 6 APIs, with some extras tools for your project, such
+                as Arquillian for testing) -->
+            <dependency>
+                <groupId>org.jboss.bom</groupId>
+                <artifactId>jboss-javaee-6.0-with-tools</artifactId>
+                <version>${version.org.jboss.bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -32,6 +53,19 @@
             <artifactId>gwt-user</artifactId>
             <version>${gwtVersion}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.security</groupId>
+            <artifactId>jbosssx</artifactId>
+            <version>3.0.0.Beta4</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.15</version>
         </dependency>
     </dependencies>
 
@@ -58,7 +92,7 @@
                 <!-- Plugin configuration. There are many available options, see
                   gwt-maven-plugin documentation at codehaus.org -->
                 <configuration>
-                    <runTarget>App.html</runTarget>
+                    <runTarget>medicalProject/App.html</runTarget>
                     <hostedWebapp>${webappDirectory}</hostedWebapp>
                     <i18nMessagesBundle>ge.tsu.client.Messages</i18nMessagesBundle>
                     <debugSuspend>false</debugSuspend>

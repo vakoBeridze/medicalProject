@@ -16,9 +16,35 @@
     <url-pattern>/App/greet</url-pattern>
   </servlet-mapping>
 
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>App.html</welcome-file>
-  </welcome-file-list>
+    <!-- Default page to serve -->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>All Resources</web-resource-name>
+            <url-pattern>/App/*</url-pattern>
+            <url-pattern>/App.html</url-pattern>
+            <url-pattern>/index.html</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>medical.web.user</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/login.jsp</form-login-page>
+            <form-error-page>/login.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
+
+    <security-role>
+        <role-name>medical.web.user</role-name>
+    </security-role>
 
 </web-app>
