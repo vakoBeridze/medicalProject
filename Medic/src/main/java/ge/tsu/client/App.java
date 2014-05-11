@@ -1,5 +1,7 @@
 package ge.tsu.client;
 
+import ge.tsu.client.service.GreetingService;
+import ge.tsu.client.service.GreetingServiceAsync;
 import ge.tsu.shared.FieldVerifier;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

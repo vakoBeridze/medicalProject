@@ -1,6 +1,6 @@
 package ge.tsu.server;
 
-import ge.tsu.client.GreetingService;
+import ge.tsu.client.service.GreetingService;
 import ge.tsu.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 

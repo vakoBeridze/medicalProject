@@ -1,4 +1,4 @@
-package ge.tsu.client;
+package ge.tsu.client.service;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;

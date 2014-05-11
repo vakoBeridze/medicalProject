@@ -20,6 +20,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <version.org.jboss.bom>1.0.4.Final-redhat-4</version.org.jboss.bom>
+
+        <hibernateVersion>4.2.0.Final</hibernateVersion>
     </properties>
 
 
@@ -56,9 +58,36 @@
         </dependency>
 
         <dependency>
+            <groupId>org.jboss.ejb3</groupId>
+            <artifactId>jboss-ejb3-ext-api</artifactId>
+            <version>2.0.0-beta-2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.jboss.security</groupId>
             <artifactId>jbosssx</artifactId>
             <version>3.0.0.Beta4</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernateVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernateVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-envers</artifactId>
+            <version>${hibernateVersion}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -84,7 +113,7 @@
     </dependencies>
 
     <build>
-        <finalName>medicalProject</finalName>
+        <finalName>medic</finalName>
 
         <!-- Generate compiled stuff in the folder used for developing mode -->
         <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
