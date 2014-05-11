@@ -1,0 +1,6 @@
+
+                <security-domain name="MedicalSecurityDomain" cache-type="default">
+                    <authentication>
+                        <login-module code="ge.tsu.security.MedicalLoginModule" flag="required"/>
+                    </authentication>
+                </security-domain>
