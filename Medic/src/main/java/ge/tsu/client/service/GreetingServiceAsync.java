@@ -12,6 +12,8 @@ public interface GreetingServiceAsync
      */
     void greetServer( java.lang.String name, AsyncCallback<java.lang.String> callback );
 
+    void logout(AsyncCallback<Void> callback);
+
 
     /**
      * Utility class to get the RPC Async interface from client-side code

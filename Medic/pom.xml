@@ -15,6 +15,7 @@
     <properties>
         <!-- Convenience property to set the GWT version -->
         <gwtVersion>2.6.1-rc2</gwtVersion>
+        <gxtVersion>3.1.0-beta</gxtVersion>
         <!-- GWT needs at least java 1.5 -->
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,6 +45,8 @@
     </dependencyManagement>
 
     <dependencies>
+
+        <!-- GWT -->
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
@@ -57,13 +60,30 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- GXT -->
+        <dependency>
+            <groupId>com.sencha.gxt</groupId>
+            <artifactId>gxt</artifactId>
+            <version>${gxtVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sencha.gxt</groupId>
+            <artifactId>gxt-chart</artifactId>
+            <version>${gxtVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sencha.gxt</groupId>
+            <artifactId>gxt-theme-neptune</artifactId>
+            <version>${gxtVersion}</version>
+        </dependency>
+
+        <!-- JBoss -->
         <dependency>
             <groupId>org.jboss.ejb3</groupId>
             <artifactId>jboss-ejb3-ext-api</artifactId>
             <version>2.0.0-beta-2</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.jboss.security</groupId>
             <artifactId>jbosssx</artifactId>
@@ -91,24 +111,25 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Logging -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.15</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.sun.jdmk</groupId>
-					<artifactId>jmxtools</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.jmx</groupId>
-					<artifactId>jmxri</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.jms</groupId>
-					<artifactId>jms</artifactId>
-				</exclusion>
-			</exclusions>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.jdmk</groupId>
+                    <artifactId>jmxtools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jmx</groupId>
+                    <artifactId>jmxri</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jms</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

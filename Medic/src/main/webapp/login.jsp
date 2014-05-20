@@ -50,7 +50,7 @@
                 <tbody>
                 <tr>
                     <td align="center" width="100%"><img border="0" alt="Company's LOGO"
-                                                         src="<%=request.getContextPath()%>\logo.png">
+                                                         src="<%=request.getContextPath()%>\images\logo.png">
                     </td>
                 </tr>
                 </tbody>

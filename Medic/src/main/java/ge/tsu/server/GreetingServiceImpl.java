@@ -30,6 +30,12 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
                 + ".<br><br>It looks like you are using:<br>" + userAgent;
     }
 
+    @Override
+    public void logout() {
+        System.out.println("<<<<<<<<<<<<<<<<<<<<< Logout User: " + getThreadLocalRequest().getUserPrincipal().getName());
+        getThreadLocalRequest().getSession().invalidate();
+    }
+
     /**
      * Escape an html string. Escaping data received from the client helps to
      * prevent cross-site script vulnerabilities.
