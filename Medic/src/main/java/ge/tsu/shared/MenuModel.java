@@ -1,5 +1,7 @@
 package ge.tsu.shared;
 
+import ge.tsu.client.Menu;
+
 import java.io.Serializable;
 
 /**
@@ -9,50 +11,50 @@ import java.io.Serializable;
  * Time: 14:31
  */
 public class MenuModel implements Serializable {
-	private String code;
-	private String label;
-	private boolean root;
-	private int menuNumber;
+    private String code;
+    private String label;
+    private boolean root;
+    private Menu menu;
 
-	public MenuModel() {
-	}
+    public MenuModel() {
+    }
 
-	public MenuModel(String code, String label, boolean root, int menuNumber) {
-		this.code = code;
-		this.label = label;
-		this.root = root;
-		this.menuNumber = menuNumber;
-	}
+    public MenuModel(String code, String label, boolean root, Menu menu) {
+        this.code = code;
+        this.label = label;
+        this.root = root;
+        this.menu = menu;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public String getLabel() {
-		return label;
-	}
+    public String getLabel() {
+        return label;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
-	public boolean isRoot() {
-		return root;
-	}
+    public boolean isRoot() {
+        return root;
+    }
 
-	public void setRoot(boolean root) {
-		this.root = root;
-	}
+    public void setRoot(boolean root) {
+        this.root = root;
+    }
 
-	public int getMenuNumber() {
-		return menuNumber;
-	}
+    public Menu getMenu() {
+        return menu;
+    }
 
-	public void setMenuNumber(int menuNumber) {
-		this.menuNumber = menuNumber;
-	}
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
 }

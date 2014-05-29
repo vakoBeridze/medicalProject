@@ -1,17 +1,15 @@
 package ge.tsu.client;
 
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.TabItemConfig;
 import ge.tsu.client.images.Images;
-import ge.tsu.client.view.Tab;
+import ge.tsu.client.presenter.*;
+import ge.tsu.client.view.*;
 import ge.tsu.shared.MenuModel;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,60 +18,86 @@ import java.util.Set;
  * Time: 16:59
  */
 public class Util {
-	private static List<MenuModel> openTabs = new ArrayList<MenuModel>();
+    public static Map<Menu, Widget> openTabs = new HashMap<Menu, Widget>();
 
-	public static ImageResource getMenuIcon(MenuModel menu) {
-		ImageResource icon = null;
-		switch (menu.getMenuNumber()) {
-			case 11: {
-				icon = Images.INSTANCE.userManager();
-				break;
-			}
-			case 100: {
-				icon = Images.INSTANCE.form100();
-				break;
-			}
-			case 200: {
-				icon = Images.INSTANCE.form200();
-				break;
-			}
-			case 300: {
-				icon = Images.INSTANCE.form300();
-				break;
-			}
-			case 400: {
-				icon = Images.INSTANCE.form400();
-				break;
-			}
-			case 500: {
-				icon = Images.INSTANCE.form500();
-				break;
-			}
+    public static ImageResource getMenuIcon(MenuModel menu) {
+        ImageResource icon = null;
+        switch (menu.getMenu()) {
+            case USER_MANAGER: {
+                icon = Images.INSTANCE.userManager();
+                break;
+            }
+            case FORM_100: {
+                icon = Images.INSTANCE.form100();
+                break;
+            }
+            case FORM_200: {
+                icon = Images.INSTANCE.form200();
+                break;
+            }
+            case FORM_300: {
+                icon = Images.INSTANCE.form300();
+                break;
+            }
+            case FORM_400: {
+                icon = Images.INSTANCE.form400();
+                break;
+            }
+            case FORM_500: {
+                icon = Images.INSTANCE.form500();
+                break;
+            }
 
-		}
-		return icon;
-	}
+        }
+        return icon;
+    }
 
-	public static void addTab(MenuModel menu) {
-		switch (menu.getMenuNumber()) {
-			case 11: {
-				MainPanel.tabPanel.add(new HTML("UserManager"), App.messages.userManager());
-				break;
-			}
-			case 100:
-			case 200:
-			case 300:
-			case 400:
-			case 500: {
-				if(!openTabs.contains(menu)) {
-					openTabs.add(menu);
-					Widget widget = new HTML(App.messages.formMenu() + " " + menu.getMenuNumber());
-					MainPanel.tabPanel.add(new Tab(menu.getMenuNumber(), widget).getWidget(), new TabItemConfig(App.messages.formMenu() + " " + menu.getMenuNumber(), true));
-				} else {
-					// TODO
-				}
-				break;
-			}
-		}
-	}
+    public static void addTab(MenuModel menu) {
+
+        if (openTabs.get(menu.getMenu()) != null) {
+            MainPanel.tabPanel.setActiveWidget(openTabs.get(menu.getMenu()));
+        } else {
+            Widget widget = null;
+            switch (menu.getMenu()) {
+                case USER_MANAGER: {
+                    UserManagerPresenter presenter = new UserManagerPresenter(new UserManagerView());
+                    widget = presenter.getDisplay().asWidget();
+                    openTabs.put(menu.getMenu(), widget);
+                    MainPanel.tabPanel.add(widget, new TabItemConfig(App.messages.userManager(), true));
+                    MainPanel.tabPanel.setActiveWidget(widget);
+                    return;
+                }
+                case FORM_100: {
+                    Form100Presenter presenter = new Form100Presenter(new Form100View());
+                    widget = presenter.getDisplay().asWidget();
+                    break;
+                }
+                case FORM_200: {
+                    Form200Presenter presenter = new Form200Presenter(new Form200View());
+                    widget = presenter.getDisplay().asWidget();
+                    break;
+                }
+                case FORM_300: {
+                    Form300Presenter presenter = new Form300Presenter(new Form300View());
+                    widget = presenter.getDisplay().asWidget();
+                    break;
+                }
+                case FORM_400: {
+                    Form400Presenter presenter = new Form400Presenter(new Form400View());
+                    widget = presenter.getDisplay().asWidget();
+                    break;
+                }
+                case FORM_500: {
+                    Form500Presenter presenter = new Form500Presenter(new Form500View());
+                    widget = presenter.getDisplay().asWidget();
+                    break;
+                }
+            }
+            if (widget != null) {
+                openTabs.put(menu.getMenu(), widget);
+                MainPanel.tabPanel.add(widget, new TabItemConfig(App.messages.formMenu() + " " + menu.getMenu().toString().substring(5), true));
+                MainPanel.tabPanel.setActiveWidget(widget);
+            }
+        }
+    }
 }

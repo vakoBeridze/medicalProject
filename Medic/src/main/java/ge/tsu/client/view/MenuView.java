@@ -19,6 +19,7 @@ import com.sencha.gxt.widget.core.client.form.StoreFilterField;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 import ge.tsu.client.App;
+import ge.tsu.client.Menu;
 import ge.tsu.client.Util;
 import ge.tsu.shared.MenuModel;
 import ge.tsu.shared.MenuModelProperties;
@@ -31,101 +32,101 @@ import ge.tsu.shared.MenuModelProperties;
  */
 public class MenuView extends Widget implements IsWidget {
 
-	private Tree<MenuModel, String> tree;
-	private MenuModel formsMenuModel;
-	private MenuModel adminMenuModel;
+    private Tree<MenuModel, String> tree;
+    private MenuModel formsMenuModel;
+    private MenuModel adminMenuModel;
 
-	public MenuView() {
-	}
+    public MenuView() {
+    }
 
-	@Override
-	public Widget asWidget() {
-		MenuModelProperties menuModelProperties = GWT.create(MenuModelProperties.class);
-		TreeStore<MenuModel> store = new TreeStore<MenuModel>(menuModelProperties.code());
-		tree = new Tree<MenuModel, String>(store, menuModelProperties.label());
+    @Override
+    public Widget asWidget() {
+        MenuModelProperties menuModelProperties = GWT.create(MenuModelProperties.class);
+        TreeStore<MenuModel> store = new TreeStore<MenuModel>(menuModelProperties.code());
+        tree = new Tree<MenuModel, String>(store, menuModelProperties.label());
 
-		FlowLayoutContainer con = new FlowLayoutContainer();
+        FlowLayoutContainer con = new FlowLayoutContainer();
 
-		StoreFilterField<MenuModel> filter = new StoreFilterField<MenuModel>() {
+        StoreFilterField<MenuModel> filter = new StoreFilterField<MenuModel>() {
 
-			@Override
-			protected boolean doSelect(Store<MenuModel> menuModelStore, MenuModel menuModel, MenuModel item, String text) {
-				if (item.isRoot()) {
-					return false;
-				}
-				String name = item.getLabel() != null ? item.getLabel().toLowerCase() : null;
-				return name != null && filter != null && name.contains(text.toLowerCase());
-			}
-		};
-		filter.bind(tree.getStore());
-		filter.setEmptyText(App.messages.filter());
+            @Override
+            protected boolean doSelect(Store<MenuModel> menuModelStore, MenuModel menuModel, MenuModel item, String text) {
+                if (item.isRoot()) {
+                    return false;
+                }
+                String name = item.getLabel() != null ? item.getLabel().toLowerCase() : null;
+                return name != null && filter != null && name.contains(text.toLowerCase());
+            }
+        };
+        filter.bind(tree.getStore());
+        filter.setEmptyText(App.messages.filter());
 
-		tree.getSelectionModel().setSelectionMode(Style.SelectionMode.SINGLE);
-		tree.setIconProvider(new IconProvider<MenuModel>() {
-			@Override
-			public ImageResource getIcon(MenuModel model) {
-				return Util.getMenuIcon(model);
-			}
-		});
+        tree.getSelectionModel().setSelectionMode(Style.SelectionMode.SINGLE);
+        tree.setIconProvider(new IconProvider<MenuModel>() {
+            @Override
+            public ImageResource getIcon(MenuModel model) {
+                return Util.getMenuIcon(model);
+            }
+        });
 
-		tree.getSelectionModel().addSelectionHandler(new SelectionHandler<MenuModel>() {
-			@Override
-			public void onSelection(SelectionEvent<MenuModel> menuModelSelectionEvent) {
-				MenuModel menu = menuModelSelectionEvent.getSelectedItem();
-				if (!menu.isRoot()) {
-					Util.addTab(menu);
-				}
-			}
-		});
+        tree.getSelectionModel().addSelectionHandler(new SelectionHandler<MenuModel>() {
+            @Override
+            public void onSelection(SelectionEvent<MenuModel> menuModelSelectionEvent) {
+                MenuModel menu = menuModelSelectionEvent.getSelectedItem();
+                if (!menu.isRoot()) {
+                    Util.addTab(menu);
+                }
+            }
+        });
 
-		ToolBar toolBar = new ToolBar();
-		toolBar.add(filter, new BoxLayoutContainer.BoxLayoutData(new Margins(10)));
+        ToolBar toolBar = new ToolBar();
+        toolBar.add(filter, new BoxLayoutContainer.BoxLayoutData(new Margins(10)));
 
-		con.add(toolBar);
-		con.add(tree, new MarginData(5));
+        con.add(toolBar);
+        con.add(tree, new MarginData(5));
 
-		con.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
+        con.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 
-		createMenuStore();
+        createMenuStore();
 
-		return con;
-	}
+        return con;
+    }
 
-	private void createMenuStore() {
-		createMenuRoots();
-		createMenuItems();
-	}
+    private void createMenuStore() {
+        createMenuRoots();
+        createMenuItems();
+    }
 
-	private void createMenuItems() {
-		TreeStore<MenuModel> store = tree.getStore();
-		MenuModel menu;
-		for (int i = 1; i < 6; i++) {
-			menu = new MenuModel();
-			menu.setLabel(App.messages.formMenu() + " " + (i * 100));
-			menu.setCode("form " + (i * 100));
-			menu.setMenuNumber(i * 100);
-			store.add(formsMenuModel, menu);
-		}
+    private void createMenuItems() {
+        TreeStore<MenuModel> store = tree.getStore();
+        MenuModel menu;
+        for (int i = 1; i < 6; i++) {
+            menu = new MenuModel();
+            menu.setLabel(App.messages.formMenu() + " " + (i * 100));
+            menu.setCode("form " + (i * 100));
+            menu.setMenu(Menu.values()[i]);
+            store.add(formsMenuModel, menu);
+        }
 
-		MenuModel userManagement = new MenuModel("userManagement", App.messages.userManager(), false, 11);
-		store.add(adminMenuModel, userManagement);
-	}
+        MenuModel userManagement = new MenuModel("userManagement", App.messages.userManager(), false, Menu.USER_MANAGER);
+        store.add(adminMenuModel, userManagement);
+    }
 
-	private void createMenuRoots() {
-		adminMenuModel = new MenuModel();
-		adminMenuModel.setCode("admin");
-		adminMenuModel.setLabel(App.messages.administrationMenu());
-		adminMenuModel.setMenuNumber(1);
-		adminMenuModel.setRoot(true);
+    private void createMenuRoots() {
+        adminMenuModel = new MenuModel();
+        adminMenuModel.setCode("admin");
+        adminMenuModel.setLabel(App.messages.administrationMenu());
+        adminMenuModel.setMenu(Menu.ROOT_ADMIN);
+        adminMenuModel.setRoot(true);
 
-		formsMenuModel = new MenuModel();
-		formsMenuModel.setCode("forms");
-		formsMenuModel.setLabel(App.messages.formsMenu());
-		formsMenuModel.setMenuNumber(2);
-		formsMenuModel.setRoot(true);
+        formsMenuModel = new MenuModel();
+        formsMenuModel.setCode("forms");
+        formsMenuModel.setLabel(App.messages.formsMenu());
+        formsMenuModel.setMenu(Menu.ROOT_FORMS);
+        formsMenuModel.setRoot(true);
 
-		tree.getStore().add(adminMenuModel);
-		tree.getStore().add(formsMenuModel);
-	}
+        tree.getStore().add(adminMenuModel);
+        tree.getStore().add(formsMenuModel);
+    }
 
 }

@@ -24,4 +24,18 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
 	String formMenu();
 
 	String userManager();
+
+    String firstName();
+
+    String lastName();
+
+    String userName();
+
+    String emailAddress();
+
+    String admin();
+
+    String yes();
+
+    String no();
 }
