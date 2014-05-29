@@ -43,7 +43,7 @@ public class MedicalLoginModule extends UsernamePasswordLoginModule {
 	private AuthorizationLocal getAuthorizationLocal() throws LoginException {
 		try {
 			InitialContext ic = new InitialContext();
-			Object object = ic.lookup("java:global/medic/AuthorizationSession!ge.tsu.server.ejb.AuthorizationLocal");
+			Object object = ic.lookup("java:global/Medic/AuthorizationSession!ge.tsu.server.ejb.AuthorizationLocal");
 			return (AuthorizationLocal) object;
 		} catch (NamingException e) {
 			log.error(e.getMessage(), e);
