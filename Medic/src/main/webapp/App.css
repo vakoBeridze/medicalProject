@@ -27,11 +27,13 @@ h1 {
     color: red;
 }
 
-/** Set ids using widget.getElement().setId("idOfElement") */
+/** Set ids using widget.getElement().setId("idOfElement")
 #closeButton {
     margin: 15px 6px 6px;
 }
-
+ */
 .GKUSXQHDJ-C .GKUSXQHDC-C {
     list-style: none;
+    margin: auto;
+    padding: inherit;
 }

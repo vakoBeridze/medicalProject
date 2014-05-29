@@ -12,4 +12,16 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
     String errorLogout();
 
     String navigation();
+
+	String home();
+
+	String filter();
+
+	String administrationMenu();
+
+	String formsMenu();
+
+	String formMenu();
+
+	String userManager();
 }

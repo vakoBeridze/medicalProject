@@ -1,9 +1,8 @@
 package ge.tsu.client;
 
-import ge.tsu.client.service.GreetingService;
-import ge.tsu.client.service.GreetingServiceAsync;
+import ge.tsu.client.service.AppService;
+import ge.tsu.client.service.AppServiceAsync;
 import ge.tsu.shared.FieldVerifier;
-import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -15,7 +14,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -31,7 +29,7 @@ public class AppTmp {
   /**
    * Create a remote service proxy to talk to the server-side Greeting service.
    */
-  private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
+  private final AppServiceAsync greetingService = GWT.create(AppService.class);
 
   private final Messages messages = GWT.create(Messages.class);
 
@@ -121,7 +119,7 @@ public class AppTmp {
         sendButton.setEnabled(false);
         textToServerLabel.setText(textToServer);
         serverResponseLabel.setText("");
-        greetingService.greetServer(textToServer, new AsyncCallback<String>() {
+        /*greetingService.greetServer(textToServer, new AsyncCallback<String>() {
           public void onFailure(Throwable caught) {
             // Show the RPC error message to the user
             dialogBox.setText("Remote Procedure Call - Failure");
@@ -138,7 +136,7 @@ public class AppTmp {
             dialogBox.center();
             closeButton.setFocus(true);
           }
-        });
+        });*/
       }
     }
 

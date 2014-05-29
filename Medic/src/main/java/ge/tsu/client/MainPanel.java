@@ -5,6 +5,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.TabItemConfig;
@@ -12,96 +13,112 @@ import com.sencha.gxt.widget.core.client.TabPanel;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.*;
+import com.sencha.gxt.widget.core.client.event.CloseEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
-import ge.tsu.client.service.GreetingServiceAsync;
+import ge.tsu.client.images.Images;
+import ge.tsu.client.service.AppServiceAsync;
+import ge.tsu.client.view.MenuView;
 
 public class MainPanel extends BorderLayoutContainer {
 
-    public MainPanel() {
+	public static TabPanel tabPanel;
 
-        monitorWindowResize = true;
-        Window.enableScrolling(false);
-        setPixelSize(Window.getClientWidth(), Window.getClientHeight());
+	public MainPanel() {
 
-        VerticalLayoutContainer headerWidgets = new VerticalLayoutContainer();
-        headerWidgets.add(initHeader(), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+		monitorWindowResize = true;
+		Window.enableScrolling(false);
+		setPixelSize(Window.getClientWidth(), Window.getClientHeight());
 
-        BorderLayoutData northData = new BorderLayoutData(35);
-        setNorthWidget(headerWidgets, northData);
+		VerticalLayoutContainer headerWidgets = new VerticalLayoutContainer();
+		headerWidgets.add(initHeader(), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
 
-        BorderLayoutData westData = new BorderLayoutData(210);
-        westData.setMargins(new Margins(5, 0, 0, 5));
-        westData.setSplit(true);
-        westData.setCollapsible(true);
-        westData.setCollapseMini(true);
+		BorderLayoutData northData = new BorderLayoutData(35);
+		setNorthWidget(headerWidgets, northData);
 
-        ContentPanel west = new ContentPanel();
-        west.setHeadingText(App.messages.navigation());
-        west.setBodyBorder(true);
-        // TODO add menu
-        west.add(new VerticalLayoutContainer());
+		BorderLayoutData westData = new BorderLayoutData(210);
+		westData.setMargins(new Margins(5, 0, 0, 5));
+		westData.setSplit(true);
+		westData.setCollapsible(true);
+		westData.setCollapseMini(true);
 
-        MarginData centerData = new MarginData();
-        centerData.setMargins(new Margins(5, 5, 0, 5));
+		ContentPanel west = new ContentPanel();
+		west.setHeadingText(App.messages.navigation());
+		west.setBodyBorder(true);
+		// TODO add menu
+		west.add(new MenuView().asWidget());
+//		west.add(new VerticalLayoutContainer());
 
-        SimpleContainer center = new SimpleContainer();
-        center.add(initTabPanel());
+		MarginData centerData = new MarginData();
+		centerData.setMargins(new Margins(5, 5, 0, 5));
 
-        setWestWidget(west, westData);
-        setCenterWidget(center, centerData);
-    }
+		SimpleContainer center = new SimpleContainer();
+		center.add(initTabPanel());
 
-    private TabPanel initTabPanel() {
-        TabPanel tabPanel = new TabPanel();
-        tabPanel.setAnimScroll(true);
-        tabPanel.setTabScroll(true);
-        tabPanel.setCloseContextMenu(true);
+		setWestWidget(west, westData);
+		setCenterWidget(center, centerData);
+	}
 
-        tabPanel.add(new Image(), "Overview");
+	private TabPanel initTabPanel() {
+		tabPanel = new TabPanel();
+		tabPanel.setAnimScroll(true);
+		tabPanel.setTabScroll(true);
+		tabPanel.setCloseContextMenu(true);
 
-        Label item2 = new Label("Test Tab 1");
-        tabPanel.add(item2, "Tab 1");
+		tabPanel.addCloseHandler(new CloseEvent.CloseHandler<Widget>() {
+			@Override
+			public void onClose(CloseEvent<Widget> widgetCloseEvent) {
+				// TODO
+			}
+		});
 
-        return tabPanel;
-    }
+		CenterLayoutContainer center = new CenterLayoutContainer();
+//		center.add(new HTML("<div><img src=\"" + GWT.getModuleBaseURL() + "/images/logo.png\"></div>"));
+		center.add(new Image(Images.INSTANCE.logo()));
+		tabPanel.add(center, new TabItemConfig(App.messages.home(), false));
 
-    private IsWidget initHeader() {
-        ToolBar toolBar = new ToolBar();
-        toolBar.setSpacing(10);
+//		Label item2 = new Label("Test Tab 1");
+//		tabPanel.add(item2, "Tab 1");
 
-        HtmlLayoutContainer title = new HtmlLayoutContainer("<font size='3' color='black'>" + App.messages.appTitle() + "</font>");
-        toolBar.add(title);
+		return tabPanel;
+	}
 
-        toolBar.add(new FillToolItem());
-        final TextButton logout = new TextButton(App.messages.logout());
-        logout.addSelectHandler(new SelectEvent.SelectHandler() {
-            public void onSelect(SelectEvent selectEvent) {
-                logout();
-            }
-        });
-        toolBar.add(logout);
+	private IsWidget initHeader() {
+		ToolBar toolBar = new ToolBar();
+		toolBar.setSpacing(10);
 
-        return toolBar;
-    }
+		HtmlLayoutContainer title = new HtmlLayoutContainer("<font size='3' color='black'>" + App.messages.appTitle() + "</font>");
+		toolBar.add(title);
 
-    private void logout() {
-        GreetingServiceAsync.Util.getInstance().logout(new AsyncCallback<Void>() {
-            @Override
-            public void onFailure(Throwable throwable) {
-                new AlertMessageBox("Error", App.messages.errorLogout()).show();
-            }
+		toolBar.add(new FillToolItem());
+		final TextButton logout = new TextButton(App.messages.logout());
+		logout.addSelectHandler(new SelectEvent.SelectHandler() {
+			public void onSelect(SelectEvent selectEvent) {
+				logout();
+			}
+		});
+		toolBar.add(logout);
 
-            @Override
-            public void onSuccess(Void aVoid) {
-                Window.Location.reload();
-            }
-        });
-    }
+		return toolBar;
+	}
 
-    @Override
-    protected void onWindowResize(int width, int height) {
-        setPixelSize(width, height);
-    }
+	private void logout() {
+		AppServiceAsync.Util.getInstance().logout(new AsyncCallback<Void>() {
+			@Override
+			public void onFailure(Throwable throwable) {
+				new AlertMessageBox("Error", App.messages.errorLogout()).show();
+			}
+
+			@Override
+			public void onSuccess(Void aVoid) {
+				Window.Location.reload();
+			}
+		});
+	}
+
+	@Override
+	protected void onWindowResize(int width, int height) {
+		setPixelSize(width, height);
+	}
 }

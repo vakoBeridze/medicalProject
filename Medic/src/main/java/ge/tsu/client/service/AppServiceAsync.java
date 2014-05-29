@@ -3,30 +3,26 @@ package ge.tsu.client.service;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface GreetingServiceAsync
+public interface AppServiceAsync
 {
-
-    /**
-     * GWT-RPC service  asynchronous (client-side) interface
-     * @see GreetingService
-     */
-    void greetServer( java.lang.String name, AsyncCallback<java.lang.String> callback );
 
     void logout(AsyncCallback<Void> callback);
 
+	void logToServer(Throwable th, AsyncCallback<Void> async);
 
-    /**
+
+	/**
      * Utility class to get the RPC Async interface from client-side code
      */
     public static final class Util 
     { 
-        private static GreetingServiceAsync instance;
+        private static AppServiceAsync instance;
 
-        public static final GreetingServiceAsync getInstance()
+        public static final AppServiceAsync getInstance()
         {
             if ( instance == null )
             {
-                instance = (GreetingServiceAsync) GWT.create( GreetingService.class );
+                instance = (AppServiceAsync) GWT.create( AppService.class );
             }
             return instance;
         }

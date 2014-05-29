@@ -2,21 +2,39 @@ package ge.tsu.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import ge.tsu.client.service.GreetingService;
-import ge.tsu.client.service.GreetingServiceAsync;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
+import ge.tsu.client.service.AppServiceAsync;
 
 public class App implements EntryPoint {
 
-    private static final String SERVER_ERROR = "An error occurred while attempting to contact the server. " +
-            "Please check your network connection and try again.";
+	public static final Messages messages = GWT.create(Messages.class);
+	private static final String SERVER_ERROR = "An error occurred while attempting to contact the server. " +
+			"Please check your network connection and try again.";
 
-    public static final Messages messages = GWT.create(Messages.class);
+	private static void log(Throwable th) {
+		AppServiceAsync.Util.getInstance().logToServer(th, new AsyncCallback<Void>() {
+			@Override
+			public void onFailure(Throwable throwable) {
+			}
 
-    @Override
-    public void onModuleLoad() {
+			@Override
+			public void onSuccess(Void aVoid) {
+			}
+		});
+	}
 
-        MainPanel mainPanel = new MainPanel();
-        RootLayoutPanel.get().add(mainPanel);
-    }
+	@Override
+	public void onModuleLoad() {
+
+		try {
+			MainPanel mainPanel = new MainPanel();
+			RootLayoutPanel.get().add(mainPanel);
+		} catch (Exception ex) {
+			AlertMessageBox messageBox = new AlertMessageBox("Error", ex.getMessage());
+			messageBox.show();
+			log(ex);
+		}
+	}
 }

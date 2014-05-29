@@ -24,7 +24,7 @@
                 <table align="center" border="0" cellspacing="5" cellpadding="10" width="100%">
                     <tbody>
                     <tr valign="center">
-                        <td colspan="2" align="center"><h3>Enter User Name and Password</h3></td>
+                        <td colspan="2" align="center"><h3 style="color: red">Invalid User Name or Password</h3></td>
                     </tr>
 
                     <tr valign="top">
