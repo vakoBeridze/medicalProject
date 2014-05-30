@@ -4,7 +4,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.ContentPanel;
@@ -32,6 +31,7 @@ public class MainPanel extends BorderLayoutContainer {
         monitorWindowResize = true;
         Window.enableScrolling(false);
         setPixelSize(Window.getClientWidth(), Window.getClientHeight());
+//        setBorders(true);
 
         VerticalLayoutContainer headerWidgets = new VerticalLayoutContainer();
         headerWidgets.add(initHeader(), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
@@ -51,7 +51,6 @@ public class MainPanel extends BorderLayoutContainer {
         // TODO add menu
         west.add(new MenuView().asWidget());
 //		west.add(new VerticalLayoutContainer());
-
         MarginData centerData = new MarginData();
         centerData.setMargins(new Margins(5, 5, 0, 5));
 

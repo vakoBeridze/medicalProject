@@ -2,7 +2,6 @@ package ge.tsu.client.view;
 
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
-import ge.tsu.client.presenter.Form200Presenter;
 import ge.tsu.client.presenter.Form300Presenter;
 
 /**

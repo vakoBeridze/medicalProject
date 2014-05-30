@@ -1,7 +1,7 @@
 package ge.tsu.server;
 
-import ge.tsu.client.service.AppService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import ge.tsu.client.service.AppService;
 
 /**
  * The server side implementation of the RPC service.

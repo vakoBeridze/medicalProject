@@ -10,12 +10,18 @@ import com.sencha.gxt.cell.core.client.SimpleSafeHtmlCell;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.widget.core.client.Dialog;
+import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
+import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import ge.tsu.client.App;
 import ge.tsu.client.presenter.UserManagerPresenter;
 import ge.tsu.shared.UserModel;
@@ -31,10 +37,16 @@ public class UserManagerView implements UserManagerPresenter.Display {
 
 
     private static final UserModelProperties props = GWT.create(UserModelProperties.class);
+    private TextButton addButton;
+    private TextButton editButton;
+    private TextButton deleteButton;
+    private TextButton yesDeleteButton;
+    private Grid<UserModel> grid;
 
     @Override
     public Widget asWidget() {
         BorderLayoutContainer blc = new BorderLayoutContainer();
+        blc.setBorders(false);
 
         BorderLayoutContainer.BorderLayoutData eastData = new BorderLayoutContainer.BorderLayoutData(.5);
         eastData.setMargins(new Margins(5, 0, 0, 5));
@@ -46,18 +58,77 @@ public class UserManagerView implements UserManagerPresenter.Display {
         east.setHeaderVisible(false);
         east.setBodyBorder(true);
         east.add(initDetailsInfo());
-//		east.add(new VerticalLayoutContainer());
 
         MarginData centerData = new MarginData();
         centerData.setMargins(new Margins(5, 5, 0, 5));
 
         SimpleContainer center = new SimpleContainer();
-        center.add(initGrid());
+        center.add(initCenterPanel());
 
         blc.setEastWidget(east, eastData);
         blc.setCenterWidget(center, centerData);
 
         return blc;
+    }
+
+    @Override
+    public SelectEvent.HasSelectHandlers getAddButton() {
+        return addButton;
+    }
+
+    @Override
+    public SelectEvent.HasSelectHandlers getEditButton() {
+        return editButton;
+    }
+
+    @Override
+    public SelectEvent.HasSelectHandlers getDeleteButton() {
+        return yesDeleteButton;
+    }
+
+    @Override
+    public UserModel getSelectedUser() {
+        return grid.getSelectionModel().getSelectedItem();
+    }
+
+    @Override
+    public void delete(UserModel selectedUser) {
+        grid.getStore().remove(selectedUser);
+    }
+
+    private Widget initCenterPanel() {
+        VerticalLayoutContainer vlc = new VerticalLayoutContainer();
+
+        ToolBar toolBar = new ToolBar();
+        yesDeleteButton = new TextButton();
+        addButton = new TextButton(App.messages.add());
+        editButton = new TextButton(App.messages.edit());
+        deleteButton = new TextButton(App.messages.delete());
+        deleteButton.addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(final SelectEvent selectEvent) {
+                ConfirmMessageBox messageBox = new ConfirmMessageBox(App.messages.confirm(), App.messages.sureDelete());
+                yesDeleteButton = messageBox.getButton(Dialog.PredefinedButton.YES);
+                yesDeleteButton.addSelectHandler(new SelectEvent.SelectHandler() {
+                    @Override
+                    public void onSelect(SelectEvent event) {
+                        // TODO
+//                        yesDeleteButton.fireEvent(selectEvent);
+                    }
+                });
+                messageBox.show();
+            }
+        });
+        toolBar.add(addButton);
+        toolBar.add(editButton);
+        toolBar.add(deleteButton);
+
+        initGrid();
+
+        vlc.add(toolBar, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        vlc.add(grid, new VerticalLayoutContainer.VerticalLayoutData(1, 1));
+
+        return vlc;
     }
 
     private Widget initDetailsInfo() {
@@ -67,7 +138,7 @@ public class UserManagerView implements UserManagerPresenter.Display {
         return new HTML("Details Info");
     }
 
-    private Grid<UserModel> initGrid() {
+    private void initGrid() {
 
         ColumnConfig<UserModel, String> firstNameCol = new ColumnConfig<UserModel, String>(props.firstName(), 50, SafeHtmlUtils.fromTrustedString("<b>" + App.messages.firstName() + "</b>"));
         ColumnConfig<UserModel, String> lastNameCol = new ColumnConfig<UserModel, String>(props.lastName(), 50, App.messages.lastName());
@@ -90,7 +161,7 @@ public class UserManagerView implements UserManagerPresenter.Display {
 
         ListStore<UserModel> store = new ListStore<UserModel>(props.id());
 
-        final Grid<UserModel> grid = new Grid<UserModel>(store, cm);
+        grid = new Grid<UserModel>(store, cm);
         grid.getView().setAutoExpandColumn(firstNameCol);
         grid.getView().setAutoFill(true);
         grid.getView().setStripeRows(true);
@@ -100,9 +171,6 @@ public class UserManagerView implements UserManagerPresenter.Display {
         grid.setColumnReordering(true);
 
         grid.getStore().addAll(getSampleData());
-
-        return grid;
-
     }
 
     public List<UserModel> getSampleData() {

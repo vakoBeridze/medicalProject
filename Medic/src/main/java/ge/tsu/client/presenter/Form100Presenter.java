@@ -1,6 +1,5 @@
 package ge.tsu.client.presenter;
 
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -24,7 +23,7 @@ public class Form100Presenter implements Presenter {
 
 
     @Override
-    public void go(HasWidgets container) {
+    public void go() {
         // TODO
     }
 }

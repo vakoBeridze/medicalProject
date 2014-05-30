@@ -57,39 +57,43 @@ public class Util {
         if (openTabs.get(menu.getMenu()) != null) {
             MainPanel.tabPanel.setActiveWidget(openTabs.get(menu.getMenu()));
         } else {
+            Presenter presenter = null;
             Widget widget = null;
             switch (menu.getMenu()) {
                 case USER_MANAGER: {
-                    UserManagerPresenter presenter = new UserManagerPresenter(new UserManagerView());
-                    widget = presenter.getDisplay().asWidget();
+                    presenter = new UserManagerPresenter(new UserManagerView());
+                    widget = ((UserManagerPresenter) presenter).getDisplay().asWidget();
+
                     openTabs.put(menu.getMenu(), widget);
                     MainPanel.tabPanel.add(widget, new TabItemConfig(App.messages.userManager(), true));
                     MainPanel.tabPanel.setActiveWidget(widget);
+
+                    presenter.go();
                     return;
                 }
                 case FORM_100: {
-                    Form100Presenter presenter = new Form100Presenter(new Form100View());
-                    widget = presenter.getDisplay().asWidget();
+                    presenter = new Form100Presenter(new Form100View());
+                    widget = ((Form100Presenter) presenter).getDisplay().asWidget();
                     break;
                 }
                 case FORM_200: {
-                    Form200Presenter presenter = new Form200Presenter(new Form200View());
-                    widget = presenter.getDisplay().asWidget();
+                    presenter = new Form200Presenter(new Form200View());
+                    widget = ((Form200Presenter) presenter).getDisplay().asWidget();
                     break;
                 }
                 case FORM_300: {
-                    Form300Presenter presenter = new Form300Presenter(new Form300View());
-                    widget = presenter.getDisplay().asWidget();
+                    presenter = new Form300Presenter(new Form300View());
+                    widget = ((Form300Presenter) presenter).getDisplay().asWidget();
                     break;
                 }
                 case FORM_400: {
-                    Form400Presenter presenter = new Form400Presenter(new Form400View());
-                    widget = presenter.getDisplay().asWidget();
+                    presenter = new Form400Presenter(new Form400View());
+                    widget = ((Form400Presenter) presenter).getDisplay().asWidget();
                     break;
                 }
                 case FORM_500: {
-                    Form500Presenter presenter = new Form500Presenter(new Form500View());
-                    widget = presenter.getDisplay().asWidget();
+                    presenter = new Form500Presenter(new Form500View());
+                    widget = ((Form500Presenter) presenter).getDisplay().asWidget();
                     break;
                 }
             }
@@ -97,6 +101,8 @@ public class Util {
                 openTabs.put(menu.getMenu(), widget);
                 MainPanel.tabPanel.add(widget, new TabItemConfig(App.messages.formMenu() + " " + menu.getMenu().toString().substring(5), true));
                 MainPanel.tabPanel.setActiveWidget(widget);
+
+                presenter.go();
             }
         }
     }

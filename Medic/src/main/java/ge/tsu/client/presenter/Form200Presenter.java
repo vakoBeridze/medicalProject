@@ -1,8 +1,6 @@
 package ge.tsu.client.presenter;
 
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
-import ge.tsu.client.view.Form200View;
 
 /**
  * Created by vako on 29/05/14.
@@ -25,7 +23,7 @@ public class Form200Presenter implements Presenter {
 
 
     @Override
-    public void go(HasWidgets container) {
+    public void go() {
         // TODO
     }
 }

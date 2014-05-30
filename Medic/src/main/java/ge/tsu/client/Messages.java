@@ -38,4 +38,16 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
     String yes();
 
     String no();
+
+    String add();
+
+    String edit();
+
+    String delete();
+
+    String sureDelete();
+
+    String confirm();
+
+    String save();
 }
