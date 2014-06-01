@@ -17,233 +17,236 @@ import java.util.List;
  * @author vamekh
  */
 
+// FIXME Inheritance
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Person {
-    @Id
-    private Long id;
-    private String pn;
 
-    @OneToMany
-    @JoinTable(name = "person_cityzenships",
-            joinColumns = @JoinColumn(name = "person_id"),
-            inverseJoinColumns = @JoinColumn(name = "cityzenship_addr_id"))
-    private List<Address> citizenship = new ArrayList<Address>();
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date birthDate;
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date deathDate;
+	@OneToMany(mappedBy = "customer")
+	List<BloodTransfusion> bloodTransfusions = new ArrayList<BloodTransfusion>();
+	@OneToMany(mappedBy = "customer")
+	List<CustomerAllergy> customerAllergies = new ArrayList<CustomerAllergy>();
+	@OneToMany(mappedBy = "customer")
+	List<CustomerSurgery> customerSurgeries = new ArrayList<CustomerSurgery>();
+	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+	List<CustomerDisease> customerDiseases = new ArrayList<CustomerDisease>();
+	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+	List<Police> customerPolices = new ArrayList<Police>();
+	private String pn;
+	@OneToMany
+	@JoinTable(name = "person_cityzenships",
+			joinColumns = @JoinColumn(name = "person_id"),
+			inverseJoinColumns = @JoinColumn(name = "cityzenship_addr_id"))
+	private List<Address> citizenship = new ArrayList<Address>();
+	@Temporal(value = TemporalType.TIMESTAMP)
+	private Date birthDate;
+	@Temporal(value = TemporalType.TIMESTAMP)
+	private Date deathDate;
+	private String firstName;
+	private String lastName;
+	private String fatherName;
+	private Integer gender;
+	private String maritalStatus;
+	private Integer invalidStatus;
+	private Integer bloodGroup;
+	private Integer rhFactory;
+	private String professionAndJob;
+	private String phoneNumber;
 
-    private String firstName;
-    private String lastName;
-    private String fatherName;
-    private Integer gender;
-    private String maritalStatus;
+	@Column(name = "EMAIL", unique = true, nullable = false)
+	private String email;
 
-    private Integer invalidStatus;
-    private Integer bloodGroup;
-    private Integer rhFactory;
+	private String password;
 
-    private String professionAndJob;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "address_id")
+	private Address address;
 
-    private String phoneNumber;
-    private String email;
+	public Long getId() {
+		return id;
+	}
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "address_id")
-    private Address address;
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    @OneToMany(mappedBy = "customer")
-    List<BloodTransfusion> bloodTransfusions = new ArrayList<BloodTransfusion>();
+	public String getPn() {
+		return pn;
+	}
 
-    @OneToMany(mappedBy = "customer")
-    List<CustomerAllergy> customerAllergies = new ArrayList<CustomerAllergy>();
+	public void setPn(String pn) {
+		this.pn = pn;
+	}
 
-    @OneToMany(mappedBy = "customer")
-    List<CustomerSurgery> customerSurgeries = new ArrayList<CustomerSurgery>();
+	public List<Address> getCitizenship() {
+		return citizenship;
+	}
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    List<CustomerDisease> customerDiseases = new ArrayList<CustomerDisease>();
+	public void setCitizenship(List<Address> citizenship) {
+		this.citizenship = citizenship;
+	}
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    List<Police> customerPolices = new ArrayList<Police>();
+	public Date getBirthDate() {
+		return birthDate;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Date getDeathDate() {
+		return deathDate;
+	}
 
-    public String getPn() {
-        return pn;
-    }
+	public void setDeathDate(Date deathDate) {
+		this.deathDate = deathDate;
+	}
 
-    public void setPn(String pn) {
-        this.pn = pn;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public List<Address> getCitizenship() {
-        return citizenship;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public void setCitizenship(List<Address> citizenship) {
-        this.citizenship = citizenship;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public Date getBirthDate() {
-        return birthDate;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
+	public String getFatherName() {
+		return fatherName;
+	}
 
-    public Date getDeathDate() {
-        return deathDate;
-    }
+	public void setFatherName(String fatherName) {
+		this.fatherName = fatherName;
+	}
 
-    public void setDeathDate(Date deathDate) {
-        this.deathDate = deathDate;
-    }
+	public Integer getGender() {
+		return gender;
+	}
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public void setGender(Integer gender) {
+		this.gender = gender;
+	}
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	public String getMaritalStatus() {
+		return maritalStatus;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public void setMaritalStatus(String maritalStatus) {
+		this.maritalStatus = maritalStatus;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public Integer getInvalidStatus() {
+		return invalidStatus;
+	}
 
-    public String getFatherName() {
-        return fatherName;
-    }
+	public void setInvalidStatus(Integer invalidStatus) {
+		this.invalidStatus = invalidStatus;
+	}
 
-    public void setFatherName(String fatherName) {
-        this.fatherName = fatherName;
-    }
+	public Integer getBloodGroup() {
+		return bloodGroup;
+	}
 
-    public Integer getGender() {
-        return gender;
-    }
+	public void setBloodGroup(Integer bloodGroup) {
+		this.bloodGroup = bloodGroup;
+	}
 
-    public void setGender(Integer gender) {
-        this.gender = gender;
-    }
+	public Integer getRhFactory() {
+		return rhFactory;
+	}
 
-    public String getMaritalStatus() {
-        return maritalStatus;
-    }
+	public void setRhFactory(Integer rhFactory) {
+		this.rhFactory = rhFactory;
+	}
 
-    public void setMaritalStatus(String maritalStatus) {
-        this.maritalStatus = maritalStatus;
-    }
+	public String getProfessionAndJob() {
+		return professionAndJob;
+	}
 
-    public Integer getInvalidStatus() {
-        return invalidStatus;
-    }
+	public void setProfessionAndJob(String professionAndJob) {
+		this.professionAndJob = professionAndJob;
+	}
 
-    public void setInvalidStatus(Integer invalidStatus) {
-        this.invalidStatus = invalidStatus;
-    }
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
-    public Integer getBloodGroup() {
-        return bloodGroup;
-    }
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
-    public void setBloodGroup(Integer bloodGroup) {
-        this.bloodGroup = bloodGroup;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public Integer getRhFactory() {
-        return rhFactory;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setRhFactory(Integer rhFactory) {
-        this.rhFactory = rhFactory;
-    }
+	public Address getAddress() {
+		return address;
+	}
 
-    public String getProfessionAndJob() {
-        return professionAndJob;
-    }
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 
-    public void setProfessionAndJob(String professionAndJob) {
-        this.professionAndJob = professionAndJob;
-    }
+	public List<BloodTransfusion> getBloodTransfusions() {
+		return bloodTransfusions;
+	}
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+	public void setBloodTransfusions(List<BloodTransfusion> bloodTransfusions) {
+		this.bloodTransfusions = bloodTransfusions;
+	}
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+	public List<CustomerAllergy> getCustomerAllergies() {
+		return customerAllergies;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public void setCustomerAllergies(List<CustomerAllergy> customerAllergies) {
+		this.customerAllergies = customerAllergies;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public List<CustomerSurgery> getCustomerSurgeries() {
+		return customerSurgeries;
+	}
 
-    public Address getAddress() {
-        return address;
-    }
+	public void setCustomerSurgeries(List<CustomerSurgery> customerSurgeries) {
+		this.customerSurgeries = customerSurgeries;
+	}
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+	public List<CustomerDisease> getCustomerDiseases() {
+		return customerDiseases;
+	}
 
-    public List<BloodTransfusion> getBloodTransfusions() {
-        return bloodTransfusions;
-    }
+	public void setCustomerDiseases(List<CustomerDisease> customerDiseases) {
+		this.customerDiseases = customerDiseases;
+	}
 
-    public void setBloodTransfusions(List<BloodTransfusion> bloodTransfusions) {
-        this.bloodTransfusions = bloodTransfusions;
-    }
+	public List<Police> getCustomerPolices() {
+		return customerPolices;
+	}
 
-    public List<CustomerAllergy> getCustomerAllergies() {
-        return customerAllergies;
-    }
+	public void setCustomerPolices(List<Police> customerPolices) {
+		this.customerPolices = customerPolices;
+	}
 
-    public void setCustomerAllergies(List<CustomerAllergy> customerAllergies) {
-        this.customerAllergies = customerAllergies;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public List<CustomerSurgery> getCustomerSurgeries() {
-        return customerSurgeries;
-    }
-
-    public void setCustomerSurgeries(List<CustomerSurgery> customerSurgeries) {
-        this.customerSurgeries = customerSurgeries;
-    }
-
-    public List<CustomerDisease> getCustomerDiseases() {
-        return customerDiseases;
-    }
-
-    public void setCustomerDiseases(List<CustomerDisease> customerDiseases) {
-        this.customerDiseases = customerDiseases;
-    }
-
-    public List<Police> getCustomerPolices() {
-        return customerPolices;
-    }
-
-    public void setCustomerPolices(List<Police> customerPolices) {
-        this.customerPolices = customerPolices;
-    }
-
-
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

@@ -6,6 +6,7 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  * Created by Vako on 5/11/2014
@@ -19,9 +20,11 @@ public class AuthorizationSession implements AuthorizationLocal {
 	private EntityManager em;
 
 	@Override
-	public String checkUser(String userName, String password) {
-		logger.info("User: " + userName + " Checked");
-		return "vako";
+	public String checkUser(String login, String password) {
+		logger.info("User: " + login + " Checked");
+		Query query = em.createQuery("select p.password from Person p where p.email=:login");
+		query.setParameter("login", login);
+		return (String) query.getSingleResult();
 	}
 
 }

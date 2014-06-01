@@ -22,8 +22,18 @@ public class MedicalLoginModule extends UsernamePasswordLoginModule {
 
 	@Override
 	protected String getUsersPassword() throws LoginException {
-		logger.info("Attempt to login: " + super.getUsername());
-		return getAuthorizationLocal().checkUser(super.getUsername().trim(), super.getUsernameAndPassword()[1]);
+
+		String login = super.getUsername().trim();
+		String password = super.getUsernameAndPassword()[1];
+
+		logger.info("Attempt to login: " + login);
+
+		// FIXME this if will be while development
+		if (login.equals("sa")) {
+			return "sa";
+		}
+
+		return getAuthorizationLocal().checkUser(login, password);
 	}
 
 	@Override

@@ -1,86 +1,116 @@
 package ge.tsu.client.presenter;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.info.Info;
 import ge.tsu.client.App;
+import ge.tsu.client.service.AppService;
 import ge.tsu.client.view.EditUserView;
 import ge.tsu.shared.UserModel;
+
+import java.util.List;
 
 /**
  * Created by vako on 29/05/14.
  */
 public class UserManagerPresenter implements Presenter {
 
-    Display display;
+	Display display;
 
-    public UserManagerPresenter(Display display) {
-        this.display = display;
-    }
+	public UserManagerPresenter(Display display) {
+		this.display = display;
+	}
 
+	private void bind() {
+		display.getAddButton().addSelectHandler(new SelectEvent.SelectHandler() {
+			@Override
+			public void onSelect(SelectEvent selectEvent) {
+				EditUserPresenter presenter = new EditUserPresenter(new EditUserView(new UserModel()), display);
+				presenter.getDisplay().asWidget();
+				presenter.go();
+			}
+		});
 
-    public interface Display {
-        Widget asWidget();
+		display.getEditButton().addSelectHandler(new SelectEvent.SelectHandler() {
+			@Override
+			public void onSelect(SelectEvent selectEvent) {
+				UserModel selectedUser = display.getSelectedUser();
+				if (selectedUser != null) {
+					EditUserPresenter presenter = new EditUserPresenter(new EditUserView(selectedUser), display);
+					presenter.getDisplay().asWidget();
+					presenter.go();
+				}
+			}
+		});
 
-        SelectEvent.HasSelectHandlers getAddButton();
+		display.getDeleteButton().addSelectHandler(new SelectEvent.SelectHandler() {
+			@Override
+			public void onSelect(SelectEvent event) {
+				UserModel modelToDelete = display.getSelectedUser();
+				if (modelToDelete != null) {
+					doDelete(modelToDelete);
+				}
+			}
+		});
+	}
 
-        SelectEvent.HasSelectHandlers getEditButton();
+	private void doDelete(final UserModel selectedUser) {
+		AppService.Util.getInstance().deleteUser(selectedUser, new AsyncCallback<Void>() {
+			@Override
+			public void onFailure(Throwable throwable) {
+				App.logError(throwable);
+			}
 
-        SelectEvent.HasSelectHandlers getDeleteButton();
+			@Override
+			public void onSuccess(Void aVoid) {
+				display.delete(selectedUser);
+			}
+		});
 
-        UserModel getSelectedUser();
+	}
 
-        void delete(UserModel selectedUser);
-    }
+	private void initData() {
+		AppService.Util.getInstance().loadUsers(new AsyncCallback<List<UserModel>>() {
+			@Override
+			public void onFailure(Throwable throwable) {
+				App.logError(throwable);
+			}
 
+			@Override
+			public void onSuccess(List<UserModel> userModels) {
+				display.setData(userModels);
+			}
+		});
+	}
 
-    private void bind() {
-        Info.display("BINDING", "bindng UserManager");
+	public Display getDisplay() {
+		return display;
+	}
 
-        display.getAddButton().addSelectHandler(new SelectEvent.SelectHandler() {
-            @Override
-            public void onSelect(SelectEvent selectEvent) {
-                EditUserPresenter presenter = new EditUserPresenter(new EditUserView());
-                presenter.getDisplay().asWidget();
-                presenter.go();
-            }
-        });
+	@Override
+	public void go() {
+		bind();
+		initData();
+	}
 
-        display.getEditButton().addSelectHandler(new SelectEvent.SelectHandler() {
-            @Override
-            public void onSelect(SelectEvent selectEvent) {
-                EditUserPresenter presenter = new EditUserPresenter(new EditUserView());
-                presenter.getDisplay().asWidget();
-                presenter.getDisplay().setModel(display.getSelectedUser());
-                presenter.go();
-            }
-        });
+	public interface Display {
+		Widget asWidget();
 
-        display.getDeleteButton().addSelectHandler(new SelectEvent.SelectHandler() {
-            @Override
-            public void onSelect(SelectEvent event) {
-                doDelete(display.getSelectedUser());
-            }
-        });
-    }
+		SelectEvent.HasSelectHandlers getAddButton();
 
-    private void doDelete(UserModel selectedUser) {
-        // TODO delete in db
+		SelectEvent.HasSelectHandlers getEditButton();
 
-        display.delete(selectedUser);
-    }
+		SelectEvent.HasSelectHandlers getDeleteButton();
 
-    @Override
-    public void go() {
-        bind();
-    }
+		UserModel getSelectedUser();
 
-    public Display getDisplay() {
-        return display;
-    }
+		void delete(UserModel selectedUser);
+
+		void setData(List<UserModel> userModels);
+
+		void add(UserModel userModel);
+
+		void update(UserModel savedUserModel);
+	}
 
 }

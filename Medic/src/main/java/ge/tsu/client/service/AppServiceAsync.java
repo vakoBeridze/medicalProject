@@ -2,34 +2,23 @@ package ge.tsu.client.service;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import ge.tsu.shared.UserModel;
 
-public interface AppServiceAsync
-{
+import java.util.List;
 
-    void logout(AsyncCallback<Void> callback);
+public interface AppServiceAsync {
 
-	void logToServer(Throwable th, AsyncCallback<Void> async);
+	void logout(AsyncCallback<Void> asyncCallback);
 
+	void logToServer(Throwable th, AsyncCallback<Void> asyncCallback);
 
-	/**
-     * Utility class to get the RPC Async interface from client-side code
-     */
-    public static final class Util 
-    { 
-        private static AppServiceAsync instance;
+	void testMethod(String testParam, AsyncCallback<Void> asyncCallback);
 
-        public static final AppServiceAsync getInstance()
-        {
-            if ( instance == null )
-            {
-                instance = (AppServiceAsync) GWT.create( AppService.class );
-            }
-            return instance;
-        }
+	void loadUsers(AsyncCallback<List<UserModel>> asyncCallback);
 
-        private Util()
-        {
-            // Utility class should not be instanciated
-        }
-    }
+	void saveUser(UserModel userModel, AsyncCallback<UserModel> asyncCallback);
+
+	void deleteUser(UserModel userModel, AsyncCallback<Void> asyncCallback);
+
+	void loadCurrentUser(AsyncCallback<UserModel> asyncCallback);
 }

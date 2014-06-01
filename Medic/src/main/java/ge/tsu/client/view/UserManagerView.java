@@ -7,6 +7,7 @@ import com.google.gwt.text.shared.AbstractSafeHtmlRenderer;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.cell.core.client.SimpleSafeHtmlCell;
+import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.ContentPanel;
@@ -17,6 +18,8 @@ import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
+import com.sencha.gxt.widget.core.client.event.HideEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -28,6 +31,7 @@ import ge.tsu.shared.UserModel;
 import ge.tsu.shared.UserModelProperties;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,163 +40,182 @@ import java.util.List;
 public class UserManagerView implements UserManagerPresenter.Display {
 
 
-    private static final UserModelProperties props = GWT.create(UserModelProperties.class);
-    private TextButton addButton;
-    private TextButton editButton;
-    private TextButton deleteButton;
-    private TextButton yesDeleteButton;
-    private Grid<UserModel> grid;
+	private static final UserModelProperties props = GWT.create(UserModelProperties.class);
+	private TextButton addButton;
+	private TextButton editButton;
+	private TextButton deleteButton;
+	private TextButton yesDeleteButton;
+	private Grid<UserModel> grid;
 
-    @Override
-    public Widget asWidget() {
-        BorderLayoutContainer blc = new BorderLayoutContainer();
-        blc.setBorders(false);
+	@Override
+	public Widget asWidget() {
+		BorderLayoutContainer blc = new BorderLayoutContainer();
+		blc.setBorders(false);
 
-        BorderLayoutContainer.BorderLayoutData eastData = new BorderLayoutContainer.BorderLayoutData(.5);
-        eastData.setMargins(new Margins(5, 0, 0, 5));
+		BorderLayoutContainer.BorderLayoutData eastData = new BorderLayoutContainer.BorderLayoutData(.2);
+		eastData.setMargins(new Margins(5, 0, 0, 5));
 //        eastData.setSplit(true);
-        eastData.setCollapsible(false);
-        eastData.setCollapseMini(false);
+		eastData.setCollapsible(false);
+		eastData.setCollapseMini(false);
 
-        ContentPanel east = new ContentPanel();
-        east.setHeaderVisible(false);
-        east.setBodyBorder(true);
-        east.add(initDetailsInfo());
+		ContentPanel east = new ContentPanel();
+		east.setHeaderVisible(false);
+		east.setBodyBorder(true);
+		east.add(initDetailsInfo());
 
-        MarginData centerData = new MarginData();
-        centerData.setMargins(new Margins(5, 5, 0, 5));
+		MarginData centerData = new MarginData();
+		centerData.setMargins(new Margins(5, 5, 0, 5));
 
-        SimpleContainer center = new SimpleContainer();
-        center.add(initCenterPanel());
+		SimpleContainer center = new SimpleContainer();
+		center.add(initCenterPanel());
 
-        blc.setEastWidget(east, eastData);
-        blc.setCenterWidget(center, centerData);
+		blc.setEastWidget(east, eastData);
+		blc.setCenterWidget(center, centerData);
 
-        return blc;
-    }
+		return blc;
+	}
 
-    @Override
-    public SelectEvent.HasSelectHandlers getAddButton() {
-        return addButton;
-    }
+	@Override
+	public SelectEvent.HasSelectHandlers getAddButton() {
+		return addButton;
+	}
 
-    @Override
-    public SelectEvent.HasSelectHandlers getEditButton() {
-        return editButton;
-    }
+	@Override
+	public SelectEvent.HasSelectHandlers getEditButton() {
+		return editButton;
+	}
 
-    @Override
-    public SelectEvent.HasSelectHandlers getDeleteButton() {
-        return yesDeleteButton;
-    }
+	@Override
+	public SelectEvent.HasSelectHandlers getDeleteButton() {
+		return yesDeleteButton;
+	}
 
-    @Override
-    public UserModel getSelectedUser() {
-        return grid.getSelectionModel().getSelectedItem();
-    }
+	@Override
+	public UserModel getSelectedUser() {
+		return grid.getSelectionModel().getSelectedItem();
+	}
 
-    @Override
-    public void delete(UserModel selectedUser) {
-        grid.getStore().remove(selectedUser);
-    }
+	@Override
+	public void delete(UserModel selectedUser) {
+		grid.getStore().remove(selectedUser);
+	}
 
-    private Widget initCenterPanel() {
-        VerticalLayoutContainer vlc = new VerticalLayoutContainer();
+	@Override
+	public void setData(List<UserModel> userModels) {
+		grid.getStore().addAll(userModels);
+	}
 
-        ToolBar toolBar = new ToolBar();
-        yesDeleteButton = new TextButton();
-        addButton = new TextButton(App.messages.add());
-        editButton = new TextButton(App.messages.edit());
-        deleteButton = new TextButton(App.messages.delete());
-        deleteButton.addSelectHandler(new SelectEvent.SelectHandler() {
-            @Override
-            public void onSelect(final SelectEvent selectEvent) {
-                ConfirmMessageBox messageBox = new ConfirmMessageBox(App.messages.confirm(), App.messages.sureDelete());
-                yesDeleteButton = messageBox.getButton(Dialog.PredefinedButton.YES);
-                yesDeleteButton.addSelectHandler(new SelectEvent.SelectHandler() {
-                    @Override
-                    public void onSelect(SelectEvent event) {
-                        // TODO
-//                        yesDeleteButton.fireEvent(selectEvent);
-                    }
-                });
-                messageBox.show();
-            }
-        });
-        toolBar.add(addButton);
-        toolBar.add(editButton);
-        toolBar.add(deleteButton);
+	@Override
+	public void add(UserModel userModel) {
+		grid.getStore().add(userModel);
+	}
 
-        initGrid();
+	@Override
+	public void update(UserModel savedUserModel) {
+		grid.getStore().update(savedUserModel);
+	}
 
-        vlc.add(toolBar, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
-        vlc.add(grid, new VerticalLayoutContainer.VerticalLayoutData(1, 1));
+	private Widget initCenterPanel() {
+		VerticalLayoutContainer vlc = new VerticalLayoutContainer();
 
-        return vlc;
-    }
+		ToolBar toolBar = new ToolBar();
+		yesDeleteButton = new TextButton();
+		addButton = new TextButton(App.messages.add());
+		editButton = new TextButton(App.messages.edit());
+		deleteButton = new TextButton(App.messages.delete());
+		yesDeleteButton = new TextButton();
 
-    private Widget initDetailsInfo() {
+		deleteButton.addSelectHandler(new SelectEvent.SelectHandler() {
 
-        // TODO
+			@Override
+			public void onSelect(final SelectEvent event) {
+				ConfirmMessageBox confirmMessageBox = new ConfirmMessageBox("Confirm", "Are you sure to delete Branch?");
+				confirmMessageBox.addDialogHideHandler(new DialogHideEvent.DialogHideHandler() {
+					@Override
+					public void onDialogHide(DialogHideEvent dialogHideEvent) {
+						if (dialogHideEvent.getHideButton() == Dialog.PredefinedButton.YES)
+							yesDeleteButton.fireEvent(event);
+					}
+				});
+				confirmMessageBox.show();
+			}
+		});
 
-        return new HTML("Details Info");
-    }
+		toolBar.add(addButton);
+		toolBar.add(editButton);
+		toolBar.add(deleteButton);
 
-    private void initGrid() {
+		initGrid();
 
-        ColumnConfig<UserModel, String> firstNameCol = new ColumnConfig<UserModel, String>(props.firstName(), 50, SafeHtmlUtils.fromTrustedString("<b>" + App.messages.firstName() + "</b>"));
-        ColumnConfig<UserModel, String> lastNameCol = new ColumnConfig<UserModel, String>(props.lastName(), 50, App.messages.lastName());
-        ColumnConfig<UserModel, String> userNameCol = new ColumnConfig<UserModel, String>(props.userName(), 50, App.messages.userName());
-        ColumnConfig<UserModel, String> emailAddressCol = new ColumnConfig<UserModel, String>(props.emailAddress(), 100, App.messages.emailAddress());
-        ColumnConfig<UserModel, Boolean> adminCol = new ColumnConfig<UserModel, Boolean>(props.admin(), 55, App.messages.admin());
-        adminCol.setCell(new SimpleSafeHtmlCell<Boolean>(new AbstractSafeHtmlRenderer<Boolean>() {
-            @Override
-            public SafeHtml render(Boolean object) {
-                return SafeHtmlUtils.fromString(object ? App.messages.yes() : App.messages.no());
-            }
-        }));
-        List<ColumnConfig<UserModel, ?>> l = new ArrayList<ColumnConfig<UserModel, ?>>();
-        l.add(firstNameCol);
-        l.add(lastNameCol);
-        l.add(userNameCol);
-        l.add(emailAddressCol);
-        l.add(adminCol);
-        ColumnModel<UserModel> cm = new ColumnModel<UserModel>(l);
+		vlc.add(toolBar, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+		vlc.add(grid, new VerticalLayoutContainer.VerticalLayoutData(1, 1));
 
-        ListStore<UserModel> store = new ListStore<UserModel>(props.id());
+		return vlc;
+	}
 
-        grid = new Grid<UserModel>(store, cm);
-        grid.getView().setAutoExpandColumn(firstNameCol);
-        grid.getView().setAutoFill(true);
-        grid.getView().setStripeRows(true);
-        grid.getView().setColumnLines(true);
-        grid.setBorders(false);
+	private Widget initDetailsInfo() {
 
-        grid.setColumnReordering(true);
+		// TODO
 
-        grid.getStore().addAll(getSampleData());
-    }
+		return new HTML("Details Info");
+	}
 
-    public List<UserModel> getSampleData() {
-        List<UserModel> data = new ArrayList<UserModel>();
-        UserModel m1 = new UserModel();
-        m1.setId(1);
-        m1.setFirstName("Vako");
-        m1.setLastName("Beridze");
-        m1.setUserName("v.beridze");
-        m1.setEmailAddress("vako.beridze@gmail.com");
-        m1.setAdmin(true);
-        data.add(m1);
+	private void initGrid() {
 
-        UserModel m = new UserModel();
-        m.setId(2);
-        m.setFirstName("Vako1");
-        m.setLastName("Beridze1");
-        m.setUserName("v.beridze");
-        m.setEmailAddress("vako.beridze@gmail.com");
-        m.setAdmin(false);
-        data.add(m);
+		ColumnConfig<UserModel, String> firstNameCol = new ColumnConfig<UserModel, String>(props.firstName(), 50, SafeHtmlUtils.fromTrustedString("<b>" + App.messages.firstName() + "</b>"));
+		ColumnConfig<UserModel, String> lastNameCol = new ColumnConfig<UserModel, String>(props.lastName(), 50, App.messages.lastName());
+		ColumnConfig<UserModel, String> pnCol = new ColumnConfig<UserModel, String>(props.pn(), 50, App.messages.pn());
+		ColumnConfig<UserModel, String> genderCol = new ColumnConfig<UserModel, String>(new ValueProvider<UserModel, String>() {
+			@Override
+			public String getValue(UserModel userModel) {
+				if (userModel.getGender() == 1)
+					return App.messages.male();
+				else if (userModel.getGender() == 4)
+					return App.messages.female();
+				return "-";
+			}
 
-        return data;
-    }
+			@Override
+			public void setValue(UserModel userModel, String s) {
+			}
+
+			@Override
+			public String getPath() {
+				return "";
+			}
+		}, 50, App.messages.gender());
+		ColumnConfig<UserModel, Date> birthDateCol = new ColumnConfig<UserModel, Date>(props.birthDate(), 50, App.messages.birthday());
+		ColumnConfig<UserModel, String> emailAddressCol = new ColumnConfig<UserModel, String>(props.emailAddress(), 70, App.messages.emailAddress());
+		ColumnConfig<UserModel, String> phoneNumberCol = new ColumnConfig<UserModel, String>(props.phoneNumber(), 50, App.messages.phoneNumber());
+		ColumnConfig<UserModel, Integer> bloodGroupCol = new ColumnConfig<UserModel, Integer>(props.bloodGroup(), 50, App.messages.bloodGroup());
+		ColumnConfig<UserModel, Boolean> adminCol = new ColumnConfig<UserModel, Boolean>(props.admin(), 55, App.messages.admin());
+		adminCol.setCell(new SimpleSafeHtmlCell<Boolean>(new AbstractSafeHtmlRenderer<Boolean>() {
+			@Override
+			public SafeHtml render(Boolean object) {
+				return SafeHtmlUtils.fromString(object ? App.messages.yes() : App.messages.no());
+			}
+		}));
+		List<ColumnConfig<UserModel, ?>> columnConfigs = new ArrayList<ColumnConfig<UserModel, ?>>();
+		columnConfigs.add(pnCol);
+		columnConfigs.add(firstNameCol);
+		columnConfigs.add(lastNameCol);
+		columnConfigs.add(emailAddressCol);
+		columnConfigs.add(genderCol);
+		columnConfigs.add(birthDateCol);
+		columnConfigs.add(phoneNumberCol);
+		columnConfigs.add(bloodGroupCol);
+		columnConfigs.add(adminCol);
+		ColumnModel<UserModel> cm = new ColumnModel<UserModel>(columnConfigs);
+
+		ListStore<UserModel> store = new ListStore<UserModel>(props.id());
+
+		grid = new Grid<UserModel>(store, cm);
+		grid.getView().setAutoExpandColumn(firstNameCol);
+		grid.getView().setAutoFill(true);
+		grid.getView().setStripeRows(true);
+		grid.getView().setColumnLines(true);
+		grid.setBorders(false);
+
+		grid.setColumnReordering(true);
+	}
 }
