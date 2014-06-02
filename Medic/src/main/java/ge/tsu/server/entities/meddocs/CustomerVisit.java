@@ -102,8 +102,8 @@ public class CustomerVisit {
         return visitConsequence;
     }
 
-    public void setVisitConsequence(Integer visitConsequance) {
-        this.visitConsequence = visitConsequance;
+    public void setVisitConsequence(Integer visitConsequence) {
+        this.visitConsequence = visitConsequence;
     }
 
     public String getNote() {
@@ -114,11 +114,11 @@ public class CustomerVisit {
         this.note = note;
     }
 
-    public List<Appealing> getAppealings() {
+    public List<CustomerAppealing> getAppealings() {
         return appealings;
     }
 
-    public void setAppealings(List<Appealing> appealings) {
+    public void setAppealings(List<CustomerAppealing> appealings) {
         this.appealings = appealings;
     }
 }
