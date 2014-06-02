@@ -26,13 +26,13 @@ public class CustomerDisease {
     @JoinColumn(name = "customer_id")
     private Person customer;
 
-    // FIXME
+    // FIXME ras erchi?
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "desease_id")
-    private Disease desease;
+    @JoinColumn(name = "disease_id")
+    private Disease disease;
 
-    //სიმწვავე(მსუბუქი, ქრონიკული, მწვავე)
-    private Integer deseaseStrength;
+    //სიმწვავე(მსუბუქი, ქრონიკული, მწვავე, ქვემწვავე)
+    private Integer diseaseStrength;
 
     private Boolean isInfection;
 
@@ -47,9 +47,9 @@ public class CustomerDisease {
     @Temporal(value = TemporalType.DATE)
     private Date justificationDate;
 
-    // FIXME
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "previus_diagnose_id")
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "previous_diagnose_id")
     private CustomerDisease previousDiagnose;
 
     private Boolean isFinalDiagnose;
@@ -58,13 +58,12 @@ public class CustomerDisease {
     //ამისთვის განსაზღვრულია enum-ი.
     private Integer diagnoseState;
 
-    // FIXME
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
-    // FIXME
-    @OneToOne(fetch = FetchType.EAGER)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_visit_id")
     private CustomerVisit visit;
 
@@ -84,20 +83,20 @@ public class CustomerDisease {
         this.customer = customer;
     }
 
-    public Disease getDesease() {
-        return desease;
+    public Disease getDisease() {
+        return disease;
     }
 
-    public void setDesease(Disease desease) {
-        this.desease = desease;
+    public void setDisease(Disease disease) {
+        this.disease = disease;
     }
 
-    public Integer getDeseaseStrength() {
-        return deseaseStrength;
+    public Integer getDiseaseStrength() {
+        return diseaseStrength;
     }
 
-    public void setDeseaseStrength(Integer deseaseStrength) {
-        this.deseaseStrength = deseaseStrength;
+    public void setDiseaseStrength(Integer diseaseStrength) {
+        this.diseaseStrength = diseaseStrength;
     }
 
     public Boolean getIsInfection() {

@@ -30,7 +30,7 @@ public class BloodTransfusion {
     private Integer bloodVolume;
     private String comment;
 
-    // FIXME
+
     @ManyToOne
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;

@@ -3,6 +3,7 @@ package ge.tsu.server.entities.meddocs;
 import ge.tsu.server.entities.Hospital;
 import ge.tsu.server.entities.Person;
 import ge.tsu.server.entities.medfacts.Appealing;
+import ge.tsu.server.entities.medwork.CustomerAppealing;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -37,9 +38,9 @@ public class CustomerVisit {
     private Integer visitConsequence;
     private String note;
 
-    // FIXME check here was:  mappedBy = "visit"
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "name")
-    private List<Appealing> appealings;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "visit")
+    private List<CustomerAppealing> appealings;
 
     public Long getId() {
         return id;

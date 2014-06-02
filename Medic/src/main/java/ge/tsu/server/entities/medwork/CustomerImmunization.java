@@ -33,7 +33,7 @@ public class CustomerImmunization {
     @JoinColumn(name = "immunization_id")
     private Immunization immunization;
 
-    //FIXME
+    //FIXME whats the problem??
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;

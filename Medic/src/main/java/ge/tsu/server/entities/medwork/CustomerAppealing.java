@@ -23,7 +23,7 @@ public class CustomerAppealing {
     @JoinColumn(name = "appealing_id")
     private Appealing appealing;
 
-    // FIXME
+
     @ManyToOne
     @JoinColumn(name = "visit_id")
     private CustomerVisit visit;

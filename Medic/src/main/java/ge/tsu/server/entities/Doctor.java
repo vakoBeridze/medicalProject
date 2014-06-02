@@ -6,7 +6,10 @@ import javax.persistence.Entity;
 public class Doctor extends Person {
 
     private Integer doctorType;
+
     private String license;
+
+    private String password;
 
     public String getLicense() {
         return license;
@@ -22,5 +25,13 @@ public class Doctor extends Person {
 
     public void setDoctorType(Integer doctorType) {
         this.doctorType = doctorType;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

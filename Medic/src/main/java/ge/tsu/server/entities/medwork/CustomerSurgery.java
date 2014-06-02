@@ -25,19 +25,19 @@ public class CustomerSurgery {
     @JoinColumn(name = "customer_id")
     private Person customer;
 
-    // FIXME check mapping
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "surgery_id")
     private Surgery surgery;
 
     private String comment;
 
-    // FIXME check mapping
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
 
-    // FIXME check mapping
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "visit_id")
     private CustomerVisit visit;
@@ -47,6 +47,16 @@ public class CustomerSurgery {
 
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date endDate;
+
+
+
+
+
+
+
+
+
+
 
     public Long getId() {
         return id;

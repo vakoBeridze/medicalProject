@@ -3,10 +3,7 @@
  */
 package ge.tsu.server.entities;
 
-import ge.tsu.server.entities.medwork.BloodTransfusion;
-import ge.tsu.server.entities.medwork.CustomerAllergy;
-import ge.tsu.server.entities.medwork.CustomerDisease;
-import ge.tsu.server.entities.medwork.CustomerSurgery;
+import ge.tsu.server.entities.medwork.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,7 +14,7 @@ import java.util.List;
  * @author vamekh
  */
 
-// FIXME Inheritance
+// FIXME Inheritance tu ginda ro ert cxrilshi iyos: InheritanceType.SINGLE_TABLE, mgoni rogorc aris normaluria
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Person {
@@ -34,9 +31,14 @@ public class Person {
 	List<CustomerSurgery> customerSurgeries = new ArrayList<CustomerSurgery>();
 	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
 	List<CustomerDisease> customerDiseases = new ArrayList<CustomerDisease>();
-	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-	List<Police> customerPolices = new ArrayList<Police>();
-	private String pn;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    List<Police> customerPolices = new ArrayList<Police>();
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    List<CustomerImmunization> customerImmunizations = new ArrayList<CustomerImmunization>();
+
+
+
+    private String pn;
 	@OneToMany
 	@JoinTable(name = "person_cityzenships",
 			joinColumns = @JoinColumn(name = "person_id"),
@@ -60,11 +62,19 @@ public class Person {
 	@Column(name = "EMAIL", unique = true, nullable = false)
 	private String email;
 
-	private String password;
-
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "address_id")
 	private Address address;
+
+
+
+
+
+
+
+
+
+
 
 	public Long getId() {
 		return id;

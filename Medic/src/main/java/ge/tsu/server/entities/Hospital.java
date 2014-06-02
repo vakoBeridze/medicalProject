@@ -7,14 +7,13 @@ public class Hospital {
     @Id
     private Long id;
 
-
-    // FIXME check
-//    @JoinColumn(name = "parent_id")
-//    private Hospital parentHospital;
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Hospital parentHospital;
 
     private String name;
 
-    // FIXME check
+
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
@@ -29,13 +28,13 @@ public class Hospital {
         this.id = id;
     }
 
-//    public Hospital getParentHospital() {
-//        return parentHospital;
-//    }
-//
-//    public void setParentHospital(Hospital parentHospital) {
-//        this.parentHospital = parentHospital;
-//    }
+    public Hospital getParentHospital() {
+        return parentHospital;
+    }
+
+    public void setParentHospital(Hospital parentHospital) {
+        this.parentHospital = parentHospital;
+    }
 
     public String getName() {
         return name;
