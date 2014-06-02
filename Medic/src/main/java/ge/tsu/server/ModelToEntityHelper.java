@@ -20,7 +20,8 @@ public class ModelToEntityHelper {
 		person.setFatherName(model.getFatherName());
 		person.setGender(model.getGender());
 		person.setEmail(model.getEmail());
-		person.setPassword(model.getPassword());
+//FIXME
+//		person.setPassword(model.getPassword());
 		person.setPn(model.getPn());
 		person.setPhoneNumber(model.getPhoneNumber());
 		person.setBloodGroup(model.getBloodGroup());

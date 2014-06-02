@@ -32,7 +32,8 @@ public class EntityToModelHelper {
 		userModel.setFatherName(person.getFatherName());
 		userModel.setGender(person.getGender());
 		userModel.setEmail(person.getEmail());
-		userModel.setPassword(person.getPassword());
+        //FIXME paaswordi aqvs doctors
+//		userModel.setPassword(person.getPassword());
 		userModel.setPn(person.getPn());
 		userModel.setPhoneNumber(person.getPhoneNumber());
 		userModel.setBloodGroup(person.getBloodGroup());
