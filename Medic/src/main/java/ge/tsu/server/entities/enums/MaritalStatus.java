@@ -1,9 +1,20 @@
 package ge.tsu.server.entities.enums;
 
-public class MaritalStatus {
-    private String MARRIED = "დაოჯახებული";
-    private String SINGLE = "დასაოჯახებელი";
-    private String DIVORCED = "განქორწინებული";
-    private String WIDOWED = "ქვრივი";
-    private String SEPARATED = "გაყრილი";
+public enum  MaritalStatus {
+
+    MARRIED("დაოჯახებული"),
+    SINGLE("დასაოჯახებელი"),
+    DIVORCED("განქორწინებული"),
+    WIDOWED("ქვრივი"),
+    SEPARATED("გაყრილი");
+
+	private final String name;
+
+	private MaritalStatus(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return this.name;
+	}
 }
