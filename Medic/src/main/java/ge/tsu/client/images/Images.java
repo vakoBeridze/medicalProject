@@ -28,4 +28,15 @@ public interface Images extends ClientBundle {
 
 	@Source("document_yellow.png")
 	ImageResource form500();
+
+	ImageResource filter();
+
+	@Source("user_add.png")
+	ImageResource addUser();
+
+	@Source("user_edit.png")
+	ImageResource editUser();
+
+	@Source("user_delete.png")
+	ImageResource deleteUser();
 }
