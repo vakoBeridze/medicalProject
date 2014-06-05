@@ -14,9 +14,8 @@ import java.util.List;
  * @author vamekh
  */
 
-// FIXME Inheritance tu ginda ro ert cxrilshi iyos: InheritanceType.SINGLE_TABLE, mgoni rogorc aris normaluria
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Person {
 
 	@Id

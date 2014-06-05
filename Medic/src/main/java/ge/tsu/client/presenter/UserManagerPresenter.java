@@ -52,6 +52,13 @@ public class UserManagerPresenter implements Presenter {
 				}
 			}
 		});
+
+		display.getFilterButton().addSelectHandler(new SelectEvent.SelectHandler() {
+			@Override
+			public void onSelect(SelectEvent selectEvent) {
+				display.filter();
+			}
+		});
 	}
 
 	private void doDelete(final UserModel selectedUser) {
@@ -111,6 +118,10 @@ public class UserManagerPresenter implements Presenter {
 		void add(UserModel userModel);
 
 		void update(UserModel savedUserModel);
+
+		void filter();
+
+		SelectEvent.HasSelectHandlers getFilterButton();
 	}
 
 }
