@@ -8,6 +8,7 @@ import ge.tsu.client.service.AppService;
 import ge.tsu.client.view.EditUserView;
 import ge.tsu.shared.UserModel;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class UserManagerPresenter implements Presenter {
 		display.getAddButton().addSelectHandler(new SelectEvent.SelectHandler() {
 			@Override
 			public void onSelect(SelectEvent selectEvent) {
-				EditUserPresenter presenter = new EditUserPresenter(new EditUserView(new UserModel()), display);
+				EditUserPresenter presenter = new EditUserPresenter(new EditUserView(createEmptyUser()), display);
 				presenter.getDisplay().asWidget();
 				presenter.go();
 			}
@@ -61,18 +62,35 @@ public class UserManagerPresenter implements Presenter {
 		});
 	}
 
-	private void doDelete(final UserModel selectedUser) {
-		AppService.Util.getInstance().deleteUser(selectedUser, new AsyncCallback<Void>() {
-			@Override
-			public void onFailure(Throwable throwable) {
-				App.logError(throwable);
-			}
+    private UserModel createEmptyUser() {
+        UserModel model = new UserModel();
+        model.setId(0);
+        model.setFirstName("");
+        model.setLastName("");
+        model.setFatherName("");
+        model.setGender(1);
+        model.setEmail("");
+        model.setPassword("password");
+        model.setPn("");
+        model.setPhoneNumber("");
+        model.setBirthDate(new Date());
+        model.setProfessionAndJob("");
+        model.setBloodGroup(1);
+        return model;
+    }
 
-			@Override
-			public void onSuccess(Void aVoid) {
-				display.delete(selectedUser);
-			}
-		});
+    private void doDelete(final UserModel selectedUser) {
+		AppService.Util.getInstance().deleteUser(selectedUser, new AsyncCallback<Void>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                App.logError(throwable);
+            }
+
+            @Override
+            public void onSuccess(Void aVoid) {
+                display.delete(selectedUser);
+            }
+        });
 
 	}
 
