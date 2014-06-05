@@ -29,7 +29,7 @@ public class AppServiceImpl extends RemoteServiceServlet implements AppService {
 
 	@Override
 	public void logToServer(Throwable th) {
-		System.out.println("Error: " + th.getMessage());
+		System.out.println(" Error  =============================================   Error: " + th.getMessage());
 		th.printStackTrace();
 	}
 
