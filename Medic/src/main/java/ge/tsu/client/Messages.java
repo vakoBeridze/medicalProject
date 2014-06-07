@@ -1,5 +1,6 @@
 package ge.tsu.client;
 
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 
 /**
@@ -86,4 +87,14 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
 	String roman4();
 
 	String bloodGroup();
+
+    String addDoctor();
+
+    String addPatient();
+
+    String license();
+
+    String noData();
+
+    String doctor();
 }

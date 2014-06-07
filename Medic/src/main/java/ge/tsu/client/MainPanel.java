@@ -29,7 +29,7 @@ public class MainPanel extends BorderLayoutContainer {
 
 	public MainPanel() {
 
-		monitorWindowResize = true;
+		monitorWindowResize = false;
 		Window.enableScrolling(false);
 		setPixelSize(Window.getClientWidth(), Window.getClientHeight());
 //        setBorders(true);
@@ -40,7 +40,7 @@ public class MainPanel extends BorderLayoutContainer {
 		BorderLayoutData northData = new BorderLayoutData(35);
 		setNorthWidget(headerWidgets, northData);
 
-		BorderLayoutData westData = new BorderLayoutData(0.15);
+		BorderLayoutData westData = new BorderLayoutData(0.2);
 		westData.setMargins(new Margins(5, 0, 0, 5));
 		westData.setSplit(true);
 		westData.setCollapsible(true);

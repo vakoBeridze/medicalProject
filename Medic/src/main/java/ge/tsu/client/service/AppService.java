@@ -3,6 +3,7 @@ package ge.tsu.client.service;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import ge.tsu.shared.MedicException;
 import ge.tsu.shared.UserModel;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface AppService extends RemoteService {
 
 	List<UserModel> loadUsers();
 
-	UserModel saveUser(UserModel userModel);
+	UserModel saveUser(UserModel userModel) throws MedicException;
 
 	void deleteUser(UserModel userModel);
 

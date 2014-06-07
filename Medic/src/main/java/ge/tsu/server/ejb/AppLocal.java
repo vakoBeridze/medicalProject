@@ -1,5 +1,6 @@
 package ge.tsu.server.ejb;
 
+import ge.tsu.server.entities.Doctor;
 import ge.tsu.server.entities.Person;
 import ge.tsu.shared.UserModel;
 
@@ -12,11 +13,14 @@ import java.util.List;
  * Time: 17:11
  */
 public interface AppLocal {
-	List<Person> loadUsers();
+	java.util.Set<? extends Person> loadUsers();
 
-	Person saveUser(Person person);
+	Person savePerson(Person person);
+
+    Doctor saveDoctor(Doctor doctor);
 
 	void deleteUser(Person person);
 
-	Person getUserByUserName(String login);
+	Doctor getUserByUserName(String login);
+
 }

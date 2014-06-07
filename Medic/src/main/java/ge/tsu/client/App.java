@@ -31,22 +31,15 @@ public class App implements EntryPoint {
 
             @Override
             public void onSuccess(Void aVoid) {
-				MessageBox messageBox = new MessageBox("Message Logged to Server Successfully");
-				messageBox.show();
+                MessageBox messageBox = new MessageBox("Message Logged to Server Successfully");
+                messageBox.show();
             }
         });
     }
 
     @Override
     public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
-            @Override
-            public void onUncaughtException(Throwable throwable) {
-                AlertMessageBox messageBox = new AlertMessageBox("UncaughtException Occurred, Please Contact Admin", throwable.getMessage());
-                messageBox.show();
-//				logError(throwable);
-            }
-        });
+        setUncaughtExceptionHandler();
 
         AppService.Util.getInstance().loadCurrentUser(new AsyncCallback<UserModel>() {
             @Override
@@ -62,6 +55,36 @@ public class App implements EntryPoint {
                 RootLayoutPanel.get().add(mainPanel);
             }
         });
+    }
 
+    private void setUncaughtExceptionHandler() {
+        GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
+            @Override
+            public void onUncaughtException(Throwable throwable) {
+                StringBuilder builder = new StringBuilder();
+                getStackTrace(throwable, builder);
+
+                AlertMessageBox messageBox = new AlertMessageBox("UncaughtException Occurred: " + throwable.getMessage(), builder.toString());
+                messageBox.show();
+//				logError(throwable);
+            }
+
+            private void getStackTrace(Throwable throwable, StringBuilder builder) {
+                StackTraceElement[] st = throwable.getStackTrace();
+
+                for (StackTraceElement stackTraceElement : st) {
+                    if (stackTraceElement.toString().contains("ge.tsu"))
+                        builder.append("=====>>>>");
+                    builder.append(stackTraceElement.toString()).append("\n");
+                }
+                builder.append("============================ Cause =============================");
+                st = throwable.getCause().getStackTrace();
+                for (StackTraceElement stackTraceElement : st) {
+                    if (stackTraceElement.toString().contains("ge.tsu"))
+                        builder.append("=====>>>>");
+                    builder.append(stackTraceElement.toString()).append("\n");
+                }
+            }
+        });
     }
 }

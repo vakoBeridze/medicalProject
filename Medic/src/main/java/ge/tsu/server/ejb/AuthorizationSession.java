@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -21,10 +22,15 @@ public class AuthorizationSession implements AuthorizationLocal {
 
 	@Override
 	public String checkUser(String login, String password) {
-		logger.info("User: " + login + " Checked");
-		Query query = em.createQuery("select p.password from Person p where p.email=:login");
+		logger.info("Doctor: " + login + " Checked");
+		Query query = em.createQuery("select d.password from Doctor d where d.email=:login");
 		query.setParameter("login", login);
-		return (String) query.getSingleResult();
+        try {
+            return (String) query.getSingleResult();
+        } catch (NoResultException e) {
+            logger.info("Doctor: " + login + " Not Found !!!");
+            return null;
+        }
 	}
 
 }

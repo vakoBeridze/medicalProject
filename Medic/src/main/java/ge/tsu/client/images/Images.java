@@ -39,4 +39,10 @@ public interface Images extends ClientBundle {
 
 	@Source("user_delete.png")
 	ImageResource deleteUser();
+
+    @Source("user_add.png")
+    ImageResource addDoctor();
+
+    @Source("user_add.png")
+    ImageResource addPatient();
 }
