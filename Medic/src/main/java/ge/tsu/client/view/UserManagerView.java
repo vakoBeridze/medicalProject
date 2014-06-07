@@ -27,6 +27,7 @@ import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import ge.tsu.client.App;
 import ge.tsu.client.images.Images;
 import ge.tsu.client.presenter.UserManagerPresenter;
+import ge.tsu.server.entities.enums.PersonGender;
 import ge.tsu.shared.UserModel;
 import ge.tsu.shared.UserModelProperties;
 

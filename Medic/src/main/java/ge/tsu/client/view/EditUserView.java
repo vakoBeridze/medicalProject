@@ -25,206 +25,206 @@ import java.util.Date;
  */
 public class EditUserView implements EditUserPresenter.Display {
 
-    private UserModel userModel;
+	private UserModel userModel;
 
-    private TextButton saveButton;
-    private Window window;
-    private TextField firstName;
-    private TextField lastName;
-    private TextField fatherName;
-    private Radio maleRadio;
-    private TextField email;
-    private PasswordField password;
-    private TextField pn;
-    private IntegerField phoneNumber;
-    private DateField birthDate;
-    private TextArea professionAndJob;
-    private Radio r1;
-    private Radio r2;
-    private Radio r3;
-    private Radio r4;
+	private TextButton saveButton;
+	private Window window;
+	private TextField firstName;
+	private TextField lastName;
+	private TextField fatherName;
+	private Radio maleRadio;
+	private TextField email;
+	private PasswordField password;
+	private TextField pn;
+	private IntegerField phoneNumber;
+	private DateField birthDate;
+	private TextArea professionAndJob;
+	private Radio r1;
+	private Radio r2;
+	private Radio r3;
+	private Radio r4;
 
-    public EditUserView(UserModel userModel) {
-        this.userModel = userModel;
-    }
+	public EditUserView(UserModel userModel) {
+		this.userModel = userModel;
+	}
 
-    @Override
-    public void asWidget() {
-        window = new Window();
-        window.setPixelSize(500, 480);
-        window.setModal(true);
-        window.setBlinkModal(true);
-        window.setHeadingText(this.userModel.getId() == 0 ? App.messages.addUser() : App.messages.editUser());
+	@Override
+	public void asWidget() {
+		window = new Window();
+		window.setPixelSize(500, 480);
+		window.setModal(true);
+		window.setBlinkModal(true);
+		window.setHeadingText(this.userModel.getId() == 0 ? App.messages.addUser() : App.messages.editUser());
 
-        FramedPanel panel = new FramedPanel();
-        initForm(panel);
+		FramedPanel panel = new FramedPanel();
+		initForm(panel);
 
-        fillForm();
+		fillForm();
 
-        saveButton = new TextButton(App.messages.save());
-        panel.addButton(saveButton);
+		saveButton = new TextButton(App.messages.save());
+		panel.addButton(saveButton);
 
-        window.add(panel, new MarginData(10));
+		window.add(panel, new MarginData(10));
 
-        window.show();
-    }
+		window.show();
+	}
 
-    private void fillForm() {
-        firstName.setValue(this.userModel.getFirstName());
-        lastName.setValue(this.userModel.getLastName());
-        email.setValue(this.userModel.getEmail());
-        fatherName.setValue(this.userModel.getFatherName());
-        phoneNumber.setValue(Integer.valueOf(this.userModel.getPhoneNumber()));
-        pn.setValue(this.userModel.getPn());
-        professionAndJob.setValue(this.userModel.getProfessionAndJob());
-    }
+	private void fillForm() {
+		firstName.setValue(this.userModel.getFirstName() == null ? "" : this.userModel.getFirstName());
+		lastName.setValue(this.userModel.getLastName() == null ? "" : this.userModel.getLastName());
+		email.setValue(this.userModel.getEmail() == null ? "" : this.userModel.getEmail());
+		fatherName.setValue(this.userModel.getFatherName() == null ? "" : this.userModel.getFatherName());
+		phoneNumber.setValue(Integer.valueOf(this.userModel.getPhoneNumber() == null ? "0" : this.userModel.getPhoneNumber()));
+		pn.setValue(this.userModel.getPn() == null ? "" : this.userModel.getPn());
+		professionAndJob.setValue(this.userModel.getProfessionAndJob() == null ? "" : this.userModel.getProfessionAndJob());
+	}
 
-    private void initForm(FramedPanel panel) {
-        panel.setHeaderVisible(false);
-        panel.setBorders(false);
-        panel.setBodyStyle("background: none;");
+	private void initForm(FramedPanel panel) {
+		panel.setHeaderVisible(false);
+		panel.setBorders(false);
+		panel.setBodyStyle("background: none;");
 
-        VerticalLayoutContainer vlc = new VerticalLayoutContainer();
-        panel.add(vlc);
+		VerticalLayoutContainer vlc = new VerticalLayoutContainer();
+		panel.add(vlc);
 
-        VerticalLayoutContainer.VerticalLayoutData layoutData = new VerticalLayoutContainer.VerticalLayoutData(1, -1);
+		VerticalLayoutContainer.VerticalLayoutData layoutData = new VerticalLayoutContainer.VerticalLayoutData(1, -1);
 
-        firstName = new TextField();
-        firstName.setAllowBlank(false);
-        vlc.add(new FieldLabel(firstName, App.messages.firstName()), layoutData);
+		firstName = new TextField();
+		firstName.setAllowBlank(false);
+		vlc.add(new FieldLabel(firstName, App.messages.firstName()), layoutData);
 
-        lastName = new TextField();
-        lastName.setAllowBlank(false);
-        vlc.add(new FieldLabel(lastName, App.messages.lastName()), layoutData);
+		lastName = new TextField();
+		lastName.setAllowBlank(false);
+		vlc.add(new FieldLabel(lastName, App.messages.lastName()), layoutData);
 
-        fatherName = new TextField();
-        fatherName.setAllowBlank(false);
-        vlc.add(new FieldLabel(fatherName, App.messages.fatherName()), layoutData);
+		fatherName = new TextField();
+		fatherName.setAllowBlank(false);
+		vlc.add(new FieldLabel(fatherName, App.messages.fatherName()), layoutData);
 
-        maleRadio = new Radio();
-        maleRadio.setBoxLabel(App.messages.male());
-        maleRadio.setValue(true);
-        Radio femaleRadio = new Radio();
-        femaleRadio.setBoxLabel(App.messages.female());
-        HorizontalPanel hp = new HorizontalPanel();
-        hp.add(maleRadio);
-        hp.add(femaleRadio);
-        vlc.add(new FieldLabel(hp, App.messages.gender()));
-        // we can set name on radios or use toggle group
-        ToggleGroup toggle = new ToggleGroup();
-        toggle.add(maleRadio);
-        toggle.add(femaleRadio);
+		maleRadio = new Radio();
+		maleRadio.setBoxLabel(App.messages.male());
+		maleRadio.setValue(true);
+		Radio femaleRadio = new Radio();
+		femaleRadio.setBoxLabel(App.messages.female());
+		HorizontalPanel hp = new HorizontalPanel();
+		hp.add(maleRadio);
+		hp.add(femaleRadio);
+		vlc.add(new FieldLabel(hp, App.messages.gender()));
+		// we can set name on radios or use toggle group
+		ToggleGroup toggle = new ToggleGroup();
+		toggle.add(maleRadio);
+		toggle.add(femaleRadio);
 
-        email = new TextField();
-        email.setAllowBlank(false);
-        vlc.add(new FieldLabel(email, App.messages.emailAddress()), layoutData);
+		email = new TextField();
+		email.setAllowBlank(false);
+		vlc.add(new FieldLabel(email, App.messages.emailAddress()), layoutData);
 
-        password = new PasswordField();
-        vlc.add(new FieldLabel(password, App.messages.password()), layoutData);
+		password = new PasswordField();
+		vlc.add(new FieldLabel(password, App.messages.password()), layoutData);
 
-        pn = new TextField();
-        pn.setAllowBlank(false);
-        vlc.add(new FieldLabel(pn, App.messages.pn()), layoutData);
+		pn = new TextField();
+		pn.setAllowBlank(false);
+		vlc.add(new FieldLabel(pn, App.messages.pn()), layoutData);
 
-        phoneNumber = new IntegerField();
-        phoneNumber.setEmptyText(App.messages.example() + " 555330455");
-        phoneNumber.addParseErrorHandler(new ParseErrorEvent.ParseErrorHandler() {
+		phoneNumber = new IntegerField();
+		phoneNumber.setEmptyText(App.messages.example() + " 555330455");
+		phoneNumber.addParseErrorHandler(new ParseErrorEvent.ParseErrorHandler() {
 
-            @Override
-            public void onParseError(ParseErrorEvent event) {
-                Info.display("Parse Error", event.getErrorValue() + " could not be parsed as a number");
-            }
-        });
-        phoneNumber.setAllowBlank(false);
-        vlc.add(new FieldLabel(phoneNumber, App.messages.phoneNumber()), layoutData);
+			@Override
+			public void onParseError(ParseErrorEvent event) {
+				Info.display("Parse Error", event.getErrorValue() + " could not be parsed as a number");
+			}
+		});
+		phoneNumber.setAllowBlank(false);
+		vlc.add(new FieldLabel(phoneNumber, App.messages.phoneNumber()), layoutData);
 
-        birthDate = new DateField();
-        birthDate.addParseErrorHandler(new ParseErrorEvent.ParseErrorHandler() {
+		birthDate = new DateField();
+		birthDate.addParseErrorHandler(new ParseErrorEvent.ParseErrorHandler() {
 
-            @Override
-            public void onParseError(ParseErrorEvent event) {
-                Info.display("Parse Error", event.getErrorValue() + " could not be parsed as a date");
-            }
-        });
+			@Override
+			public void onParseError(ParseErrorEvent event) {
+				Info.display("Parse Error", event.getErrorValue() + " could not be parsed as a date");
+			}
+		});
 
-        birthDate.addValidator(new MaxDateValidator(new Date()));
-        vlc.add(new FieldLabel(birthDate, App.messages.birthday()), layoutData);
+		birthDate.addValidator(new MaxDateValidator(new Date()));
+		vlc.add(new FieldLabel(birthDate, App.messages.birthday()), layoutData);
 
-        professionAndJob = new TextArea();
-        professionAndJob.setAllowBlank(false);
-        professionAndJob.addValidator(new MinLengthValidator(10));
-        vlc.add(new FieldLabel(professionAndJob, App.messages.professionAndJob()), new VerticalLayoutContainer.VerticalLayoutData(1, 60));
+		professionAndJob = new TextArea();
+		professionAndJob.setAllowBlank(false);
+		professionAndJob.addValidator(new MinLengthValidator(10));
+		vlc.add(new FieldLabel(professionAndJob, App.messages.professionAndJob()), new VerticalLayoutContainer.VerticalLayoutData(1, 60));
 
 
-        r1 = new Radio();
-        r1.setBoxLabel(App.messages.roman1());
-        r1.setValue(true);
+		r1 = new Radio();
+		r1.setBoxLabel(App.messages.roman1());
+		r1.setValue(true);
 
-        r2 = new Radio();
-        r2.setBoxLabel(App.messages.roman2());
+		r2 = new Radio();
+		r2.setBoxLabel(App.messages.roman2());
 
-        r3 = new Radio();
-        r3.setBoxLabel(App.messages.roman3());
+		r3 = new Radio();
+		r3.setBoxLabel(App.messages.roman3());
 
-        r4 = new Radio();
-        r4.setBoxLabel(App.messages.roman4());
+		r4 = new Radio();
+		r4.setBoxLabel(App.messages.roman4());
 
-        HorizontalPanel bloodHP = new HorizontalPanel();
-        bloodHP.add(r1);
-        bloodHP.add(r2);
-        bloodHP.add(r3);
-        bloodHP.add(r4);
+		HorizontalPanel bloodHP = new HorizontalPanel();
+		bloodHP.add(r1);
+		bloodHP.add(r2);
+		bloodHP.add(r3);
+		bloodHP.add(r4);
 
-        vlc.add(new FieldLabel(bloodHP, App.messages.bloodGroup()));
-        // we can set name on radios or use toggle group
-        ToggleGroup bloodToggle = new ToggleGroup();
-        bloodToggle.add(r1);
-        bloodToggle.add(r2);
-        bloodToggle.add(r3);
-        bloodToggle.add(r4);
-    }
+		vlc.add(new FieldLabel(bloodHP, App.messages.bloodGroup()));
+		// we can set name on radios or use toggle group
+		ToggleGroup bloodToggle = new ToggleGroup();
+		bloodToggle.add(r1);
+		bloodToggle.add(r2);
+		bloodToggle.add(r3);
+		bloodToggle.add(r4);
+	}
 
-    @Override
-    public SelectEvent.HasSelectHandlers getSaveButton() {
-        return saveButton;
-    }
+	@Override
+	public SelectEvent.HasSelectHandlers getSaveButton() {
+		return saveButton;
+	}
 
-    @Override
-    public void close() {
-        window.hide();
-    }
+	@Override
+	public void close() {
+		window.hide();
+	}
 
-    @Override
-    public UserModel getModel() {
-        this.userModel.setFirstName(firstName.getValue());
-        this.userModel.setLastName(lastName.getValue());
-        this.userModel.setEmail(email.getValue());
-        this.userModel.setFatherName(fatherName.getValue());
-        this.userModel.setUserName(email.getValue());
-        this.userModel.setPhoneNumber(phoneNumber.getValue().toString());
-        this.userModel.setBirthDate(birthDate.getValue() == null ? new Date() : birthDate.getValue());
-        this.userModel.setPn(pn.getValue());
-        this.userModel.setProfessionAndJob(professionAndJob.getValue());
-        this.userModel.setPassword(password.getValue());
-        this.userModel.setGender(maleRadio.getValue() ? 1 : 4);
+	@Override
+	public UserModel getModel() {
+		this.userModel.setFirstName(firstName.getValue());
+		this.userModel.setLastName(lastName.getValue());
+		this.userModel.setEmail(email.getValue());
+		this.userModel.setFatherName(fatherName.getValue());
+		this.userModel.setUserName(email.getValue());
+		this.userModel.setPhoneNumber(phoneNumber.getValue().toString());
+		this.userModel.setBirthDate(birthDate.getValue() == null ? new Date() : birthDate.getValue());
+		this.userModel.setPn(pn.getValue());
+		this.userModel.setProfessionAndJob(professionAndJob.getValue());
+		this.userModel.setPassword(password.getValue());
+		this.userModel.setGender(maleRadio.getValue() ? 1 : 4);
 
-        int bloodGroup = 0;
-        if (r1.getValue()) {
-            bloodGroup = 1;
-        } else if (r2.getValue()) {
-            bloodGroup = 2;
-        } else if (r3.getValue()) {
-            bloodGroup = 3;
-        } else if (r4.getValue()) {
-            bloodGroup = 4;
-        }
-        this.userModel.setBloodGroup(bloodGroup);
+		int bloodGroup = 0;
+		if (r1.getValue()) {
+			bloodGroup = 1;
+		} else if (r2.getValue()) {
+			bloodGroup = 2;
+		} else if (r3.getValue()) {
+			bloodGroup = 3;
+		} else if (r4.getValue()) {
+			bloodGroup = 4;
+		}
+		this.userModel.setBloodGroup(bloodGroup);
 
-        return this.userModel;
-    }
+		return this.userModel;
+	}
 
-    @Override
-    public void setSaveButtonEnabled(boolean enabled) {
-        saveButton.setEnabled(enabled);
-    }
+	@Override
+	public void setSaveButtonEnabled(boolean enabled) {
+		saveButton.setEnabled(enabled);
+	}
 }
