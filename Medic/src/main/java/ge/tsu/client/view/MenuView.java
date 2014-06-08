@@ -33,7 +33,7 @@ import ge.tsu.shared.MenuModelProperties;
 public class MenuView extends Widget implements IsWidget {
 
     private Tree<MenuModel, String> tree;
-    private MenuModel formsMenuModel;
+    private MenuModel ambulanceMenuModel;
     private MenuModel adminMenuModel;
 
     public MenuView() {
@@ -88,6 +88,9 @@ public class MenuView extends Widget implements IsWidget {
         con.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 
         createMenuStore();
+        
+        tree.setAutoExpand(true);
+        tree.expandAll();
 
         return con;
     }
@@ -99,14 +102,17 @@ public class MenuView extends Widget implements IsWidget {
 
     private void createMenuItems() {
         TreeStore<MenuModel> store = tree.getStore();
-        MenuModel menu;
+       /* MenuModel menu;
         for (int i = 1; i < 6; i++) {
             menu = new MenuModel();
             menu.setLabel(App.messages.formMenu() + " " + (i * 100));
             menu.setCode("form " + (i * 100));
             menu.setMenu(Menu.values()[i]);
             store.add(formsMenuModel, menu);
-        }
+        }*/
+
+        MenuModel form200a = new MenuModel("form200a", App.messages.formMenu() + " №IV-200 / " + App.messages.a(), false, Menu.FORM_200);
+        store.add(ambulanceMenuModel, form200a);
 
         MenuModel userManagement = new MenuModel("userManagement", App.messages.userManager(), false, Menu.USER_MANAGER);
         store.add(adminMenuModel, userManagement);
@@ -119,14 +125,14 @@ public class MenuView extends Widget implements IsWidget {
         adminMenuModel.setMenu(Menu.ROOT_ADMIN);
         adminMenuModel.setRoot(true);
 
-        formsMenuModel = new MenuModel();
-        formsMenuModel.setCode("forms");
-        formsMenuModel.setLabel(App.messages.formsMenu());
-        formsMenuModel.setMenu(Menu.ROOT_FORMS);
-        formsMenuModel.setRoot(true);
+        ambulanceMenuModel = new MenuModel();
+        ambulanceMenuModel.setCode("ambulance");
+        ambulanceMenuModel.setLabel(App.messages.ambulanceMenu());
+        ambulanceMenuModel.setMenu(Menu.ROOT_AMBULANCE);
+        ambulanceMenuModel.setRoot(true);
 
         tree.getStore().add(adminMenuModel);
-        tree.getStore().add(formsMenuModel);
+        tree.getStore().add(ambulanceMenuModel);
     }
 
 }

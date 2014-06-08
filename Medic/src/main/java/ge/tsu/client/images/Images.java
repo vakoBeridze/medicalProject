@@ -17,10 +17,10 @@ public interface Images extends ClientBundle {
 	@Source("document_editing.png")
 	ImageResource form100();
 
-	@Source("document_black.png")
+    @Source("document_green.png")
 	ImageResource form200();
 
-	@Source("document_green.png")
+    @Source("document_black.png")
 	ImageResource form300();
 
 	@Source("document_red.png")

@@ -1,20 +1,24 @@
 /**
  *
  */
-package ge.tsu.server.entities;
+package ge.tsu.shared;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * @author vamekh
  */
 
 @Entity
-public class InsuranceCompany {
+public class InsuranceCompany implements Serializable {
     @Id
     private Long id;
     private String name;
+
+    public InsuranceCompany() {
+    }
 
     public Long getId() {
         return id;

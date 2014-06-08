@@ -1,5 +1,7 @@
 package ge.tsu.server.entities;
 
+import ge.tsu.shared.InsuranceCompany;
+
 import javax.persistence.*;
 import java.util.Date;
 

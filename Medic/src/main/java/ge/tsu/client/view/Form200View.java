@@ -1,230 +1,273 @@
 package ge.tsu.client.view;
 
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
-import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.core.client.util.DateWrapper;
+import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
+import com.sencha.gxt.core.client.dom.ScrollSupport;
+import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.ToggleGroup;
+import com.sencha.gxt.data.shared.LabelProvider;
+import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.FramedPanel;
-import com.sencha.gxt.widget.core.client.Slider;
 import com.sencha.gxt.widget.core.client.button.TextButton;
-import com.sencha.gxt.widget.core.client.container.CenterLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
+import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.event.ParseErrorEvent;
-import com.sencha.gxt.widget.core.client.event.ParseErrorEvent.ParseErrorHandler;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.*;
-import com.sencha.gxt.widget.core.client.form.validator.MinDateValidator;
-import com.sencha.gxt.widget.core.client.form.validator.MinLengthValidator;
-import com.sencha.gxt.widget.core.client.info.Info;
+import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
+import ge.tsu.client.App;
 import ge.tsu.client.presenter.Form200Presenter;
+import ge.tsu.shared.InsuranceCompany;
+import ge.tsu.shared.InsuranceCompanyProperties;
+import ge.tsu.shared.UserModel;
+import ge.tsu.shared.UserModelProperties;
 
-import java.util.Date;
+import java.util.List;
 
 /**
  * Created by vako on 29/05/14.
  */
 public class Form200View implements Form200Presenter.Display {
 
-    private CenterLayoutContainer container;
+
+    private static final int FORM_WIDTH = (int) (Window.getClientWidth() * 0.7);
+
+    private FramedPanel panel;
+
+    private TextField firstName;
+    private TextField lastName;
+    private TextField bloodGroup;
+    private Radio maleRadio;
+    private Radio femaleRadio;
+    private TextField rhFactory;
+    private TextField phoneNumber;
+    private DateField birthDate;
+    private TextField pn;
+    private TextArea professionAndJob;
+    private TextArea bloodTransfusion;
+    private TextArea allergy;
+    private TextArea surgery;
+    private TextArea chronicDiseases;
+    private TextArea infectionDiseases;
+    private TextField policeNumber;
+    private ComboBox<InsuranceCompany> insuranceCompany;
+    private ListStore<UserModel> usersStore;
+    private TextButton saveButton;
 
     @Override
     public Widget asWidget() {
-        container = new CenterLayoutContainer();
-        container.setBorders(false);
+        panel = new FramedPanel();
+        panel.setHeaderVisible(false);
+        panel.setBorders(false);
+//        panel.setBodyStyle("background: none;");
+
         createForm();
-        return container;
+
+        saveButton = new TextButton(App.messages.save());
+        panel.addButton(saveButton);
+        TextButton unVisibleButton = new TextButton("-----------------");
+        unVisibleButton.setWidth(FORM_WIDTH / 2);
+        unVisibleButton.setVisible(false);
+        panel.addButton(unVisibleButton);
+
+        return panel;
+    }
+
+    @Override
+    public void setComboData(List<UserModel> userModels) {
+        usersStore.addAll(userModels);
+    }
+
+    @Override
+    public SelectEvent.HasSelectHandlers getSaveButton() {
+        return saveButton;
     }
 
     private void createForm() {
-        FramedPanel panel = new FramedPanel();
-        panel.setHeaderVisible(false);
-        panel.setBorders(false);
-        panel.setWidth(800);
-        panel.setBodyStyle("background: none;");
 
-        VerticalLayoutContainer p = new VerticalLayoutContainer();
-        panel.add(p);
+        int cw = (FORM_WIDTH / 2) - 80;
+        int rw = FORM_WIDTH - 35;
 
-        TextField firstName = new TextField();
-        firstName.setAllowBlank(false);
-        firstName.setEmptyText("Enter your name...");
-        firstName.addValueChangeHandler(new ValueChangeHandler<String>() {
+        VerticalLayoutContainer vlc = new VerticalLayoutContainer();
+        vlc.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
+
+        HtmlLayoutContainer con = new HtmlLayoutContainer(getTableMarkup());
+        vlc.add(con, new VerticalLayoutContainer.VerticalLayoutData(1, 1));
+
+        panel.add(vlc, new MarginData(new Margins(10, 5, 5, 20)));
+
+//        VerticalLayoutContainer con = new VerticalLayoutContainer();
+//        panel.add(con);
+
+        UserModelProperties props = GWT.create(UserModelProperties.class);
+        usersStore = new ListStore<UserModel>(props.id());
+
+        ComboBox<UserModel> usersCombo = new ComboBox<UserModel>(usersStore, new LabelProvider<UserModel>() {
             @Override
-            public void onValueChange(ValueChangeEvent<String> event) {
-                Info.display("Value Changed", "First name changed to " + event.getValue() == null ? "blank" : event.getValue());
-            }
-        });
-        p.add(new FieldLabel(firstName, "Name"), new VerticalLayoutData(1, -1));
-
-        TextField email = new TextField();
-        email.setAllowBlank(false);
-        p.add(new FieldLabel(email, "Email"), new VerticalLayoutData(1, -1));
-
-        PasswordField password = new PasswordField();
-        p.add(new FieldLabel(password, "Password"), new VerticalLayoutData(1, -1));
-
-        IntegerField age = new IntegerField();
-        age.addParseErrorHandler(new ParseErrorHandler() {
-
-            @Override
-            public void onParseError(ParseErrorEvent event) {
-                Info.display("Parse Error", event.getErrorValue() + " could not be parsed as a number");
-            }
-        });
-        age.setAllowBlank(false);
-
-        p.add(new FieldLabel(age, "Age"), new VerticalLayoutData(1, -1));
-
-        DateField date = new DateField();
-        date.addParseErrorHandler(new ParseErrorHandler() {
-
-            @Override
-            public void onParseError(ParseErrorEvent event) {
-                Info.display("Parse Error", event.getErrorValue() + " could not be parsed as a date");
+            public String getLabel(UserModel model) {
+                return model.getFirstName() + " " + model.getLastName() + " / " + model.getPn();
             }
         });
 
-        date.addValueChangeHandler(new ValueChangeHandler<Date>() {
+        usersCombo.addValueChangeHandler(new ValueChangeHandler<UserModel>() {
 
             @Override
-            public void onValueChange(ValueChangeEvent<Date> event) {
-                String v = event.getValue() == null ? "nothing"
-                        : DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM).format(event.getValue());
-                Info.display("Selected", "You selected " + v);
-
+            public void onValueChange(ValueChangeEvent<UserModel> event) {
+                // TODO
+                UserModel userModel = event.getValue();
+                firstName.setValue(userModel.getFirstName());
+                lastName.setValue(userModel.getLastName());
+                maleRadio.setValue(userModel.getGender() == 1);
+                femaleRadio.setValue(userModel.getGender() != 1);
+                phoneNumber.setValue(userModel.getPhoneNumber());
+                birthDate.setValue(userModel.getBirthDate());
+                pn.setValue(userModel.getPn());
+                professionAndJob.setValue(userModel.getProfessionAndJob());
+                bloodGroup.setValue(userModel.getBloodGroup().toString());
+                rhFactory.setValue(userModel.getRhFactory() == null ? "" : userModel.getRhFactory().toString());
             }
         });
-        date.addValidator(new MinDateValidator(new Date()));
-        p.add(new FieldLabel(date, "Birthday"), new VerticalLayoutData(1, -1));
+        usersCombo.setAllowBlank(true);
+        usersCombo.setForceSelection(true);
+        usersCombo.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
+        usersCombo.setWidth(rw);
 
-        TimeField time = new TimeField();
-        time.setFormat(DateTimeFormat.getFormat("hh:mm a"));
-        time.addParseErrorHandler(new ParseErrorHandler() {
+        con.add(new FieldLabel(usersCombo, App.messages.patient()), new HtmlData(".user"));
 
-            @Override
-            public void onParseError(ParseErrorEvent event) {
-                Info.display("Parse Error", event.getErrorValue() + " could not be parsed as a valid time");
-            }
-        });
+        firstName = new TextField();
+        firstName.setEnabled(false);
+        firstName.setWidth(cw);
+        firstName.setToolTip(App.messages.fillsAutomatically());
+        con.add(new FieldLabel(firstName, App.messages.firstName()), new HtmlData(".fn"));
 
-        time.setMinValue(new DateWrapper().clearTime().addHours(8).asDate());
-        time.setMaxValue(new DateWrapper().clearTime().addHours(18).addSeconds(1).asDate());
-        p.add(new FieldLabel(time, "Time"), new VerticalLayoutData(1, -1));
+        lastName = new TextField();
+        lastName.setEnabled(false);
+        lastName.setWidth(cw);
+        lastName.setToolTip(App.messages.fillsAutomatically());
+        con.add(new FieldLabel(lastName, App.messages.lastName()), new HtmlData(".ln"));
 
-        Slider slider = new Slider();
-        slider.setMinValue(40);
-        slider.setMaxValue(90);
-        slider.setValue(0);
-        slider.setIncrement(5);
-        slider.setMessage("{0} inches tall");
-        p.add(new FieldLabel(slider, "Size"), new VerticalLayoutData(1, -1));
-
-        ValueChangeHandler<Boolean> musicHandler = new ValueChangeHandler<Boolean>() {
-
-            @Override
-            public void onValueChange(ValueChangeEvent<Boolean> event) {
-                CheckBox check = (CheckBox)event.getSource();
-                Info.display("Music Changed", check.getBoxLabel() + " " + (event.getValue() ? "selected" : "not selected"));
-            }
-        };
-
-        CheckBox check1 = new CheckBox();
-        check1.setEnabled(false);
-        check1.setBoxLabel("Classical");
-        check1.addValueChangeHandler(musicHandler);
-
-        CheckBox check2 = new CheckBox();
-        check2.setBoxLabel("Rock");
-        check2.addValueChangeHandler(musicHandler);
-        check2.setValue(true);
-
-        CheckBox check3 = new CheckBox();
-        check3.setBoxLabel("Blues");
-        check3.addValueChangeHandler(musicHandler);
+        maleRadio = new Radio();
+        maleRadio.setEnabled(false);
+        maleRadio.setBoxLabel(App.messages.male());
+        maleRadio.setToolTip(App.messages.fillsAutomatically());
+        femaleRadio = new Radio();
+        femaleRadio.setEnabled(false);
+        femaleRadio.setBoxLabel(App.messages.female());
+        femaleRadio.setToolTip(App.messages.fillsAutomatically());
 
         HorizontalPanel hp = new HorizontalPanel();
-        hp.add(check1);
-        hp.add(check2);
-        hp.add(check3);
-
-        p.add(new FieldLabel(hp, "Music"));
-
-        Radio radio = new Radio();
-        radio.setBoxLabel("Red");
-
-        Radio radio2 = new Radio();
-        radio2.setBoxLabel("Blue");
-        radio2.setValue(true);
-
-        hp = new HorizontalPanel();
-        hp.add(radio);
-        hp.add(radio2);
-
-        p.add(new FieldLabel(hp, "Color"));
-
-        // we can set name on radios or use toggle group
+        hp.add(maleRadio);
+        hp.add(femaleRadio);
+        FieldLabel genderFieldLabel = new FieldLabel(hp, App.messages.gender());
+//        genderFieldLabel.setEnabled(false);
+        genderFieldLabel.setWidth(cw);
+        con.add(genderFieldLabel, new HtmlData(".gender"));
         ToggleGroup toggle = new ToggleGroup();
-        toggle.add(radio);
-        toggle.add(radio2);
-        toggle.addValueChangeHandler(new ValueChangeHandler<HasValue<Boolean>>() {
+        toggle.add(maleRadio);
+        toggle.add(femaleRadio);
 
+        birthDate = new DateField();
+        birthDate.setEnabled(false);
+        birthDate.setWidth(cw);
+        birthDate.setToolTip(App.messages.fillsAutomatically());
+        con.add(new FieldLabel(birthDate, App.messages.birthday()), new HtmlData(".birthday"));
+
+        pn = new TextField();
+        pn.setEnabled(false);
+        pn.setWidth(cw);
+        pn.setToolTip(App.messages.fillsAutomatically());
+        con.add(new FieldLabel(pn, App.messages.pn()), new HtmlData(".pn"));
+
+        phoneNumber = new TextField();
+        phoneNumber.setEnabled(false);
+        phoneNumber.setWidth(cw);
+        phoneNumber.setToolTip(App.messages.fillsAutomatically());
+        con.add(new FieldLabel(phoneNumber, App.messages.phoneNumber()), new HtmlData(".phone"));
+
+        professionAndJob = new TextArea();
+        professionAndJob.setEnabled(false);
+        professionAndJob.setWidth(rw);
+        professionAndJob.setToolTip(App.messages.fillsAutomatically());
+        con.add(new FieldLabel(professionAndJob, App.messages.professionAndJob()), new HtmlData(".job"));
+
+        bloodGroup = new TextField();
+        bloodGroup.setEnabled(false);
+        bloodGroup.setWidth(cw);
+        bloodGroup.setToolTip(App.messages.fillsAutomatically());
+        con.add(new FieldLabel(bloodGroup, App.messages.bloodGroup()), new HtmlData(".blood"));
+
+        rhFactory = new TextField();
+        rhFactory.setEnabled(false);
+        rhFactory.setWidth(cw);
+        rhFactory.setToolTip(App.messages.fillsAutomatically());
+        con.add(new FieldLabel(rhFactory, App.messages.rhFactory()), new HtmlData(".rh"));
+
+        bloodTransfusion = new TextArea();
+        bloodTransfusion.setEmptyText(App.messages.when() + " " + App.messages.and() + " " + App.messages.howMany());
+        bloodTransfusion.setWidth(rw);
+        con.add(new FieldLabel(bloodTransfusion, App.messages.bloodTransfusion()), new HtmlData(".transfusion"));
+
+        allergy = new TextArea();
+        allergy.setWidth(rw);
+        allergy.setEmptyText(App.messages.medicaments() + " " + App.messages.food() + " " + App.messages.and() + " " + App.messages.other() + ". " + App.messages.reactionType());
+        con.add(new FieldLabel(allergy, App.messages.allergy()), new HtmlData(".allergy"));
+
+        surgery = new TextArea();
+        surgery.setWidth(rw);
+        con.add(new FieldLabel(surgery, App.messages.surgery()), new HtmlData(".surgery"));
+
+        infectionDiseases = new TextArea();
+        infectionDiseases.setWidth(rw);
+        con.add(new FieldLabel(infectionDiseases, App.messages.infectionDiseases()), new HtmlData(".infection"));
+
+        chronicDiseases = new TextArea();
+        chronicDiseases.setWidth(rw);
+        con.add(new FieldLabel(chronicDiseases, App.messages.chronicDiseases()), new HtmlData(".chronic"));
+
+        policeNumber = new TextField();
+        policeNumber.setWidth(cw);
+        con.add(new FieldLabel(policeNumber, App.messages.policeNumber()), new HtmlData(".police"));
+
+        InsuranceCompanyProperties insProps = GWT.create(InsuranceCompanyProperties.class);
+        ListStore<InsuranceCompany> companyStore = new ListStore<InsuranceCompany>(insProps.id());
+        insuranceCompany = new ComboBox<InsuranceCompany>(companyStore, new LabelProvider<InsuranceCompany>() {
             @Override
-            public void onValueChange(ValueChangeEvent<HasValue<Boolean>> event) {
-                ToggleGroup group = (ToggleGroup)event.getSource();
-                Radio radio = (Radio)group.getValue();
-                Info.display("Color Changed", "You selected " + radio.getBoxLabel());
+            public String getLabel(InsuranceCompany insuranceCompany) {
+                return insuranceCompany.getName();
             }
         });
+        insuranceCompany.setWidth(cw);
+        con.add(new FieldLabel(insuranceCompany, App.messages.insuranceCompany()), new HtmlData(".insurance"));
 
-        TextArea description = new TextArea();
-        description.setAllowBlank(false);
-        description.addValidator(new MinLengthValidator(10));
-        p.add(new FieldLabel(description, "Description"), new VerticalLayoutData(1, 100));
-
-        final DoubleSpinnerField spinnerField = new DoubleSpinnerField();
-        spinnerField.setIncrement(.1d);
-        spinnerField.setMinValue(-10d);
-        spinnerField.setMaxValue(10d);
-        spinnerField.setAllowNegative(true);
-        spinnerField.setAllowBlank(false);
-        spinnerField.getPropertyEditor().setFormat(NumberFormat.getFormat("0.0"));
-        spinnerField.addValueChangeHandler(new ValueChangeHandler<Double>() {
-
-            @Override
-            public void onValueChange(ValueChangeEvent<Double> event) {
-                Info.display("Duration Changed",
-                        "Duration changed to " + event.getValue() == null ? "nothing" : event.getValue() + "");
-            }
-        });
-        spinnerField.addSelectionHandler(new SelectionHandler<Double>() {
-
-            @Override
-            public void onSelection(SelectionEvent<Double> event) {
-                String msg = "nothing";
-                if (event.getSelectedItem() != null) {
-                    msg = spinnerField.getPropertyEditor().render(event.getSelectedItem());
-                }
-
-                Info.display("Spin Change", "Current value changed to " + msg);
-            }
-        });
-
-        FieldLabel spinLabel = new FieldLabel(spinnerField, "Duration(s)");
-
-        p.add(spinLabel, new VerticalLayoutData(1, -1));
-
-        panel.addButton(new TextButton("Save"));
-        panel.addButton(new TextButton("Cancel"));
-
-        container.add(panel);
+        // need to call after everything is constructed
+        List<FieldLabel> labels = FormPanelHelper.getFieldLabels(panel);
+        for (FieldLabel lbl : labels) {
+            lbl.setLabelAlign(FormPanel.LabelAlign.TOP);
+        }
     }
 
+    private native String getTableMarkup() /*-{
+        return [ '<table width=100% cellpadding=0 cellspacing=0>',
+            '<tr><td class=user colspan=2></td></tr>',
+            '<tr><td class=fn width=50%></td><td class=ln width=50%></td></tr>',
+            '<tr><td class=gender></td><td class=phone></td></tr>',
+            '<tr><td class=birthday></td><td class=pn></td></tr>',
+            '<tr><td class=job colspan=2></td></tr>',
+            '<tr><td class=blood></td><td class=rh></td></tr>',
+            '<tr><td class=transfusion colspan=2></td></tr>',
+            '<tr><td class=allergy colspan=2></td></tr>',
+            '<tr><td class=surgery colspan=2></td></tr>',
+            '<tr><td class=infection colspan=2></td></tr>',
+            '<tr><td class=chronic colspan=2></td></tr>',
+            '<tr><td class=police></td><td class=insurance></td></tr>', '</table>'
+
+        ].join("");
+    }-*/;
 }

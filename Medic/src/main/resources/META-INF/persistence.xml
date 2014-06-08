@@ -24,6 +24,7 @@
             <property name="hibernate.cache.use_query_cache" value="true"/>
             <property name="hibernate.cache.use_structured_entries" value="true"/>
 
+            <property name="hibernate.connection.defaultNChar" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>

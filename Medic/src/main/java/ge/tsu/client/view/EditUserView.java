@@ -52,7 +52,7 @@ public class EditUserView implements EditUserPresenter.Display {
     @Override
     public void asWidget() {
         window = new Window();
-        window.setPixelSize(500, 490);
+        window.setPixelSize(500, 470);
         window.setModal(true);
         window.setBlinkModal(true);
         window.setHeadingText(this.userModel.getId() == 0 ? App.messages.addUser() : App.messages.editUser());
@@ -77,6 +77,7 @@ public class EditUserView implements EditUserPresenter.Display {
         fatherName.setValue(this.userModel.getFatherName() == null ? "" : this.userModel.getFatherName());
         if (this.userModel.isDoctor()) {
             license.setValue(this.userModel.getLicense() == null ? "" : this.userModel.getLicense());
+            window.setHeight(490);
         }
         setGender(this.userModel.getGender() == null ? 0 : this.userModel.getGender());
         birthDate.setValue(this.userModel.getBirthDate());
