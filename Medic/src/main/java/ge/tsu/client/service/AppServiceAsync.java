@@ -1,6 +1,8 @@
 package ge.tsu.client.service;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import ge.tsu.shared.AllergyModel;
+import ge.tsu.shared.BloodTransfusionModel;
 import ge.tsu.shared.UserModel;
 
 import java.util.List;
@@ -20,4 +22,8 @@ public interface AppServiceAsync {
 	void deleteUser(UserModel userModel, AsyncCallback<Void> asyncCallback);
 
 	void loadCurrentUser(AsyncCallback<UserModel> asyncCallback);
+
+    void saveForm200a(BloodTransfusionModel transfusionModel, AsyncCallback<Void> asyncCallback);
+
+    void loadAllergies(AsyncCallback<List<AllergyModel>> asyncCallback);
 }

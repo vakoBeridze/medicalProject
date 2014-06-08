@@ -2,6 +2,8 @@ package ge.tsu.server.ejb;
 
 import ge.tsu.server.entities.Doctor;
 import ge.tsu.server.entities.Person;
+import ge.tsu.server.entities.medfacts.Allergy;
+import ge.tsu.server.entities.medwork.BloodTransfusion;
 import ge.tsu.shared.UserModel;
 
 import java.util.List;
@@ -23,4 +25,7 @@ public interface AppLocal {
 
 	Doctor getUserByUserName(String login);
 
+    BloodTransfusion saveTransfusion(BloodTransfusion bloodTransfusion);
+
+    List<Allergy> loadAllergies();
 }

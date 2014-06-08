@@ -1,8 +1,12 @@
 package ge.tsu.client.view;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -12,23 +16,22 @@ import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.ToggleGroup;
 import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ListStore;
-import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.FocusEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.*;
-import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
+import com.sencha.gxt.widget.core.client.info.Info;
 import ge.tsu.client.App;
 import ge.tsu.client.presenter.Form200Presenter;
-import ge.tsu.shared.InsuranceCompany;
-import ge.tsu.shared.InsuranceCompanyProperties;
-import ge.tsu.shared.UserModel;
-import ge.tsu.shared.UserModelProperties;
+import ge.tsu.shared.*;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,9 +60,10 @@ public class Form200View implements Form200Presenter.Display {
     private TextArea chronicDiseases;
     private TextArea infectionDiseases;
     private TextField policeNumber;
-    private ComboBox<InsuranceCompany> insuranceCompany;
+    private ComboBox<InsuranceCompanyModel> insuranceCompany;
     private ListStore<UserModel> usersStore;
     private TextButton saveButton;
+    private ComboBox<UserModel> usersCombo;
 
     @Override
     public Widget asWidget() {
@@ -90,6 +94,97 @@ public class Form200View implements Form200Presenter.Display {
         return saveButton;
     }
 
+    @Override
+    public FocusEvent.HasFocusHandlers getBloodTransfusion() {
+        return bloodTransfusion;
+    }
+
+    @Override
+    public FocusEvent.HasFocusHandlers getAllergy() {
+        return allergy;
+    }
+
+    @Override
+    public void setBloodTransfusion(Date transfusionDate, String bloodVolume, String comment) {
+        String dateString = DateTimeFormat.getFormat("dd.MM.yyyy").format(transfusionDate);
+        String transfusionString = App.messages.transfusionDate() + ": " + dateString + "; " +
+                App.messages.bloodVolume() + " " + bloodVolume + "; \n" + App.messages.comment() + ": " + comment;
+        bloodTransfusion.setValue(transfusionString);
+
+        bloodTransfusion.setData("transfusionDate", transfusionDate);
+        bloodTransfusion.setData("bloodVolume", bloodVolume);
+        bloodTransfusion.setData("comment", comment);
+    }
+
+    @Override
+    public Date getBloodTransfusionDate() {
+        return bloodTransfusion.getData("transfusionDate");
+    }
+
+    @Override
+    public String getBloodTransfusionVolume() {
+        return bloodTransfusion.getData("bloodVolume");
+    }
+
+    @Override
+    public String getBloodTransfusionComment() {
+        return bloodTransfusion.getData("comment");
+    }
+
+    @Override
+    public BloodTransfusionModel getBloodTransfusionModel() {
+        BloodTransfusionModel model = new BloodTransfusionModel();
+        model.setTransfusionDate(getBloodTransfusionDate());
+        model.setBloodVolume(Integer.valueOf(getBloodTransfusionVolume()));
+        model.setComment(getBloodTransfusionComment());
+        model.setCustomerId(usersCombo.getValue().getId());
+        // TODO change issuer Id
+        model.setIssuerId(App.currentUser.getId());
+        return model;
+    }
+
+    @Override
+    public void clearForm() {
+        // TODO clear form
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void addAllergy(boolean clear, AllergyModel model) {
+        if (clear) {
+            allergy.setValue(null);
+            allergy.setData("data", null);
+        } else {
+            ArrayList<AllergyModel> allergyModels = new ArrayList<AllergyModel>();
+            Object data = allergy.getData("data");
+            if (data == null) {
+                allergyModels.add(model);
+                allergy.setData("data", allergyModels);
+            } else {
+                allergyModels = (ArrayList<AllergyModel>) data;
+                if (!allergyModels.contains(model)) {
+                    allergyModels.add(model);
+                    allergy.setData("data", allergyModels);
+                }
+            }
+            // update field value
+            String value = "";
+            for (AllergyModel allergyModel : allergyModels) {
+                value = value.concat(allergyModel.getName()).concat("; ");
+            }
+            allergy.setValue(value);
+        }
+    }
+
+    @Override
+    public void setSavingMask(boolean mask) {
+        if(mask) {
+            panel.mask(App.messages.saving());
+        } else {
+            panel.unmask();
+        }
+    }
+
     private void createForm() {
 
         int cw = (FORM_WIDTH / 2) - 80;
@@ -109,7 +204,7 @@ public class Form200View implements Form200Presenter.Display {
         UserModelProperties props = GWT.create(UserModelProperties.class);
         usersStore = new ListStore<UserModel>(props.id());
 
-        ComboBox<UserModel> usersCombo = new ComboBox<UserModel>(usersStore, new LabelProvider<UserModel>() {
+        usersCombo = new ComboBox<UserModel>(usersStore, new LabelProvider<UserModel>() {
             @Override
             public String getLabel(UserModel model) {
                 return model.getFirstName() + " " + model.getLastName() + " / " + model.getPn();
@@ -120,7 +215,7 @@ public class Form200View implements Form200Presenter.Display {
 
             @Override
             public void onValueChange(ValueChangeEvent<UserModel> event) {
-                // TODO
+                // TODO check null-s
                 UserModel userModel = event.getValue();
                 firstName.setValue(userModel.getFirstName());
                 lastName.setValue(userModel.getLastName());
@@ -236,10 +331,10 @@ public class Form200View implements Form200Presenter.Display {
         con.add(new FieldLabel(policeNumber, App.messages.policeNumber()), new HtmlData(".police"));
 
         InsuranceCompanyProperties insProps = GWT.create(InsuranceCompanyProperties.class);
-        ListStore<InsuranceCompany> companyStore = new ListStore<InsuranceCompany>(insProps.id());
-        insuranceCompany = new ComboBox<InsuranceCompany>(companyStore, new LabelProvider<InsuranceCompany>() {
+        ListStore<InsuranceCompanyModel> companyStore = new ListStore<InsuranceCompanyModel>(insProps.id());
+        insuranceCompany = new ComboBox<InsuranceCompanyModel>(companyStore, new LabelProvider<InsuranceCompanyModel>() {
             @Override
-            public String getLabel(InsuranceCompany insuranceCompany) {
+            public String getLabel(InsuranceCompanyModel insuranceCompany) {
                 return insuranceCompany.getName();
             }
         });

@@ -1,10 +1,11 @@
 /**
  *
  */
-package ge.tsu.shared;
+package ge.tsu.server.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -12,6 +13,7 @@ import java.io.Serializable;
  */
 
 @Entity
+@Table(name = "INSURANCE_COMPANY")
 public class InsuranceCompany implements Serializable {
     @Id
     private Long id;

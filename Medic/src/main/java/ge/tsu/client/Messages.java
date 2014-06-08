@@ -1,8 +1,5 @@
 package ge.tsu.client;
 
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
-
 /**
  * Interface to represent the messages contained in resource bundle:
  * D:/Development/My/TsuProject/Medic/src/main/resources/ge/tsu/client/Messages.properties'.
@@ -135,4 +132,18 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
     String fillsAutomatically();
 
     String ambulanceMenu();
+
+    String choose();
+
+    String comment();
+
+    String transfusionDate();
+
+    String bloodVolume();
+
+    String clear();
+
+    String loading();
+
+    String saving();
 }

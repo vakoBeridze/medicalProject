@@ -17,7 +17,6 @@ import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.*;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import com.sencha.gxt.widget.core.client.event.HideEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
@@ -31,7 +30,6 @@ import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import ge.tsu.client.App;
 import ge.tsu.client.images.Images;
 import ge.tsu.client.presenter.UserManagerPresenter;
-import ge.tsu.server.entities.enums.PersonGender;
 import ge.tsu.shared.UserModel;
 import ge.tsu.shared.UserModelProperties;
 

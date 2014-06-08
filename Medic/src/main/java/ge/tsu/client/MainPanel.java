@@ -18,7 +18,6 @@ import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import ge.tsu.client.images.Images;
 import ge.tsu.client.service.AppService;
-import ge.tsu.client.service.AppServiceAsync;
 import ge.tsu.client.view.MenuView;
 
 import java.util.Map;

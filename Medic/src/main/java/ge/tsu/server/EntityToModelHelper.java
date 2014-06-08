@@ -2,6 +2,8 @@ package ge.tsu.server;
 
 import ge.tsu.server.entities.Doctor;
 import ge.tsu.server.entities.Person;
+import ge.tsu.server.entities.medfacts.Allergy;
+import ge.tsu.shared.AllergyModel;
 import ge.tsu.shared.UserModel;
 
 import java.util.ArrayList;
@@ -69,5 +71,23 @@ public class EntityToModelHelper {
         userModel.setProfessionAndJob(person.getProfessionAndJob());
 
         return userModel;
+    }
+
+    public List<AllergyModel> allergiesToModels(List<Allergy> allergies) {
+        List<AllergyModel> allergyModels = new ArrayList<AllergyModel>();
+        for (Allergy allergy : allergies) {
+            allergyModels.add(allergyToModel(allergy));
+        }
+        return allergyModels;
+    }
+
+    private AllergyModel allergyToModel(Allergy allergy) {
+        AllergyModel model = new AllergyModel();
+        model.setId(allergy.getId());
+        model.setComment(allergy.getComment());
+        model.setName(allergy.getName());
+        model.setStandard(allergy.getStandard());
+
+        return model;
     }
 }

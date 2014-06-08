@@ -2,6 +2,8 @@ package ge.tsu.server;
 
 import ge.tsu.server.entities.Doctor;
 import ge.tsu.server.entities.Person;
+import ge.tsu.server.entities.medwork.BloodTransfusion;
+import ge.tsu.shared.BloodTransfusionModel;
 import ge.tsu.shared.UserModel;
 
 /**
@@ -48,5 +50,17 @@ public class ModelToEntityHelper {
 
         return doctor;
 
+    }
+
+    public BloodTransfusion transfusionModelToEntity(BloodTransfusionModel model) {
+        BloodTransfusion transfusion = new BloodTransfusion();
+        transfusion.setId(model.getId());
+        transfusion.setBloodVolume(model.getBloodVolume());
+        transfusion.setComment(model.getComment());
+        transfusion.setTransfusionDate(model.getTransfusionDate());
+        transfusion.setCustomer(new Person(model.getCustomerId()));
+        transfusion.setIssuer(new Person(model.getIssuerId()));
+
+        return transfusion;
     }
 }

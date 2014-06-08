@@ -5,6 +5,10 @@ import ge.tsu.client.service.AppService;
 import ge.tsu.server.ejb.AppLocal;
 import ge.tsu.server.entities.Doctor;
 import ge.tsu.server.entities.Person;
+import ge.tsu.server.entities.medfacts.Allergy;
+import ge.tsu.server.entities.medwork.BloodTransfusion;
+import ge.tsu.shared.AllergyModel;
+import ge.tsu.shared.BloodTransfusionModel;
 import ge.tsu.shared.MedicException;
 import ge.tsu.shared.UserModel;
 
@@ -85,4 +89,15 @@ public class AppServiceImpl extends RemoteServiceServlet implements AppService {
 
 		return entityToModelHelper.doctorToUserModel(appLocal.getUserByUserName(login));
 	}
+
+    @Override
+    public void saveForm200a(BloodTransfusionModel transfusionModel) {
+        appLocal.saveTransfusion(modelToEntityHelper.transfusionModelToEntity(transfusionModel));
+    }
+
+    @Override
+    public List<AllergyModel> loadAllergies() {
+        List<Allergy> allergies = appLocal.loadAllergies();
+        return entityToModelHelper.allergiesToModels(allergies);
+    }
 }

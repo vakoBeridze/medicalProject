@@ -7,12 +7,12 @@
         <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
         <properties>
 
-            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2008Dialect"/>
+            <!--<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2008Dialect"/>-->
             <!--<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>-->
             <!--<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/> -->
             <!--<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>-->
 
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
 
             <!--Test-->
             <property name="hibernate.show_sql" value="true"/>
@@ -23,6 +23,10 @@
             <property name="hibernate.cache.use_second_level_cache" value="true"/>
             <property name="hibernate.cache.use_query_cache" value="true"/>
             <property name="hibernate.cache.use_structured_entries" value="true"/>
+
+            <property name="hibernate.connection.CharSet" value="UTF-8"/>
+            <property name="hibernate.connection.characterEncoding" value="UTF-8"/>
+            <property name="hibernate.connection.useUnicode" value="true"/>
 
             <property name="hibernate.connection.defaultNChar" value="true"/>
         </properties>

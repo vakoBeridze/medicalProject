@@ -17,6 +17,7 @@ import java.util.Date;
  */
 
 @Entity
+@Table(name = "CUSTOMER_SURGERY")
 public class CustomerSurgery {
     @Id
     private Long id;
