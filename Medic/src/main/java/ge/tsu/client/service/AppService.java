@@ -3,6 +3,9 @@ package ge.tsu.client.service;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import ge.tsu.shared.AllergyModel;
+import ge.tsu.shared.BloodTransfusionModel;
+import ge.tsu.shared.MedicException;
 import ge.tsu.shared.UserModel;
 
 import java.util.List;
@@ -21,13 +24,17 @@ public interface AppService extends RemoteService {
 
 	List<UserModel> loadUsers();
 
-	UserModel saveUser(UserModel userModel);
+	UserModel saveUser(UserModel userModel) throws MedicException;
 
 	void deleteUser(UserModel userModel);
 
 	UserModel loadCurrentUser();
 
-	/**
+    void saveForm200a(BloodTransfusionModel transfusionModel);
+
+    List<AllergyModel> loadAllergies();
+
+    /**
 	 * Utility class to get the RPC Async interface from client-side code
 	 */
 /*	public static final class Util {

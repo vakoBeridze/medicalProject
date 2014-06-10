@@ -2,6 +2,7 @@ package ge.tsu.shared;
 
 import com.google.gwt.editor.client.Editor;
 import com.sencha.gxt.core.client.ValueProvider;
+import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
 
@@ -27,8 +28,8 @@ public interface UserModelProperties extends PropertyAccess<UserModel> {
 	@Editor.Path("email")
 	ValueProvider<UserModel, String> emailAddress();
 
-	@Editor.Path("admin")
-	ValueProvider<UserModel, Boolean> admin();
+	@Editor.Path("doctor")
+	ValueProvider<UserModel, Boolean> doctor();
 
 	ValueProvider<UserModel, String> pn();
 

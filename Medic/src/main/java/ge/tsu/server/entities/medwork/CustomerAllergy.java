@@ -14,9 +14,11 @@ import javax.persistence.*;
  */
 
 @Entity
+@Table(name = "CUSTOMER_ALLERGY")
 public class CustomerAllergy {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)

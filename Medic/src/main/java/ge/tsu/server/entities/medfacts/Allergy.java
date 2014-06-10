@@ -14,10 +14,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "ALLERGIES")
 public class Allergy {
+
     @Id
     private Long id;
     private String name;
-    private String standart;
+    private String standard;
     private String comment;
 
     public Long getId() {
@@ -36,12 +37,12 @@ public class Allergy {
         this.name = name;
     }
 
-    public String getStandart() {
-        return standart;
+    public String getStandard() {
+        return standard;
     }
 
-    public void setStandart(String standart) {
-        this.standart = standart;
+    public void setStandard(String standard) {
+        this.standard = standard;
     }
 
     public String getComment() {

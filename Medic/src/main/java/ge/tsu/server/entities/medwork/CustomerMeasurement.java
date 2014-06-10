@@ -14,6 +14,7 @@ import java.util.Date;
  */
 
 @Entity
+@Table(name = "CUSTOMER_MEASUREMENT")
 public class CustomerMeasurement {
     @Id
     private Long id;
@@ -25,10 +26,10 @@ public class CustomerMeasurement {
 
     @ManyToOne
     @JoinColumn(name = "mesurement_id")
-    private Measurement mesurement;
+    private Measurement measurement;
 
     @Temporal(value = TemporalType.TIMESTAMP)
-    private Date mesurementDate;
+    private Date measurementDate;
 
     private String value;
     private String note;
@@ -55,20 +56,20 @@ public class CustomerMeasurement {
         this.customer = customer;
     }
 
-    public Measurement getMesurement() {
-        return mesurement;
+    public Measurement getMeasurement() {
+        return measurement;
     }
 
-    public void setMesurement(Measurement mesurement) {
-        this.mesurement = mesurement;
+    public void setMeasurement(Measurement mesurement) {
+        this.measurement = mesurement;
     }
 
-    public Date getMesurementDate() {
-        return mesurementDate;
+    public Date getMeasurementDate() {
+        return measurementDate;
     }
 
-    public void setMesurementDate(Date mesurementDate) {
-        this.mesurementDate = mesurementDate;
+    public void setMeasurementDate(Date mesurementDate) {
+        this.measurementDate = mesurementDate;
     }
 
     public String getValue() {

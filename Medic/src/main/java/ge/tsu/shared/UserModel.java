@@ -7,186 +7,196 @@ import java.util.Date;
  * Created by vako on 29/05/14.
  */
 public class UserModel implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private long id;
-	private String pn;
-	private String firstName;
-	private String lastName;
-	private String fatherName;
-	private Integer gender;
-	private String maritalStatus;
+    private long id;
+    private String pn;
+    private String firstName;
+    private String lastName;
+    private String fatherName;
+    private Integer gender;
+    private String maritalStatus;
 
-	private Integer invalidStatus;
-	private Integer bloodGroup;
-	private Integer rhFactory;
+    private Integer invalidStatus;
+    private Integer bloodGroup;
+    private Integer rhFactory;
 
-	private Date birthDate;
+    private Date birthDate;
 
-	private String professionAndJob;
+    private String professionAndJob;
 
-	private String phoneNumber;
-	private String email;
+    private String license;
 
-	private String userName;
-	private String password;
+    private String phoneNumber;
+    private String email;
 
-	private boolean admin;
+    private String userName;
+    private String password;
+
+    private boolean doctor;
 
 
-	public UserModel() {
-	}
+    public UserModel() {
+    }
 
-	public long getId() {
-		return id;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public String getPn() {
-		return pn;
-	}
+    public String getPn() {
+        return pn;
+    }
 
-	public void setPn(String pn) {
-		this.pn = pn;
-	}
+    public void setPn(String pn) {
+        this.pn = pn;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public String getFatherName() {
-		return fatherName;
-	}
+    public String getFatherName() {
+        return fatherName;
+    }
 
-	public void setFatherName(String fatherName) {
-		this.fatherName = fatherName;
-	}
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
+    }
 
-	public Integer getGender() {
-		return gender;
-	}
+    public Integer getGender() {
+        return gender;
+    }
 
-	public void setGender(Integer gender) {
-		this.gender = gender;
-	}
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
 
-	public String getMaritalStatus() {
-		return maritalStatus;
-	}
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
 
-	public void setMaritalStatus(String maritalStatus) {
-		this.maritalStatus = maritalStatus;
-	}
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
 
-	public Integer getInvalidStatus() {
-		return invalidStatus;
-	}
+    public Integer getInvalidStatus() {
+        return invalidStatus;
+    }
 
-	public void setInvalidStatus(Integer invalidStatus) {
-		this.invalidStatus = invalidStatus;
-	}
+    public void setInvalidStatus(Integer invalidStatus) {
+        this.invalidStatus = invalidStatus;
+    }
 
-	public Integer getBloodGroup() {
-		return bloodGroup;
-	}
+    public Integer getBloodGroup() {
+        return bloodGroup;
+    }
 
-	public void setBloodGroup(Integer bloodGroup) {
-		this.bloodGroup = bloodGroup;
-	}
+    public void setBloodGroup(Integer bloodGroup) {
+        this.bloodGroup = bloodGroup;
+    }
 
-	public Integer getRhFactory() {
-		return rhFactory;
-	}
+    public Integer getRhFactory() {
+        return rhFactory;
+    }
 
-	public void setRhFactory(Integer rhFactory) {
-		this.rhFactory = rhFactory;
-	}
+    public void setRhFactory(Integer rhFactory) {
+        this.rhFactory = rhFactory;
+    }
 
-	public String getProfessionAndJob() {
-		return professionAndJob;
-	}
+    public String getProfessionAndJob() {
+        return professionAndJob;
+    }
 
-	public void setProfessionAndJob(String professionAndJob) {
-		this.professionAndJob = professionAndJob;
-	}
+    public void setProfessionAndJob(String professionAndJob) {
+        this.professionAndJob = professionAndJob;
+    }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getUserName() {
-		return userName;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public boolean isAdmin() {
-		return admin;
-	}
+    public boolean isDoctor() {
+        return doctor;
+    }
 
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
-	}
+    public void setDoctor(boolean doctor) {
+        this.doctor = doctor;
+    }
 
-	public Date getBirthDate() {
-		return birthDate;
-	}
+    public Date getBirthDate() {
+        return birthDate;
+    }
 
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+    public String getLicense() {
+        return license;
+    }
 
-		UserModel userModel = (UserModel) o;
+    public void setLicense(String license) {
+        this.license = license;
+    }
 
-		if (id != userModel.id) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-		return true;
-	}
+        UserModel userModel = (UserModel) o;
 
-	@Override
-	public int hashCode() {
-		return (int) (id ^ (id >>> 32));
-	}
+        if (id != userModel.id) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 }

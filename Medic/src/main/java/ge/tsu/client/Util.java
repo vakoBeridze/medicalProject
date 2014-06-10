@@ -63,13 +63,7 @@ public class Util {
                 case USER_MANAGER: {
                     presenter = new UserManagerPresenter(new UserManagerView());
                     widget = ((UserManagerPresenter) presenter).getDisplay().asWidget();
-
-                    openTabs.put(menu.getMenu(), widget);
-                    MainPanel.tabPanel.add(widget, new TabItemConfig(App.messages.userManager(), true));
-                    MainPanel.tabPanel.setActiveWidget(widget);
-
-                    presenter.go();
-                    return;
+                    break;
                 }
                 case FORM_100: {
                     presenter = new Form100Presenter(new Form100View());
@@ -99,7 +93,7 @@ public class Util {
             }
             if (widget != null) {
                 openTabs.put(menu.getMenu(), widget);
-                MainPanel.tabPanel.add(widget, new TabItemConfig(App.messages.formMenu() + " " + menu.getMenu().toString().substring(5), true));
+                MainPanel.tabPanel.add(widget, new TabItemConfig(menu.getLabel(), true));
                 MainPanel.tabPanel.setActiveWidget(widget);
 
                 presenter.go();

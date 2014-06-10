@@ -5,16 +5,22 @@ package ge.tsu.server.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * @author vamekh
  */
 
 @Entity
-public class InsuranceCompany {
+@Table(name = "INSURANCE_COMPANY")
+public class InsuranceCompany implements Serializable {
     @Id
     private Long id;
     private String name;
+
+    public InsuranceCompany() {
+    }
 
     public Long getId() {
         return id;

@@ -1,89 +1,149 @@
 package ge.tsu.client;
 
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
-
 /**
  * Interface to represent the messages contained in resource bundle:
  * D:/Development/My/TsuProject/Medic/src/main/resources/ge/tsu/client/Messages.properties'.
  */
 public interface Messages extends com.google.gwt.i18n.client.Messages {
-	String logout();
+    String logout();
 
-	String appTitle();
+    String appTitle();
 
-	String errorLogout();
+    String errorLogout();
 
-	String navigation();
+    String navigation();
 
-	String home();
+    String home();
 
-	String filter();
+    String filter();
 
-	String administrationMenu();
+    String administrationMenu();
 
-	String formsMenu();
+    String formsMenu();
 
-	String formMenu();
+    String formMenu();
 
-	String userManager();
+    String userManager();
 
-	String firstName();
+    String firstName();
 
-	String lastName();
+    String lastName();
 
-	String userName();
+    String userName();
 
-	String emailAddress();
+    String emailAddress();
 
-	String admin();
+    String admin();
 
-	String yes();
+    String yes();
 
-	String no();
+    String no();
 
-	String add();
+    String add();
 
-	String edit();
+    String edit();
 
-	String delete();
+    String delete();
 
-	String sureDelete();
+    String sureDelete();
 
-	String confirm();
+    String confirm();
 
-	String save();
+    String save();
 
-	String addUser();
+    String addUser();
 
-	String editUser();
+    String editUser();
 
-	String fatherName();
+    String fatherName();
 
-	String password();
+    String password();
 
-	String pn();
+    String pn();
 
-	String phoneNumber();
+    String phoneNumber();
 
-	String birthday();
+    String birthday();
 
-	String professionAndJob();
+    String professionAndJob();
 
-	String example();
+    String example();
 
-	String gender();
+    String gender();
 
-	String male();
+    String male();
 
-	String female();
+    String female();
 
-	String roman1();
+    String roman1();
 
-	String roman2();
+    String roman2();
 
-	String roman3();
+    String roman3();
 
-	String roman4();
+    String roman4();
 
-	String bloodGroup();
+    String bloodGroup();
+
+    String addDoctor();
+
+    String addPatient();
+
+    String license();
+
+    String noData();
+
+    String doctor();
+
+    String a();
+
+    String patient();
+
+    String rhFactory();
+
+    String howMany();
+
+    String and();
+
+    String when();
+
+    String bloodTransfusion();
+
+    String reactionType();
+
+    String medicaments();
+
+    String food();
+
+    String other();
+
+    String allergy();
+
+    String policeNumber();
+
+    String surgery();
+
+    String infectionDiseases();
+
+    String chronicDiseases();
+
+    String insuranceCompany();
+
+    String fillsAutomatically();
+
+    String ambulanceMenu();
+
+    String choose();
+
+    String comment();
+
+    String transfusionDate();
+
+    String bloodVolume();
+
+    String clear();
+
+    String loading();
+
+    String saving();
 }

@@ -3,11 +3,19 @@ package ge.tsu.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import ge.tsu.client.service.AppService;
 import ge.tsu.server.ejb.AppLocal;
+import ge.tsu.server.entities.Doctor;
 import ge.tsu.server.entities.Person;
+import ge.tsu.server.entities.medfacts.Allergy;
+import ge.tsu.server.entities.medwork.BloodTransfusion;
+import ge.tsu.shared.AllergyModel;
+import ge.tsu.shared.BloodTransfusionModel;
+import ge.tsu.shared.MedicException;
 import ge.tsu.shared.UserModel;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The server side implementation of the RPC service.
@@ -40,14 +48,23 @@ public class AppServiceImpl extends RemoteServiceServlet implements AppService {
 
 	@Override
 	public List<UserModel> loadUsers() {
-		List<Person> persons = appLocal.loadUsers();
-		return entityToModelHelper.personsToUserModels(persons);
+		Set<? extends Person> users = appLocal.loadUsers();
+		return entityToModelHelper.personsToUserModels(users);
 	}
 
 	@Override
-	public UserModel saveUser(UserModel userModel) {
-		Person person = modelToEntityHelper.userModelToPerson(userModel);
-		return entityToModelHelper.personToUserModel(appLocal.saveUser(person));
+	public UserModel saveUser(UserModel userModel) throws MedicException {
+        try {
+            if (userModel.isDoctor()) {
+                Doctor doctor = modelToEntityHelper.userModelToDoctor(userModel);
+                return entityToModelHelper.doctorToUserModel(appLocal.saveDoctor(doctor));
+            } else {
+                Person person = modelToEntityHelper.userModelToPerson(userModel);
+                return entityToModelHelper.personToUserModel(appLocal.savePerson(person));
+            }
+        } catch (EJBTransactionRolledbackException ex) {
+            throw new MedicException(userModel.getEmail()+" Not Unique");
+        }
 	}
 
 	@Override
@@ -70,6 +87,17 @@ public class AppServiceImpl extends RemoteServiceServlet implements AppService {
 			return model;
 		}
 
-		return entityToModelHelper.personToUserModel(appLocal.getUserByUserName(login));
+		return entityToModelHelper.doctorToUserModel(appLocal.getUserByUserName(login));
 	}
+
+    @Override
+    public void saveForm200a(BloodTransfusionModel transfusionModel) {
+        appLocal.saveTransfusion(modelToEntityHelper.transfusionModelToEntity(transfusionModel));
+    }
+
+    @Override
+    public List<AllergyModel> loadAllergies() {
+        List<Allergy> allergies = appLocal.loadAllergies();
+        return entityToModelHelper.allergiesToModels(allergies);
+    }
 }

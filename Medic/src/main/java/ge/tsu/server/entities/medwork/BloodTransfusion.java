@@ -14,22 +14,23 @@ import java.util.Date;
  */
 
 @Entity
+@Table(name = "BLOOD_TRANSFUSION")
 public class BloodTransfusion {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "reciver_pn")
+    @JoinColumn(name = "reciver_id")
     private Person customer;
 
     @ManyToOne
-    @JoinColumn(name = "issuer_pn")
+    @JoinColumn(name = "issuer_id")
     private Person issuer;
 
     private Date transfusionDate;
     private Integer bloodVolume;
     private String comment;
-
 
     @ManyToOne
     @JoinColumn(name = "hospital_id")
@@ -47,8 +48,8 @@ public class BloodTransfusion {
         return customer;
     }
 
-    public void setCustomer(Person reciver) {
-        this.customer = reciver;
+    public void setCustomer(Person receiver) {
+        this.customer = receiver;
     }
 
     public Person getIssuer() {

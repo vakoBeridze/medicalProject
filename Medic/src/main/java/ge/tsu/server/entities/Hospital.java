@@ -3,6 +3,7 @@ package ge.tsu.server.entities;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "HOSPITAL")
 public class Hospital {
     @Id
     private Long id;
@@ -12,7 +13,6 @@ public class Hospital {
     private Hospital parentHospital;
 
     private String name;
-
 
     @ManyToOne
     @JoinColumn(name = "address_id")

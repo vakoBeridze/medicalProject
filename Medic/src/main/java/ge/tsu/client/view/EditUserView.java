@@ -1,7 +1,6 @@
 package ge.tsu.client.view;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.ToggleGroup;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
@@ -35,6 +34,7 @@ public class EditUserView implements EditUserPresenter.Display {
     private Radio maleRadio;
     private TextField email;
     private PasswordField password;
+    private TextField license;
     private TextField pn;
     private IntegerField phoneNumber;
     private DateField birthDate;
@@ -43,6 +43,7 @@ public class EditUserView implements EditUserPresenter.Display {
     private Radio r2;
     private Radio r3;
     private Radio r4;
+    private Radio femaleRadio;
 
     public EditUserView(UserModel userModel) {
         this.userModel = userModel;
@@ -51,7 +52,7 @@ public class EditUserView implements EditUserPresenter.Display {
     @Override
     public void asWidget() {
         window = new Window();
-        window.setPixelSize(500, 480);
+        window.setPixelSize(500, 470);
         window.setModal(true);
         window.setBlinkModal(true);
         window.setHeadingText(this.userModel.getId() == 0 ? App.messages.addUser() : App.messages.editUser());
@@ -70,13 +71,55 @@ public class EditUserView implements EditUserPresenter.Display {
     }
 
     private void fillForm() {
-        firstName.setValue(this.userModel.getFirstName());
-        lastName.setValue(this.userModel.getLastName());
-        email.setValue(this.userModel.getEmail());
-        fatherName.setValue(this.userModel.getFatherName());
-        phoneNumber.setValue(Integer.valueOf(this.userModel.getPhoneNumber()));
-        pn.setValue(this.userModel.getPn());
-        professionAndJob.setValue(this.userModel.getProfessionAndJob());
+        firstName.setValue(this.userModel.getFirstName() == null ? "" : this.userModel.getFirstName());
+        lastName.setValue(this.userModel.getLastName() == null ? "" : this.userModel.getLastName());
+        email.setValue(this.userModel.getEmail() == null ? "" : this.userModel.getEmail());
+        fatherName.setValue(this.userModel.getFatherName() == null ? "" : this.userModel.getFatherName());
+        if (this.userModel.isDoctor()) {
+            license.setValue(this.userModel.getLicense() == null ? "" : this.userModel.getLicense());
+            window.setHeight(490);
+        }
+        setGender(this.userModel.getGender() == null ? 0 : this.userModel.getGender());
+        birthDate.setValue(this.userModel.getBirthDate());
+//        phoneNumber.setValue(Integer.valueOf(this.userModel.getPhoneNumber() == null ? "0" : this.userModel.getPhoneNumber()));
+        phoneNumber.setValue((this.userModel.getPhoneNumber() == null || this.userModel.getPhoneNumber().equals("")) ? null : Integer.valueOf(this.userModel.getPhoneNumber()));
+        pn.setValue(this.userModel.getPn() == null ? "" : this.userModel.getPn());
+        professionAndJob.setValue(this.userModel.getProfessionAndJob() == null ? "" : this.userModel.getProfessionAndJob());
+        setBloodGroup(this.userModel.getBloodGroup() == null ? 0 : this.userModel.getBloodGroup());
+    }
+
+    private void setGender(int gender) {
+        maleRadio.setValue(false);
+        femaleRadio.setValue(false);
+        switch (gender) {
+            case 1:
+                maleRadio.setValue(true);
+                break;
+            case 4:
+                femaleRadio.setValue(true);
+                break;
+        }
+    }
+
+    private void setBloodGroup(int bloodGroup) {
+        r1.setValue(false);
+        r2.setValue(false);
+        r3.setValue(false);
+        r4.setValue(false);
+        switch (bloodGroup) {
+            case 1:
+                r1.setValue(true);
+                break;
+            case 2:
+                r2.setValue(true);
+                break;
+            case 3:
+                r3.setValue(true);
+                break;
+            case 4:
+                r4.setValue(true);
+                break;
+        }
     }
 
     private void initForm(FramedPanel panel) {
@@ -104,7 +147,7 @@ public class EditUserView implements EditUserPresenter.Display {
         maleRadio = new Radio();
         maleRadio.setBoxLabel(App.messages.male());
         maleRadio.setValue(true);
-        Radio femaleRadio = new Radio();
+        femaleRadio = new Radio();
         femaleRadio.setBoxLabel(App.messages.female());
         HorizontalPanel hp = new HorizontalPanel();
         hp.add(maleRadio);
@@ -119,8 +162,15 @@ public class EditUserView implements EditUserPresenter.Display {
         email.setAllowBlank(false);
         vlc.add(new FieldLabel(email, App.messages.emailAddress()), layoutData);
 
-        password = new PasswordField();
-        vlc.add(new FieldLabel(password, App.messages.password()), layoutData);
+        if (this.userModel.isDoctor()) {
+            password = new PasswordField();
+            vlc.add(new FieldLabel(password, App.messages.password()), layoutData);
+
+            license = new TextField();
+            license.setAllowBlank(false);
+            vlc.add(new FieldLabel(license, App.messages.license()), layoutData);
+
+        }
 
         pn = new TextField();
         pn.setAllowBlank(false);
@@ -205,8 +255,11 @@ public class EditUserView implements EditUserPresenter.Display {
         this.userModel.setBirthDate(birthDate.getValue() == null ? new Date() : birthDate.getValue());
         this.userModel.setPn(pn.getValue());
         this.userModel.setProfessionAndJob(professionAndJob.getValue());
-        this.userModel.setPassword(password.getValue());
         this.userModel.setGender(maleRadio.getValue() ? 1 : 4);
+        if (this.userModel.isDoctor()) {
+            this.userModel.setPassword(password.getValue() == null || password.getValue().equals("") ? this.userModel.getPassword() : password.getValue());
+            this.userModel.setLicense(license.getValue());
+        }
 
         int bloodGroup = 0;
         if (r1.getValue()) {
@@ -226,5 +279,11 @@ public class EditUserView implements EditUserPresenter.Display {
     @Override
     public void setSaveButtonEnabled(boolean enabled) {
         saveButton.setEnabled(enabled);
+    }
+
+    @Override
+    public void validateEmail() {
+        email.setValue("");
+        email.validate();
     }
 }

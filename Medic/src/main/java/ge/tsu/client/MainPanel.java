@@ -18,7 +18,6 @@ import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import ge.tsu.client.images.Images;
 import ge.tsu.client.service.AppService;
-import ge.tsu.client.service.AppServiceAsync;
 import ge.tsu.client.view.MenuView;
 
 import java.util.Map;
@@ -29,7 +28,7 @@ public class MainPanel extends BorderLayoutContainer {
 
 	public MainPanel() {
 
-		monitorWindowResize = true;
+		monitorWindowResize = false;
 		Window.enableScrolling(false);
 		setPixelSize(Window.getClientWidth(), Window.getClientHeight());
 //        setBorders(true);
@@ -40,7 +39,7 @@ public class MainPanel extends BorderLayoutContainer {
 		BorderLayoutData northData = new BorderLayoutData(35);
 		setNorthWidget(headerWidgets, northData);
 
-		BorderLayoutData westData = new BorderLayoutData(0.15);
+		BorderLayoutData westData = new BorderLayoutData(0.2);
 		westData.setMargins(new Margins(5, 0, 0, 5));
 		westData.setSplit(true);
 		westData.setCollapsible(true);
