@@ -1,4 +1,4 @@
-package ge.tsu.server;
+package ge.tsu.server.util;
 
 import ge.tsu.server.entities.Doctor;
 import ge.tsu.server.entities.Person;
@@ -18,6 +18,8 @@ import java.util.Set;
  */
 public class EntityToModelHelper {
 
+    private ModelHelper<UserModel, Person> personModelHelper = new ModelHelper<UserModel, Person>();
+
     public List<UserModel> personsToUserModels(Set<? extends Person> persons) {
 
         List<UserModel> models = new ArrayList<UserModel>();
@@ -34,6 +36,7 @@ public class EntityToModelHelper {
 
     public UserModel doctorToUserModel(Doctor doctor) {
         UserModel userModel = new UserModel();
+//        doctorModelHelper.toModel(userModel, doctor);
         userModel.setId(doctor.getId());
         userModel.setUserName(doctor.getEmail());
         userModel.setFirstName(doctor.getFirstName());
@@ -56,19 +59,20 @@ public class EntityToModelHelper {
 
     public UserModel personToUserModel(Person person) {
         UserModel userModel = new UserModel();
-        userModel.setId(person.getId());
-        userModel.setUserName(person.getEmail());
-        userModel.setFirstName(person.getFirstName());
-        userModel.setLastName(person.getLastName());
-        userModel.setFatherName(person.getFatherName());
-        userModel.setGender(person.getGender());
-        userModel.setEmail(person.getEmail());
-        userModel.setDoctor(false);
-        userModel.setPn(person.getPn());
-        userModel.setPhoneNumber(person.getPhoneNumber());
-        userModel.setBloodGroup(person.getBloodGroup());
-        userModel.setBirthDate(person.getBirthDate());
-        userModel.setProfessionAndJob(person.getProfessionAndJob());
+        personModelHelper.toModel(userModel, person);
+//        userModel.setId(person.getId());
+//        userModel.setUserName(person.getEmail());
+//        userModel.setFirstName(person.getFirstName());
+//        userModel.setLastName(person.getLastName());
+//        userModel.setFatherName(person.getFatherName());
+//        userModel.setGender(person.getGender());
+//        userModel.setEmail(person.getEmail());
+//        userModel.setDoctor(false);
+//        userModel.setPn(person.getPn());
+//        userModel.setPhoneNumber(person.getPhoneNumber());
+//        userModel.setBloodGroup(person.getBloodGroup());
+//        userModel.setBirthDate(person.getBirthDate());
+//        userModel.setProfessionAndJob(person.getProfessionAndJob());
 
         return userModel;
     }

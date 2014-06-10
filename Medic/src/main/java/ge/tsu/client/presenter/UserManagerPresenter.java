@@ -110,14 +110,17 @@ public class UserManagerPresenter implements Presenter {
     }
 
     private void initData() {
+        display.setLoadMask(true);
         AppService.Util.getInstance().loadUsers(new AsyncCallback<List<UserModel>>() {
             @Override
             public void onFailure(Throwable throwable) {
+                display.setLoadMask(false);
                 App.logError(throwable);
             }
 
             @Override
             public void onSuccess(List<UserModel> userModels) {
+                display.setLoadMask(false);
                 display.setData(userModels);
             }
         });
@@ -157,6 +160,8 @@ public class UserManagerPresenter implements Presenter {
         HasSelectionHandlers<Item> getAddDoctorButton();
 
         HasSelectionHandlers<Item> getAddPatientButton();
+
+        void setLoadMask(boolean mask);
     }
 
 }

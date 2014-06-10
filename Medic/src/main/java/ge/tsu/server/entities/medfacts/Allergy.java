@@ -3,9 +3,7 @@
  */
 package ge.tsu.server.entities.medfacts;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author vamekh
@@ -16,6 +14,7 @@ import javax.persistence.Table;
 public class Allergy {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String standard;

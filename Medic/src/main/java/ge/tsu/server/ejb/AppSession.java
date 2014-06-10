@@ -4,6 +4,7 @@ import ge.tsu.server.entities.Doctor;
 import ge.tsu.server.entities.Person;
 import ge.tsu.server.entities.medfacts.Allergy;
 import ge.tsu.server.entities.medwork.BloodTransfusion;
+import ge.tsu.server.entities.medwork.CustomerAllergy;
 import org.apache.log4j.Logger;
 
 import javax.ejb.Local;
@@ -76,5 +77,12 @@ public class AppSession implements AppLocal {
     public List<Allergy> loadAllergies() {
         Query loadAllergies = em.createQuery("SELECT a FROM Allergy a");
         return loadAllergies.getResultList();
+    }
+
+    @Override
+    public void saveCustomerAllergies(List<CustomerAllergy> customerAllergies) {
+        for (CustomerAllergy customerAllergy : customerAllergies) {
+            em.merge(customerAllergy);
+        }
     }
 }

@@ -6,20 +6,15 @@ import ge.tsu.server.ejb.AppLocal;
 import ge.tsu.server.entities.Doctor;
 import ge.tsu.server.entities.Person;
 import ge.tsu.server.entities.medfacts.Allergy;
-import ge.tsu.server.entities.medwork.BloodTransfusion;
-import ge.tsu.shared.AllergyModel;
-import ge.tsu.shared.BloodTransfusionModel;
-import ge.tsu.shared.MedicException;
-import ge.tsu.shared.UserModel;
+import ge.tsu.server.util.EntityToModelHelper;
+import ge.tsu.server.util.ModelToEntityHelper;
+import ge.tsu.shared.*;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import java.util.List;
 import java.util.Set;
 
-/**
- * The server side implementation of the RPC service.
- */
 @SuppressWarnings("serial")
 public class AppServiceImpl extends RemoteServiceServlet implements AppService {
 
@@ -91,8 +86,12 @@ public class AppServiceImpl extends RemoteServiceServlet implements AppService {
 	}
 
     @Override
-    public void saveForm200a(BloodTransfusionModel transfusionModel) {
+    public void saveForm200a(BloodTransfusionModel transfusionModel, List<CustomerAllergyModel> customerAllergyModels) {
+
         appLocal.saveTransfusion(modelToEntityHelper.transfusionModelToEntity(transfusionModel));
+
+        appLocal.saveCustomerAllergies(modelToEntityHelper.customerAllergyModelsToEntities(customerAllergyModels));
+
     }
 
     @Override

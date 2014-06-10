@@ -4,16 +4,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.event.FocusEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.info.Info;
 import ge.tsu.client.App;
 import ge.tsu.client.chooser.AllergyChooser;
 import ge.tsu.client.chooser.BloodTransfusionChooser;
 import ge.tsu.client.service.AppService;
-import ge.tsu.server.entities.medfacts.Allergy;
-import ge.tsu.server.entities.medwork.BloodTransfusion;
 import ge.tsu.shared.AllergyModel;
 import ge.tsu.shared.BloodTransfusionModel;
+import ge.tsu.shared.CustomerAllergyModel;
 import ge.tsu.shared.UserModel;
 
 import java.util.Date;
@@ -67,7 +65,7 @@ public class Form200Presenter implements Presenter {
 
     private void doSave() {
         display.setSavingMask(true);
-        AppService.Util.getInstance().saveForm200a(display.getBloodTransfusionModel(), new AsyncCallback<Void>() {
+        AppService.Util.getInstance().saveForm200a(display.getBloodTransfusionModel(), display.getCustomerAllergyModels(), new AsyncCallback<Void>() {
             @Override
             public void onFailure(Throwable throwable) {
                 App.logError(throwable);
@@ -84,14 +82,17 @@ public class Form200Presenter implements Presenter {
     }
 
     private void initData() {
+        display.setLoadMask(true);
         AppService.Util.getInstance().loadUsers(new AsyncCallback<List<UserModel>>() {
             @Override
             public void onFailure(Throwable throwable) {
+                display.setLoadMask(false);
                 App.logError(throwable);
             }
 
             @Override
             public void onSuccess(List<UserModel> userModels) {
+                display.setLoadMask(false);
                 display.setComboData(userModels);
             }
         });
@@ -123,5 +124,9 @@ public class Form200Presenter implements Presenter {
         void addAllergy(boolean clear, AllergyModel model);
 
         void setSavingMask(boolean mask);
+
+        void setLoadMask(boolean mask);
+
+        List<CustomerAllergyModel> getCustomerAllergyModels();
     }
 }

@@ -329,6 +329,15 @@ public class UserManagerView implements UserManagerPresenter.Display {
         return addPatientButton;
     }
 
+    @Override
+    public void setLoadMask(boolean mask) {
+        if (mask) {
+            grid.mask(App.messages.loading());
+        } else {
+            grid.unmask();
+        }
+    }
+
 
     private List<UserModel> allGridItems;
 

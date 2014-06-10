@@ -3,27 +3,28 @@ package ge.tsu.client.service;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import ge.tsu.shared.AllergyModel;
 import ge.tsu.shared.BloodTransfusionModel;
+import ge.tsu.shared.CustomerAllergyModel;
 import ge.tsu.shared.UserModel;
 
 import java.util.List;
 
 public interface AppServiceAsync {
 
-	void logout(AsyncCallback<Void> asyncCallback);
+    void logout(AsyncCallback<Void> asyncCallback);
 
-	void logToServer(Throwable th, AsyncCallback<Void> asyncCallback);
+    void logToServer(Throwable th, AsyncCallback<Void> asyncCallback);
 
-	void testMethod(String testParam, AsyncCallback<Void> asyncCallback);
+    void testMethod(String testParam, AsyncCallback<Void> asyncCallback);
 
-	void loadUsers(AsyncCallback<List<UserModel>> asyncCallback);
+    void loadUsers(AsyncCallback<List<UserModel>> asyncCallback);
 
-	void saveUser(UserModel userModel, AsyncCallback<UserModel> asyncCallback);
+    void saveUser(UserModel userModel, AsyncCallback<UserModel> asyncCallback);
 
-	void deleteUser(UserModel userModel, AsyncCallback<Void> asyncCallback);
+    void deleteUser(UserModel userModel, AsyncCallback<Void> asyncCallback);
 
-	void loadCurrentUser(AsyncCallback<UserModel> asyncCallback);
+    void loadCurrentUser(AsyncCallback<UserModel> asyncCallback);
 
-    void saveForm200a(BloodTransfusionModel transfusionModel, AsyncCallback<Void> asyncCallback);
+    void saveForm200a(BloodTransfusionModel transfusionModel, List<CustomerAllergyModel> customerAllergyModels, AsyncCallback<Void> asyncCallback);
 
     void loadAllergies(AsyncCallback<List<AllergyModel>> asyncCallback);
 }

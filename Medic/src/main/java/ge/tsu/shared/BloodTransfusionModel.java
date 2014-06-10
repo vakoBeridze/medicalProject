@@ -9,8 +9,8 @@ import java.util.Date;
 public class BloodTransfusionModel implements Serializable {
 
     private long id;
-    private long customerId;
-    private long issuerId;
+    private UserModel customerModel;
+    private UserModel issuerModel;
     private Date transfusionDate;
     private Integer bloodVolume;
     private String comment;
@@ -29,20 +29,20 @@ public class BloodTransfusionModel implements Serializable {
         this.id = id;
     }
 
-    public long getCustomerId() {
-        return customerId;
+    public UserModel getCustomerModel() {
+        return customerModel;
     }
 
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
+    public void setCustomerModel(UserModel customerModel) {
+        this.customerModel = customerModel;
     }
 
-    public long getIssuerId() {
-        return issuerId;
+    public UserModel getIssuerModel() {
+        return issuerModel;
     }
 
-    public void setIssuerId(long issuerId) {
-        this.issuerId = issuerId;
+    public void setIssuerModel(UserModel issuerModel) {
+        this.issuerModel = issuerModel;
     }
 
     public Date getTransfusionDate() {

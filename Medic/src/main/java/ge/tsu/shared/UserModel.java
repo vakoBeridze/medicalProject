@@ -7,7 +7,6 @@ import java.util.Date;
  * Created by vako on 29/05/14.
  */
 public class UserModel implements Serializable {
-    private static final long serialVersionUID = 1L;
 
     private long id;
     private String pn;

@@ -1,9 +1,6 @@
 package ge.tsu.client.view;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -25,7 +22,6 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.FocusEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.*;
-import com.sencha.gxt.widget.core.client.info.Info;
 import ge.tsu.client.App;
 import ge.tsu.client.presenter.Form200Presenter;
 import ge.tsu.shared.*;
@@ -137,9 +133,9 @@ public class Form200View implements Form200Presenter.Display {
         model.setTransfusionDate(getBloodTransfusionDate());
         model.setBloodVolume(Integer.valueOf(getBloodTransfusionVolume()));
         model.setComment(getBloodTransfusionComment());
-        model.setCustomerId(usersCombo.getValue().getId());
-        // TODO change issuer Id
-        model.setIssuerId(App.currentUser.getId());
+        model.setCustomerModel(usersCombo.getValue());
+        // TODO change issuer
+        model.setIssuerModel(usersCombo.getValue());
         return model;
     }
 
@@ -170,19 +166,41 @@ public class Form200View implements Form200Presenter.Display {
             // update field value
             String value = "";
             for (AllergyModel allergyModel : allergyModels) {
-                value = value.concat(allergyModel.getName()).concat("; ");
+                value = value.concat(allergyModel.getName()).concat(", ");
             }
-            allergy.setValue(value);
+            allergy.setValue(value.substring(0, value.length() - 2));
         }
     }
 
     @Override
     public void setSavingMask(boolean mask) {
-        if(mask) {
+        if (mask) {
             panel.mask(App.messages.saving());
         } else {
             panel.unmask();
         }
+    }
+
+    @Override
+    public void setLoadMask(boolean mask) {
+        if (mask) {
+            usersCombo.mask(App.messages.loading());
+        } else {
+            usersCombo.unmask();
+        }
+    }
+
+    @Override
+    public List<CustomerAllergyModel> getCustomerAllergyModels() {
+        ArrayList<AllergyModel> allergyModels = (ArrayList<AllergyModel>) allergy.getData("data");
+        List<CustomerAllergyModel> customerAllergyModels = new ArrayList<CustomerAllergyModel>();
+
+        for (AllergyModel allergyModel : allergyModels) {
+            CustomerAllergyModel customerAllergyModel = new CustomerAllergyModel(allergyModel, usersCombo.getValue());
+            customerAllergyModels.add(customerAllergyModel);
+        }
+
+        return customerAllergyModels;
     }
 
     private void createForm() {
@@ -233,6 +251,7 @@ public class Form200View implements Form200Presenter.Display {
         usersCombo.setForceSelection(true);
         usersCombo.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
         usersCombo.setWidth(rw);
+        usersCombo.setEmptyText(App.messages.select() + " " + App.messages.patient());
 
         con.add(new FieldLabel(usersCombo, App.messages.patient()), new HtmlData(".user"));
 

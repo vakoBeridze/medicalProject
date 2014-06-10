@@ -4,7 +4,7 @@ import ge.tsu.server.entities.Doctor;
 import ge.tsu.server.entities.Person;
 import ge.tsu.server.entities.medfacts.Allergy;
 import ge.tsu.server.entities.medwork.BloodTransfusion;
-import ge.tsu.shared.UserModel;
+import ge.tsu.server.entities.medwork.CustomerAllergy;
 
 import java.util.List;
 
@@ -15,17 +15,19 @@ import java.util.List;
  * Time: 17:11
  */
 public interface AppLocal {
-	java.util.Set<? extends Person> loadUsers();
+    java.util.Set<? extends Person> loadUsers();
 
-	Person savePerson(Person person);
+    Person savePerson(Person person);
 
     Doctor saveDoctor(Doctor doctor);
 
-	void deleteUser(Person person);
+    void deleteUser(Person person);
 
-	Doctor getUserByUserName(String login);
+    Doctor getUserByUserName(String login);
 
     BloodTransfusion saveTransfusion(BloodTransfusion bloodTransfusion);
 
     List<Allergy> loadAllergies();
+
+    void saveCustomerAllergies(List<CustomerAllergy> customerAllergies);
 }
