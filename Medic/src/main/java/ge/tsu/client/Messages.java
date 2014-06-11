@@ -148,4 +148,30 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
     String saving();
 
     String select();
+
+    String beginningDate();
+
+    String endDate();
+
+    String detectionDate();
+
+    String cureDate();
+
+    String justificationDate();
+
+    String light();
+
+    String chronic();
+
+    String acute();
+
+    String subAcute();
+
+    String diseaseStrength();
+
+    String finalDiagnose();
+
+    String genetic();
+
+    String sureSave();
 }

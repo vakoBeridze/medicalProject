@@ -1,22 +1,13 @@
-/**
- *
- */
-package ge.tsu.server.entities.medfacts;
+package ge.tsu.shared;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
- * @author vamekh
+ * Created by vako on 11/06/14.
  */
+public class DiseaseModel implements Serializable {
 
-@Entity
-@Table(name = "DISEASES")
-public class Disease {
-
-    @Id
-    private Long id;
+    private long id;
     private String name;
     private String standard;
     private boolean isChronic;
@@ -25,6 +16,9 @@ public class Disease {
     private Integer diseaseType;
     private String comment;
     private Integer category;
+
+    public DiseaseModel() {
+    }
 
     public Long getId() {
         return id;
@@ -96,5 +90,22 @@ public class Disease {
 
     public void setCategory(Integer category) {
         this.category = category;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DiseaseModel model = (DiseaseModel) o;
+
+        if (id != model.id) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
     }
 }

@@ -1,12 +1,13 @@
 package ge.tsu.shared;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by Vako on 08.06.2014.
  */
-public class AllergyModel implements Serializable {
+public class AllergyModel implements IsSerializable, Serializable {
 
     private long id;
     private String name;

@@ -1,10 +1,16 @@
 package ge.tsu.server.ejb;
 
 import ge.tsu.server.entities.Doctor;
+import ge.tsu.server.entities.InsuranceCompany;
 import ge.tsu.server.entities.Person;
+import ge.tsu.server.entities.Police;
 import ge.tsu.server.entities.medfacts.Allergy;
+import ge.tsu.server.entities.medfacts.Disease;
+import ge.tsu.server.entities.medfacts.Surgery;
 import ge.tsu.server.entities.medwork.BloodTransfusion;
 import ge.tsu.server.entities.medwork.CustomerAllergy;
+import ge.tsu.server.entities.medwork.CustomerDisease;
+import ge.tsu.server.entities.medwork.CustomerSurgery;
 import org.apache.log4j.Logger;
 
 import javax.ejb.Local;
@@ -84,5 +90,47 @@ public class AppSession implements AppLocal {
         for (CustomerAllergy customerAllergy : customerAllergies) {
             em.merge(customerAllergy);
         }
+    }
+
+    @Override
+    public List<Surgery> loadSurgeries() {
+        Query loadSurgeries = em.createQuery("SELECT s FROM Surgery s");
+        return loadSurgeries.getResultList();
+    }
+
+    @Override
+    public void saveCustomerSurgeries(List<CustomerSurgery> customerSurgeries) {
+        for (CustomerSurgery customerSurgery : customerSurgeries) {
+            em.merge(customerSurgery);
+        }
+    }
+
+    @Override
+    public List<Disease> loadDiseases(boolean chronicDisease) {
+        Query loadDiseases = null;
+        if (chronicDisease) {
+            loadDiseases = em.createQuery("SELECT s FROM Disease s where s.isChronic=true");
+        } else {
+            loadDiseases = em.createQuery("SELECT s FROM Disease s where s.isInfection=true");
+        }
+        return loadDiseases.getResultList();
+    }
+
+    @Override
+    public void saveCustomerDiseases(List<CustomerDisease> customerDiseases) {
+        for (CustomerDisease customerDisease : customerDiseases) {
+            em.merge(customerDisease);
+        }
+    }
+
+    @Override
+    public List<InsuranceCompany> loadInsuranceCompanies() {
+        Query loadCompanies = em.createQuery("SELECT s FROM InsuranceCompany s");
+        return loadCompanies.getResultList();
+    }
+
+    @Override
+    public void savePolice(Police police) {
+        em.merge(police);
     }
 }

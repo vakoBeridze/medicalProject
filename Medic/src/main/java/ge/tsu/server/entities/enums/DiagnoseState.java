@@ -8,5 +8,5 @@ package ge.tsu.server.entities.enums;
  */
 public enum DiagnoseState {
     WRONG,
-	CURRENT_VERSION;
+    CURRENT_VERSION
 }

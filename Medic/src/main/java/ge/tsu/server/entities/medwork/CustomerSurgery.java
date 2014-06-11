@@ -20,6 +20,7 @@ import java.util.Date;
 @Table(name = "CUSTOMER_SURGERY")
 public class CustomerSurgery {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -48,15 +49,6 @@ public class CustomerSurgery {
 
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date endDate;
-
-
-
-
-
-
-
-
-
 
 
     public Long getId() {

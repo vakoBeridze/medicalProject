@@ -8,10 +8,11 @@ import java.util.Date;
 public class Police {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer_pn")
+    @JoinColumn(name = "customer_id")
     private Person customer;
 
     private String policeNumber;

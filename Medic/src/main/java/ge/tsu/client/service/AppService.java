@@ -27,9 +27,15 @@ public interface AppService extends RemoteService {
 
     UserModel loadCurrentUser();
 
-    void saveForm200a(BloodTransfusionModel transfusionModel, List<CustomerAllergyModel> customerAllergyModels);
+    void saveForm200a(BloodTransfusionModel transfusionModel, List<CustomerAllergyModel> customerAllergyModels, List<CustomerSurgeryModel> customerSurgeryModels, List<CustomerDiseaseModel> customerDiseaseModels, PoliceModel policeModel);
 
     List<AllergyModel> loadAllergies();
+
+    List<SurgeryModel> loadSurgeries();
+
+    List<DiseaseModel> loadDiseases(boolean chronicDisease);
+
+    List<InsuranceCompanyModel> loadInsuranceCompanies();
 
     /**
      * Utility class to get the RPC Async interface from client-side code

@@ -1,11 +1,14 @@
 package ge.tsu.server.util;
 
 import ge.tsu.server.entities.Doctor;
+import ge.tsu.server.entities.InsuranceCompany;
 import ge.tsu.server.entities.Person;
 import ge.tsu.server.entities.medfacts.Allergy;
-import ge.tsu.shared.AllergyModel;
-import ge.tsu.shared.UserModel;
+import ge.tsu.server.entities.medfacts.Disease;
+import ge.tsu.server.entities.medfacts.Surgery;
+import ge.tsu.shared.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -16,9 +19,10 @@ import java.util.Set;
  * Date: 01.06.2014
  * Time: 17:32
  */
-public class EntityToModelHelper {
+public class EntityToModelHelper implements Serializable {
 
     private ModelHelper<UserModel, Person> personModelHelper = new ModelHelper<UserModel, Person>();
+    private ModelHelper<DiseaseModel, Disease> diseaseModelHelper = new ModelHelper<DiseaseModel, Disease>();
 
     public List<UserModel> personsToUserModels(Set<? extends Person> persons) {
 
@@ -93,5 +97,42 @@ public class EntityToModelHelper {
         model.setStandard(allergy.getStandard());
 
         return model;
+    }
+
+    public List<SurgeryModel> surgeriesToModels(List<Surgery> surgeries) {
+        List<SurgeryModel> surgeryModels = new ArrayList<SurgeryModel>();
+        for (Surgery surgery : surgeries) {
+            surgeryModels.add(surgeryToModel(surgery));
+        }
+        return surgeryModels;
+    }
+
+    private SurgeryModel surgeryToModel(Surgery surgery) {
+        SurgeryModel model = new SurgeryModel();
+        model.setId(surgery.getId());
+        model.setSurgeryName(surgery.getSurgeryName());
+        return model;
+    }
+
+    public List<DiseaseModel> diseasesToModels(List<Disease> diseases) {
+        List<DiseaseModel> diseaseModels = new ArrayList<DiseaseModel>();
+        for (Disease disease : diseases) {
+            diseaseModels.add(diseaseToModel(disease));
+        }
+        return diseaseModels;
+    }
+
+    private DiseaseModel diseaseToModel(Disease disease) {
+        DiseaseModel model = new DiseaseModel();
+        diseaseModelHelper.toModel(model, disease);
+        return model;
+    }
+
+    public List<InsuranceCompanyModel> insuranceCompaniesToModels(List<InsuranceCompany> companies) {
+        List<InsuranceCompanyModel> models = new ArrayList<InsuranceCompanyModel>();
+        for (InsuranceCompany company : companies) {
+            models.add(new InsuranceCompanyModel(company.getId(), company.getName()));
+        }
+        return models;
     }
 }

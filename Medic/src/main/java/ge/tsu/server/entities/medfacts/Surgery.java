@@ -18,6 +18,9 @@ public class Surgery {
     private Long id;
     private String surgeryName;
 
+    public Surgery() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -33,4 +36,6 @@ public class Surgery {
     public void setSurgeryName(String surgeryName) {
         this.surgeryName = surgeryName;
     }
+
+
 }

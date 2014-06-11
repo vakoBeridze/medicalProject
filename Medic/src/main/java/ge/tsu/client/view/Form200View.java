@@ -13,12 +13,15 @@ import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.ToggleGroup;
 import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.FramedPanel;
+import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
 import com.sencha.gxt.widget.core.client.event.FocusEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.*;
@@ -59,6 +62,7 @@ public class Form200View implements Form200Presenter.Display {
     private ComboBox<InsuranceCompanyModel> insuranceCompany;
     private ListStore<UserModel> usersStore;
     private TextButton saveButton;
+    private TextButton yesSaveButton;
     private ComboBox<UserModel> usersCombo;
 
     @Override
@@ -69,15 +73,33 @@ public class Form200View implements Form200Presenter.Display {
 //        panel.setBodyStyle("background: none;");
 
         createForm();
+        createButtons();
 
-        saveButton = new TextButton(App.messages.save());
         panel.addButton(saveButton);
-        TextButton unVisibleButton = new TextButton("-----------------");
-        unVisibleButton.setWidth(FORM_WIDTH / 2);
-        unVisibleButton.setVisible(false);
-        panel.addButton(unVisibleButton);
 
         return panel;
+    }
+
+    private void createButtons() {
+
+        saveButton = new TextButton(App.messages.save());
+
+        yesSaveButton = new TextButton();
+
+        saveButton.addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(final SelectEvent event) {
+                ConfirmMessageBox confirmMessageBox = new ConfirmMessageBox(App.messages.confirm(), App.messages.sureSave() + " " + App.messages.formMenu() + " 200 ?");
+                confirmMessageBox.addDialogHideHandler(new DialogHideEvent.DialogHideHandler() {
+                    @Override
+                    public void onDialogHide(DialogHideEvent dialogHideEvent) {
+                        if (dialogHideEvent.getHideButton() == Dialog.PredefinedButton.YES)
+                            yesSaveButton.fireEvent(event);
+                    }
+                });
+                confirmMessageBox.show();
+            }
+        });
     }
 
     @Override
@@ -86,8 +108,13 @@ public class Form200View implements Form200Presenter.Display {
     }
 
     @Override
+    public void setInsuranceCompaniesData(List<InsuranceCompanyModel> insuranceCompanyModels) {
+        insuranceCompany.getStore().addAll(insuranceCompanyModels);
+    }
+
+    @Override
     public SelectEvent.HasSelectHandlers getSaveButton() {
-        return saveButton;
+        return yesSaveButton;
     }
 
     @Override
@@ -101,6 +128,21 @@ public class Form200View implements Form200Presenter.Display {
     }
 
     @Override
+    public FocusEvent.HasFocusHandlers getSurgery() {
+        return surgery;
+    }
+
+    @Override
+    public FocusEvent.HasFocusHandlers getInfectionDiseases() {
+        return infectionDiseases;
+    }
+
+    @Override
+    public FocusEvent.HasFocusHandlers getChronicDiseases() {
+        return chronicDiseases;
+    }
+
+    @Override
     public void setBloodTransfusion(Date transfusionDate, String bloodVolume, String comment) {
         String dateString = DateTimeFormat.getFormat("dd.MM.yyyy").format(transfusionDate);
         String transfusionString = App.messages.transfusionDate() + ": " + dateString + "; " +
@@ -110,6 +152,14 @@ public class Form200View implements Form200Presenter.Display {
         bloodTransfusion.setData("transfusionDate", transfusionDate);
         bloodTransfusion.setData("bloodVolume", bloodVolume);
         bloodTransfusion.setData("comment", comment);
+    }
+
+    @Override
+    public void clearBloodTransfusion() {
+        bloodTransfusion.clear();
+        bloodTransfusion.setData("transfusionDate", null);
+        bloodTransfusion.setData("bloodVolume", null);
+        bloodTransfusion.setData("comment", null);
     }
 
     @Override
@@ -129,19 +179,22 @@ public class Form200View implements Form200Presenter.Display {
 
     @Override
     public BloodTransfusionModel getBloodTransfusionModel() {
-        BloodTransfusionModel model = new BloodTransfusionModel();
-        model.setTransfusionDate(getBloodTransfusionDate());
-        model.setBloodVolume(Integer.valueOf(getBloodTransfusionVolume()));
-        model.setComment(getBloodTransfusionComment());
-        model.setCustomerModel(usersCombo.getValue());
-        // TODO change issuer
-        model.setIssuerModel(usersCombo.getValue());
-        return model;
+        if (bloodTransfusion.getValue() != null) {
+            BloodTransfusionModel model = new BloodTransfusionModel();
+            model.setTransfusionDate(getBloodTransfusionDate());
+            model.setBloodVolume(Integer.valueOf(getBloodTransfusionVolume()));
+            model.setComment(getBloodTransfusionComment());
+            model.setCustomerModel(usersCombo.getValue());
+            // TODO change issuer
+            model.setIssuerModel(usersCombo.getValue());
+            return model;
+        }
+        return null;
     }
 
     @Override
     public void clearForm() {
-        // TODO clear form
+        usersCombo.clear();
     }
 
     @Override
@@ -182,7 +235,7 @@ public class Form200View implements Form200Presenter.Display {
     }
 
     @Override
-    public void setLoadMask(boolean mask) {
+    public void setUsersLoadMask(boolean mask) {
         if (mask) {
             usersCombo.mask(App.messages.loading());
         } else {
@@ -191,16 +244,156 @@ public class Form200View implements Form200Presenter.Display {
     }
 
     @Override
-    public List<CustomerAllergyModel> getCustomerAllergyModels() {
-        ArrayList<AllergyModel> allergyModels = (ArrayList<AllergyModel>) allergy.getData("data");
-        List<CustomerAllergyModel> customerAllergyModels = new ArrayList<CustomerAllergyModel>();
-
-        for (AllergyModel allergyModel : allergyModels) {
-            CustomerAllergyModel customerAllergyModel = new CustomerAllergyModel(allergyModel, usersCombo.getValue());
-            customerAllergyModels.add(customerAllergyModel);
+    public void setCompaniesLoadMask(boolean mask) {
+        if (mask) {
+            insuranceCompany.mask(App.messages.loading());
+        } else {
+            insuranceCompany.unmask();
         }
+    }
 
-        return customerAllergyModels;
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<CustomerAllergyModel> getCustomerAllergyModels() {
+        if (allergy.getData("data") != null) {
+            ArrayList<AllergyModel> allergyModels = (ArrayList<AllergyModel>) allergy.getData("data");
+            List<CustomerAllergyModel> customerAllergyModels = new ArrayList<CustomerAllergyModel>();
+
+            for (AllergyModel allergyModel : allergyModels) {
+                CustomerAllergyModel customerAllergyModel = new CustomerAllergyModel(allergyModel, usersCombo.getValue());
+                customerAllergyModels.add(customerAllergyModel);
+            }
+
+            return customerAllergyModels.isEmpty() ? null : customerAllergyModels;
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void addSurgery(boolean clear, CustomerSurgeryModel model) {
+        if (clear) {
+            surgery.setValue(null);
+            surgery.setData("data", null);
+        } else {
+            ArrayList<CustomerSurgeryModel> customerSurgeryModels = new ArrayList<CustomerSurgeryModel>();
+            Object data = surgery.getData("data");
+            if (data == null) {
+                model.setCustomerModel(usersCombo.getValue());
+                customerSurgeryModels.add(model);
+                surgery.setData("data", customerSurgeryModels);
+            } else {
+                customerSurgeryModels = (ArrayList<CustomerSurgeryModel>) data;
+                if (!customerSurgeryModels.contains(model)) {
+                    model.setCustomerModel(usersCombo.getValue());
+                    customerSurgeryModels.add(model);
+                    surgery.setData("data", customerSurgeryModels);
+                }
+            }
+            // update field value
+            String value = "";
+            for (CustomerSurgeryModel customerSurgeryModel : customerSurgeryModels) {
+                value = value.concat(customerSurgeryModel.getSurgeryModel().getSurgeryName() + " - " + customerSurgeryModel.getComment()).concat(", ");
+            }
+            surgery.setValue(value.substring(0, value.length() - 2));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<CustomerSurgeryModel> getCustomerSurgeryModels() {
+        return (ArrayList<CustomerSurgeryModel>) surgery.getData("data");
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void addInfectionDisease(boolean clear, CustomerDiseaseModel model) {
+        if (clear) {
+            infectionDiseases.setValue(null);
+            infectionDiseases.setData("data", null);
+        } else {
+            ArrayList<CustomerDiseaseModel> customerDiseaseModels = new ArrayList<CustomerDiseaseModel>();
+            Object data = infectionDiseases.getData("data");
+            if (data == null) {
+                model.setCustomerModel(usersCombo.getValue());
+                customerDiseaseModels.add(model);
+                infectionDiseases.setData("data", customerDiseaseModels);
+            } else {
+                customerDiseaseModels = (ArrayList<CustomerDiseaseModel>) data;
+                if (!customerDiseaseModels.contains(model)) {
+                    model.setCustomerModel(usersCombo.getValue());
+                    customerDiseaseModels.add(model);
+                    infectionDiseases.setData("data", customerDiseaseModels);
+                }
+            }
+            // update field value
+            String value = "";
+            for (CustomerDiseaseModel customerDiseasesModel : customerDiseaseModels) {
+                value = value.concat(customerDiseasesModel.getDiseaseModel().getName()).concat(", ");
+            }
+            infectionDiseases.setValue(value.substring(0, value.length() - 2));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void addChronicDisease(boolean clear, CustomerDiseaseModel model) {
+        if (clear) {
+            chronicDiseases.setValue(null);
+            chronicDiseases.setData("data", null);
+        } else {
+            ArrayList<CustomerDiseaseModel> customerDiseaseModels = new ArrayList<CustomerDiseaseModel>();
+            Object data = chronicDiseases.getData("data");
+            if (data == null) {
+                model.setCustomerModel(usersCombo.getValue());
+                customerDiseaseModels.add(model);
+                chronicDiseases.setData("data", customerDiseaseModels);
+            } else {
+                customerDiseaseModels = (ArrayList<CustomerDiseaseModel>) data;
+                if (!customerDiseaseModels.contains(model)) {
+                    model.setCustomerModel(usersCombo.getValue());
+                    customerDiseaseModels.add(model);
+                    chronicDiseases.setData("data", customerDiseaseModels);
+                }
+            }
+            // update field value
+            String value = "";
+            for (CustomerDiseaseModel customerDiseasesModel : customerDiseaseModels) {
+                value = value.concat(customerDiseasesModel.getDiseaseModel().getName()).concat(", ");
+            }
+            chronicDiseases.setValue(value.substring(0, value.length() - 2));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<CustomerDiseaseModel> getCustomerDiseases() {
+        ArrayList<CustomerDiseaseModel> infDiseases = (ArrayList<CustomerDiseaseModel>) infectionDiseases.getData("data");
+        ArrayList<CustomerDiseaseModel> chrDiseases = (ArrayList<CustomerDiseaseModel>) chronicDiseases.getData("data");
+
+        List<CustomerDiseaseModel> diseases = new ArrayList<CustomerDiseaseModel>();
+        if (infDiseases != null) {
+            diseases.addAll(infDiseases);
+        }
+        if (chrDiseases != null) {
+            diseases.addAll(chrDiseases);
+        }
+        return diseases.isEmpty() ? null : diseases;
+    }
+
+    @Override
+    public PoliceModel getPoliceModel() {
+        insuranceCompany.finishEditing();
+        policeNumber.finishEditing();
+
+        if (insuranceCompany.getValue() != null && (policeNumber.getValue() != null && !policeNumber.getValue().trim().equals(""))) {
+            PoliceModel model = new PoliceModel();
+            model.setPoliceNumber(policeNumber.getValue());
+            model.setCustomerModel(usersCombo.getValue());
+            model.setInsuranceCompanyModel(insuranceCompany.getValue());
+            return model;
+        }
+        return null;
     }
 
     private void createForm() {
@@ -243,8 +436,8 @@ public class Form200View implements Form200Presenter.Display {
                 birthDate.setValue(userModel.getBirthDate());
                 pn.setValue(userModel.getPn());
                 professionAndJob.setValue(userModel.getProfessionAndJob());
-                bloodGroup.setValue(userModel.getBloodGroup().toString());
-                rhFactory.setValue(userModel.getRhFactory() == null ? "" : userModel.getRhFactory().toString());
+                bloodGroup.setValue(userModel.getBloodGroup() == null ? null : userModel.getBloodGroup().toString());
+                rhFactory.setValue(userModel.getRhFactory() == null ? null : userModel.getRhFactory().toString());
             }
         });
         usersCombo.setAllowBlank(true);

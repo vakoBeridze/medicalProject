@@ -1,10 +1,7 @@
 package ge.tsu.client.service;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import ge.tsu.shared.AllergyModel;
-import ge.tsu.shared.BloodTransfusionModel;
-import ge.tsu.shared.CustomerAllergyModel;
-import ge.tsu.shared.UserModel;
+import ge.tsu.shared.*;
 
 import java.util.List;
 
@@ -24,7 +21,13 @@ public interface AppServiceAsync {
 
     void loadCurrentUser(AsyncCallback<UserModel> asyncCallback);
 
-    void saveForm200a(BloodTransfusionModel transfusionModel, List<CustomerAllergyModel> customerAllergyModels, AsyncCallback<Void> asyncCallback);
+    void saveForm200a(BloodTransfusionModel transfusionModel, List<CustomerAllergyModel> customerAllergyModels, List<CustomerSurgeryModel> customerSurgeryModels, List<CustomerDiseaseModel> customerDiseaseModels, PoliceModel policeModel, AsyncCallback<Void> asyncCallback);
 
     void loadAllergies(AsyncCallback<List<AllergyModel>> asyncCallback);
+
+    void loadSurgeries(AsyncCallback<List<SurgeryModel>> asyncCallback);
+
+    void loadDiseases(boolean chronicDisease, AsyncCallback<List<DiseaseModel>> asyncCallback);
+
+    void loadInsuranceCompanies(AsyncCallback<List<InsuranceCompanyModel>> asyncCallback);
 }

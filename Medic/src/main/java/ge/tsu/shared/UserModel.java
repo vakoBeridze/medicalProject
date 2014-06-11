@@ -1,12 +1,14 @@
 package ge.tsu.shared;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by vako on 29/05/14.
  */
-public class UserModel implements Serializable {
+public class UserModel implements IsSerializable, Serializable {
 
     private long id;
     private String pn;

@@ -1,56 +1,25 @@
-/**
- *
- */
-package ge.tsu.server.entities.medwork;
+package ge.tsu.shared;
 
-import ge.tsu.server.entities.Doctor;
-import ge.tsu.server.entities.Person;
-import ge.tsu.server.entities.meddocs.CustomerVisit;
-import ge.tsu.server.entities.medfacts.Disease;
 
-import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author vamekh
- *         აქ ფიქსირდება რა დაავადებები შემთხვევია როდესმე პაციენტს
+ * Created by vako on 11/06/14.
  */
+public class CustomerDiseaseModel implements Serializable {
 
-@Entity
-@Table(name = "CUSTOMER_DISEASES")
-public class CustomerDisease {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer_id")
-    private Person customer;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "disease_id")
-    private Disease disease;
-
+    private long id;
+    private UserModel customerModel;
+    private DiseaseModel diseaseModel;
     //სიმწვავე(მსუბუქი, ქრონიკული, მწვავე, ქვემწვავე)
     private Integer diseaseStrength;
-
     private Boolean isInfection;
-
     private Boolean isGenetic;
 
-    @Temporal(value = TemporalType.DATE)
     private Date detectionDate;
-
-    @Temporal(value = TemporalType.DATE)
     private Date cureDate;
-
-    @Temporal(value = TemporalType.DATE)
     private Date justificationDate;
-
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "previous_diagnose_id")
-    private CustomerDisease previousDiagnose;
 
     private Boolean isFinalDiagnose;
     private Boolean isPreDiagnose;
@@ -58,37 +27,34 @@ public class CustomerDisease {
     //ამისთვის განსაზღვრულია enum-ი.
     private Integer diagnoseState;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
+    // TODO add previousDiagnose,  doctor, visit
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer_visit_id")
-    private CustomerVisit visit;
+    public CustomerDiseaseModel() {
+    }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Person getCustomer() {
-        return customer;
+    public UserModel getCustomerModel() {
+        return customerModel;
     }
 
-    public void setCustomer(Person customer) {
-        this.customer = customer;
+    public void setCustomerModel(UserModel customerModel) {
+        this.customerModel = customerModel;
     }
 
-    public Disease getDisease() {
-        return disease;
+    public DiseaseModel getDiseaseModel() {
+        return diseaseModel;
     }
 
-    public void setDisease(Disease disease) {
-        this.disease = disease;
+    public void setDiseaseModel(DiseaseModel diseaseModel) {
+        this.diseaseModel = diseaseModel;
     }
 
     public Integer getDiseaseStrength() {
@@ -139,14 +105,6 @@ public class CustomerDisease {
         this.justificationDate = justificationDate;
     }
 
-    public CustomerDisease getPreviousDiagnose() {
-        return previousDiagnose;
-    }
-
-    public void setPreviousDiagnose(CustomerDisease previousDiagnose) {
-        this.previousDiagnose = previousDiagnose;
-    }
-
     public Boolean getIsFinalDiagnose() {
         return isFinalDiagnose;
     }
@@ -171,19 +129,20 @@ public class CustomerDisease {
         this.diagnoseState = diagnoseState;
     }
 
-    public Doctor getDoctor() {
-        return doctor;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CustomerDiseaseModel that = (CustomerDiseaseModel) o;
+
+        if (diseaseModel != null ? !diseaseModel.equals(that.diseaseModel) : that.diseaseModel != null) return false;
+
+        return true;
     }
 
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
-    public CustomerVisit getVisit() {
-        return visit;
-    }
-
-    public void setVisit(CustomerVisit visit) {
-        this.visit = visit;
+    @Override
+    public int hashCode() {
+        return diseaseModel != null ? diseaseModel.hashCode() : 0;
     }
 }

@@ -20,7 +20,7 @@ public class Chooser {
 
     public Chooser() {
         window = new Window();
-        window.setPixelSize(400, 250);
+        window.setPixelSize(430, 250);
         window.setModal(true);
         window.setBlinkModal(true);
 

@@ -8,11 +8,10 @@ import com.sencha.gxt.widget.core.client.info.Info;
 import ge.tsu.client.App;
 import ge.tsu.client.chooser.AllergyChooser;
 import ge.tsu.client.chooser.BloodTransfusionChooser;
+import ge.tsu.client.chooser.DiseaseChooser;
+import ge.tsu.client.chooser.SurgeryChooser;
 import ge.tsu.client.service.AppService;
-import ge.tsu.shared.AllergyModel;
-import ge.tsu.shared.BloodTransfusionModel;
-import ge.tsu.shared.CustomerAllergyModel;
-import ge.tsu.shared.UserModel;
+import ge.tsu.shared.*;
 
 import java.util.Date;
 import java.util.List;
@@ -61,11 +60,35 @@ public class Form200Presenter implements Presenter {
                 chooser.loadData();
             }
         });
+
+        display.getSurgery().addFocusHandler(new FocusEvent.FocusHandler() {
+            @Override
+            public void onFocus(FocusEvent focusEvent) {
+                SurgeryChooser chooser = new SurgeryChooser(display);
+                chooser.loadData();
+            }
+        });
+
+        display.getInfectionDiseases().addFocusHandler(new FocusEvent.FocusHandler() {
+            @Override
+            public void onFocus(FocusEvent focusEvent) {
+                DiseaseChooser chooser = new DiseaseChooser(display, false);
+                chooser.loadData();
+            }
+        });
+
+        display.getChronicDiseases().addFocusHandler(new FocusEvent.FocusHandler() {
+            @Override
+            public void onFocus(FocusEvent focusEvent) {
+                DiseaseChooser chooser = new DiseaseChooser(display, true);
+                chooser.loadData();
+            }
+        });
     }
 
     private void doSave() {
         display.setSavingMask(true);
-        AppService.Util.getInstance().saveForm200a(display.getBloodTransfusionModel(), display.getCustomerAllergyModels(), new AsyncCallback<Void>() {
+        AppService.Util.getInstance().saveForm200a(display.getBloodTransfusionModel(), display.getCustomerAllergyModels(), display.getCustomerSurgeryModels(), display.getCustomerDiseases(), display.getPoliceModel(), new AsyncCallback<Void>() {
             @Override
             public void onFailure(Throwable throwable) {
                 App.logError(throwable);
@@ -74,7 +97,7 @@ public class Form200Presenter implements Presenter {
 
             @Override
             public void onSuccess(Void aVoid) {
-                Info.display("Success", "blood transfusion saved");
+                Info.display("Success", "saveForm200a saved");
                 display.setSavingMask(false);
                 display.clearForm();
             }
@@ -82,20 +105,36 @@ public class Form200Presenter implements Presenter {
     }
 
     private void initData() {
-        display.setLoadMask(true);
+        display.setUsersLoadMask(true);
         AppService.Util.getInstance().loadUsers(new AsyncCallback<List<UserModel>>() {
             @Override
             public void onFailure(Throwable throwable) {
-                display.setLoadMask(false);
+                display.setUsersLoadMask(false);
                 App.logError(throwable);
             }
 
             @Override
             public void onSuccess(List<UserModel> userModels) {
-                display.setLoadMask(false);
+                display.setUsersLoadMask(false);
                 display.setComboData(userModels);
             }
         });
+
+        display.setCompaniesLoadMask(true);
+        AppService.Util.getInstance().loadInsuranceCompanies(new AsyncCallback<List<InsuranceCompanyModel>>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                display.setCompaniesLoadMask(false);
+                App.logError(throwable);
+            }
+
+            @Override
+            public void onSuccess(List<InsuranceCompanyModel> insuranceCompanyModels) {
+                display.setCompaniesLoadMask(false);
+                display.setInsuranceCompaniesData(insuranceCompanyModels);
+            }
+        });
+
     }
 
     public interface Display {
@@ -103,13 +142,23 @@ public class Form200Presenter implements Presenter {
 
         void setComboData(List<UserModel> userModels);
 
+        void setInsuranceCompaniesData(List<InsuranceCompanyModel> insuranceCompanyModels);
+
         SelectEvent.HasSelectHandlers getSaveButton();
 
         FocusEvent.HasFocusHandlers getBloodTransfusion();
 
         FocusEvent.HasFocusHandlers getAllergy();
 
+        FocusEvent.HasFocusHandlers getSurgery();
+
+        FocusEvent.HasFocusHandlers getInfectionDiseases();
+
+        FocusEvent.HasFocusHandlers getChronicDiseases();
+
         void setBloodTransfusion(Date transfusionDate, String bloodVolume, String comment);
+
+        void clearBloodTransfusion();
 
         Date getBloodTransfusionDate();
 
@@ -125,8 +174,22 @@ public class Form200Presenter implements Presenter {
 
         void setSavingMask(boolean mask);
 
-        void setLoadMask(boolean mask);
+        void setUsersLoadMask(boolean mask);
+
+        void setCompaniesLoadMask(boolean mask);
 
         List<CustomerAllergyModel> getCustomerAllergyModels();
+
+        void addSurgery(boolean clear, CustomerSurgeryModel model);
+
+        List<CustomerSurgeryModel> getCustomerSurgeryModels();
+
+        void addInfectionDisease(boolean clear, CustomerDiseaseModel model);
+
+        void addChronicDisease(boolean clear, CustomerDiseaseModel model);
+
+        List<CustomerDiseaseModel> getCustomerDiseases();
+
+        PoliceModel getPoliceModel();
     }
 }

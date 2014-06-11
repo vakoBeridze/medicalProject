@@ -186,7 +186,6 @@ public class UserManagerView implements UserManagerPresenter.Display {
         addButton.setMenu(createMenu());
         editButton = new TextButton(App.messages.edit(), Images.INSTANCE.editUser());
         deleteButton = new TextButton(App.messages.delete(), Images.INSTANCE.deleteUser());
-        yesDeleteButton = new TextButton();
 
         deleteButton.addSelectHandler(new SelectEvent.SelectHandler() {
 

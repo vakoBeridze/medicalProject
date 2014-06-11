@@ -1,14 +1,17 @@
 package ge.tsu.server.util;
 
 import ge.tsu.server.entities.Doctor;
+import ge.tsu.server.entities.InsuranceCompany;
 import ge.tsu.server.entities.Person;
+import ge.tsu.server.entities.Police;
 import ge.tsu.server.entities.medfacts.Allergy;
+import ge.tsu.server.entities.medfacts.Disease;
+import ge.tsu.server.entities.medfacts.Surgery;
 import ge.tsu.server.entities.medwork.BloodTransfusion;
 import ge.tsu.server.entities.medwork.CustomerAllergy;
-import ge.tsu.shared.AllergyModel;
-import ge.tsu.shared.BloodTransfusionModel;
-import ge.tsu.shared.CustomerAllergyModel;
-import ge.tsu.shared.UserModel;
+import ge.tsu.server.entities.medwork.CustomerDisease;
+import ge.tsu.server.entities.medwork.CustomerSurgery;
+import ge.tsu.shared.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,9 @@ public class ModelToEntityHelper {
     private ModelHelper<UserModel, Person> personModelHelper = new ModelHelper<UserModel, Person>();
     private ModelHelper<AllergyModel, Allergy> allergyModelHelper = new ModelHelper<AllergyModel, Allergy>();
     private ModelHelper<BloodTransfusionModel, BloodTransfusion> bloodModelHelper = new ModelHelper<BloodTransfusionModel, BloodTransfusion>();
+    private ModelHelper<CustomerDiseaseModel, CustomerDisease> customerDiseaseModelHelper = new ModelHelper<CustomerDiseaseModel, CustomerDisease>();
+    private ModelHelper<DiseaseModel, Disease> diseaseModelHelper = new ModelHelper<DiseaseModel, Disease>();
+    private ModelHelper<PoliceModel, Police> policeModelHelper = new ModelHelper<PoliceModel, Police>();
 
 
     public Person userModelToPerson(UserModel model) {
@@ -98,5 +104,57 @@ public class ModelToEntityHelper {
         }
 
         return customerAllergies;
+    }
+
+    public List<CustomerSurgery> customerSurgeryModelsToEntities(List<CustomerSurgeryModel> customerSurgeryModels) {
+
+        List<CustomerSurgery> customerSurgeries = new ArrayList<CustomerSurgery>();
+        for (CustomerSurgeryModel model : customerSurgeryModels) {
+            CustomerSurgery surgery = new CustomerSurgery();
+            surgery.setId(model.getId());
+            surgery.setBeginningDate(model.getBeginningDate());
+            surgery.setEndDate(model.getEndDate());
+            surgery.setComment(model.getComment());
+            surgery.setCustomer(userModelToPerson(model.getCustomerModel()));
+            surgery.setSurgery(surgeryModelToEntity(model.getSurgeryModel()));
+            customerSurgeries.add(surgery);
+        }
+
+        return customerSurgeries;
+    }
+
+    private Surgery surgeryModelToEntity(SurgeryModel model) {
+        Surgery surgery = new Surgery();
+        surgery.setId(model.getId());
+        surgery.setSurgeryName(model.getSurgeryName());
+        return surgery;
+    }
+
+    public List<CustomerDisease> customerDiseaseModelsToEntities(List<CustomerDiseaseModel> customerDiseaseModels) {
+        List<CustomerDisease> customerDiseases = new ArrayList<CustomerDisease>();
+        for (CustomerDiseaseModel model : customerDiseaseModels) {
+            CustomerDisease disease = new CustomerDisease();
+            customerDiseaseModelHelper.toEntity(model, disease);
+            disease.setCustomer(userModelToPerson(model.getCustomerModel()));
+            disease.setDisease(diseaseModelToEntity(model.getDiseaseModel()));
+            customerDiseases.add(disease);
+        }
+        return customerDiseases;
+    }
+
+    private Disease diseaseModelToEntity(DiseaseModel diseaseModel) {
+        return diseaseModelHelper.toEntity(diseaseModel, new Disease());
+    }
+
+    public Police policeModelToEntity(PoliceModel model) {
+        Police police = new Police();
+        policeModelHelper.toEntity(model, police);
+        police.setCompany(insuranceCompanyModelToEntity(model.getInsuranceCompanyModel()));
+        police.setCustomer(userModelToPerson(model.getCustomerModel()));
+        return police;
+    }
+
+    private InsuranceCompany insuranceCompanyModelToEntity(InsuranceCompanyModel model) {
+        return new InsuranceCompany(model.getId(), model.getName());
     }
 }

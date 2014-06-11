@@ -13,6 +13,11 @@ public class InsuranceCompanyModel implements Serializable {
     public InsuranceCompanyModel() {
     }
 
+    public InsuranceCompanyModel(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public long getId() {
         return id;
     }
