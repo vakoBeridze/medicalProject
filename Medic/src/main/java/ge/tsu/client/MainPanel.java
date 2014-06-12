@@ -1,8 +1,10 @@
 package ge.tsu.client;
 
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.util.Margins;
@@ -14,11 +16,15 @@ import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.*;
 import com.sencha.gxt.widget.core.client.event.CloseEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.menu.Item;
+import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import ge.tsu.client.images.Images;
+import ge.tsu.client.presenter.PasswordChangePresenter;
 import ge.tsu.client.service.AppService;
 import ge.tsu.client.view.MenuView;
+import ge.tsu.client.view.PasswordChangeView;
 
 import java.util.Map;
 
@@ -79,9 +85,13 @@ public class MainPanel extends BorderLayoutContainer {
             }
         });
 
-        CenterLayoutContainer center = new CenterLayoutContainer();
-        center.add(new Image(Images.INSTANCE.logo()));
-        tabPanel.add(center, new TabItemConfig(App.messages.home(), false));
+//        CenterLayoutContainer center = new CenterLayoutContainer();
+
+        HTMLPanel htmlPanel = new HTMLPanel(Images.INSTANCE.about().getText());
+//        center.add(htmlPanel, new MarginData(new Margins(5)));
+
+
+        tabPanel.add(htmlPanel, new TabItemConfig(App.messages.home(), false));
         return tabPanel;
     }
 
@@ -93,32 +103,54 @@ public class MainPanel extends BorderLayoutContainer {
         toolBar.add(title);
 
         toolBar.add(new FillToolItem());
-
-        String displayName = App.currentUser.getFirstName() + " " + App.currentUser.getLastName() + " (" + App.currentUser.getEmail() + ") ";
-        HtmlLayoutContainer user = new HtmlLayoutContainer("<font size='2' color='black'> " + displayName + " </font>");
-        toolBar.add(user);
-
-/*
-TODO
-        final TextButton changeLanguage = new TextButton(App.messages.changeLanguage());
-        changeLanguage.addSelectHandler(new SelectEvent.SelectHandler() {
+        TextButton changeLanguageButton = new TextButton(App.messages.languageName().equals("English") ? "ქართული" : "English", App.messages.languageName().equals("English") ? Images.INSTANCE.geFlag() : Images.INSTANCE.engFlag());
+        changeLanguageButton.addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
             public void onSelect(SelectEvent selectEvent) {
-                changeLanguage();
+                if (App.messages.languageName().equals("English")) {
+                    Window.open(com.google.gwt.core.client.GWT.getHostPageBaseURL() + "App.html?locale=ka", "_self", "");
+                } else {
+                    Window.open(com.google.gwt.core.client.GWT.getHostPageBaseURL(), "_self", "");
+                }
             }
         });
-        toolBar.add(changeLanguage);
+        toolBar.add(changeLanguageButton);
 
-*/
+        String displayName = App.currentUser.getFirstName() + " " + App.currentUser.getLastName();// + " (" + App.currentUser.getEmail() + ") ";
+//        HtmlLayoutContainer user = new HtmlLayoutContainer("<font size='2' color='black'> " + displayName + " </font>");
+//        toolBar.add(user);
 
-        final TextButton logout = new TextButton(App.messages.logout());
-        logout.addSelectHandler(new SelectEvent.SelectHandler() {
-            public void onSelect(SelectEvent selectEvent) {
+        final TextButton userButton = new TextButton(displayName, Images.INSTANCE.user());
+        userButton.setMenu(createMenu());
+        toolBar.add(userButton);
+
+        return toolBar;
+    }
+
+    private com.sencha.gxt.widget.core.client.menu.Menu createMenu() {
+        com.sencha.gxt.widget.core.client.menu.Menu menu = new com.sencha.gxt.widget.core.client.menu.Menu();
+
+
+        MenuItem changePasswordMenu = new MenuItem(App.messages.changePassword(), Images.INSTANCE.changePassword());
+        changePasswordMenu.addSelectionHandler(new SelectionHandler<Item>() {
+            @Override
+            public void onSelection(SelectionEvent<Item> itemSelectionEvent) {
+                PasswordChangePresenter presenter = new PasswordChangePresenter(new PasswordChangeView());
+                presenter.go();
+            }
+        });
+
+        MenuItem logoutMenu = new MenuItem(App.messages.logout(), Images.INSTANCE.logout());
+        logoutMenu.addSelectionHandler(new SelectionHandler<Item>() {
+            @Override
+            public void onSelection(SelectionEvent<Item> itemSelectionEvent) {
                 logout();
             }
         });
-        toolBar.add(logout);
 
-        return toolBar;
+        menu.add(changePasswordMenu);
+        menu.add(logoutMenu);
+        return menu;
     }
 
     private void logout() {

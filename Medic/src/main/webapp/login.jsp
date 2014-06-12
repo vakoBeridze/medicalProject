@@ -14,8 +14,8 @@
 							<tr>
 								<td align="center" width="100%"><img border="0"
 									alt="Company's LOGO"
-									src="<%=request.getContextPath()%>\images\logo.png"></td>
-							</tr>
+                                    src="<%=request.getContextPath()%>\images\medic.jpg"></td>
+                            </tr>
 						</tbody>
 					</table>
 				</td>
@@ -27,11 +27,6 @@
 						<table align="center" border="0" cellspacing="5" cellpadding="10"
 							width="100%">
 							<tbody>
-								<tr valign="center">
-									<td colspan="2" align="center"><h3>Enter User Name
-											and Password</h3></td>
-								</tr>
-
 								<tr valign="top">
 									<td width="50%" align="right"><label id="login">Login</label></td>
 									<td width="50%" align="left"><input name="j_username"
@@ -63,8 +58,8 @@
 			</tr>
 
 			<tr>
-				<td align="center" colspan="2" height="150"></td>
-			</tr>
+                <td align="center" colspan="2" height="100"></td>
+            </tr>
 			<tr>
 				<td align="center">
 					<table width="300px" cellspacing="0" cellpadding="0" border="0">

@@ -180,4 +180,16 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
     String police();
 
     String detailsInfo();
+
+    String languageName();
+
+    String changePassword();
+
+    String newPassword();
+
+    String confirmPassword();
+
+    String success();
+
+    String passwordChanged();
 }

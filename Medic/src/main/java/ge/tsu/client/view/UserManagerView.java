@@ -42,16 +42,38 @@ import java.util.List;
  */
 public class UserManagerView implements UserManagerPresenter.Display {
 
+    private static final UserModelProperties props = GWT.create(UserModelProperties.class);
+
     private ContentPanel bloodTransfusionCP;
     private ContentPanel allergyCP;
-    private ContentPanel surgeryCP;
+    private ContentPanel customerSurgeryCP;
     private ContentPanel diseaseCP;
     private ContentPanel policeCP;
+
     private Grid<BloodTransfusionModel> bloodGrid;
     private Grid<CustomerAllergyModel> allergyGrid;
-    private Grid<CustomerSurgeryModel> surgeryGrid;
+    private Grid<CustomerSurgeryModel> customerSurgeryGrid;
     private Grid<CustomerDiseaseModel> diseaseGrid;
     private Grid<PoliceModel> policeGrid;
+
+    private List<UserModel> allGridItems;
+    private MenuItem addDoctorButton;
+    private MenuItem addPatientButton;
+    private TextButton addButton;
+    private TextButton editButton;
+    private TextButton deleteButton;
+    private TextButton yesDeleteButton;
+    private Grid<UserModel> grid;
+    // filter
+    private TextField idFilter;
+    private TextField firstNameFilter;
+    private TextField lastNameFilter;
+    private TextField emailFilter;
+    private TextField sexFilter;
+    private TextField birthDayFilter;
+    private TextField phoneFilter;
+    private TextField bloodGroupFilter;
+    private TextButton gridFilterButton;
 
     @Override
     public Widget asWidget() {
@@ -60,9 +82,9 @@ public class UserManagerView implements UserManagerPresenter.Display {
 
         BorderLayoutContainer.BorderLayoutData eastData = new BorderLayoutContainer.BorderLayoutData(.2);
         eastData.setMargins(new Margins(5, 0, 0, 5));
-//        eastData.setSplit(true);
-        eastData.setCollapsible(false);
-        eastData.setCollapseMini(false);
+        eastData.setSplit(true);
+        eastData.setCollapsible(true);
+        eastData.setCollapseMini(true);
 
         ContentPanel east = new ContentPanel();
         east.setHeaderVisible(false);
@@ -130,7 +152,6 @@ public class UserManagerView implements UserManagerPresenter.Display {
         return filterTollBar;
     }
 
-
     @Override
     public SelectEvent.HasSelectHandlers getEditButton() {
         return editButton;
@@ -193,10 +214,10 @@ public class UserManagerView implements UserManagerPresenter.Display {
         addPatientButton = new MenuItem(App.messages.addPatient(), Images.INSTANCE.addPatient());
 
         yesDeleteButton = new TextButton();
-        addButton = new TextButton(App.messages.add(), Images.INSTANCE.addUser());
+        addButton = new TextButton(App.messages.add(), Images.INSTANCE.add());
         addButton.setMenu(createMenu());
-        editButton = new TextButton(App.messages.edit(), Images.INSTANCE.editUser());
-        deleteButton = new TextButton(App.messages.delete(), Images.INSTANCE.deleteUser());
+        editButton = new TextButton(App.messages.edit(), Images.INSTANCE.edit());
+        deleteButton = new TextButton(App.messages.delete(), Images.INSTANCE.delete());
 
         deleteButton.addSelectHandler(new SelectEvent.SelectHandler() {
 
@@ -225,7 +246,9 @@ public class UserManagerView implements UserManagerPresenter.Display {
 
     private Widget initDetailsInfo() {
         ContentPanel detailsPanel = new ContentPanel();
+        detailsPanel.setBodyBorder(false);
         detailsPanel.setHeadingText(App.messages.detailsInfo());
+        detailsPanel.getHeader().setIcon(Images.INSTANCE.info());
 
         AccordionLayoutContainer con = new AccordionLayoutContainer();
         con.setExpandMode(AccordionLayoutContainer.ExpandMode.SINGLE_FILL);
@@ -255,16 +278,15 @@ public class UserManagerView implements UserManagerPresenter.Display {
         }.getGrid();
         allergyCP.add(allergyGrid);
 
-        surgeryCP = new ContentPanel(appearance);
-        surgeryCP.setAnimCollapse(false);
-        con.add(surgeryCP);
-        surgeryGrid = new CustomGrid<CustomerSurgeryModel>() {
+        customerSurgeryCP = new ContentPanel(appearance);
+        con.add(customerSurgeryCP);
+        customerSurgeryGrid = new CustomGrid<CustomerSurgeryModel>() {
             @Override
             protected String getCustomValue(CustomerSurgeryModel model) {
-                return DateTimeFormat.getFormat("dd.MM.yyyy").format(model.getBeginningDate()) + " / " + model.getSurgeryModel().getSurgeryName() + " / " + model.getComment();
+                return model.getSurgeryModel().getSurgeryName();
             }
         }.getGrid();
-        surgeryCP.addButton(surgeryGrid);
+        customerSurgeryCP.add(customerSurgeryGrid);
 
         diseaseCP = new ContentPanel(appearance);
         diseaseCP.setAnimCollapse(false);
@@ -276,6 +298,7 @@ public class UserManagerView implements UserManagerPresenter.Display {
             }
         }.getGrid();
         diseaseCP.add(diseaseGrid);
+
 
         policeCP = new ContentPanel(appearance);
         policeCP.setAnimCollapse(false);
@@ -353,7 +376,6 @@ public class UserManagerView implements UserManagerPresenter.Display {
         grid.setColumnReordering(true);
     }
 
-
     @Override
     public void filter() {
         idFilter.finishEditing();
@@ -396,7 +418,6 @@ public class UserManagerView implements UserManagerPresenter.Display {
         return addDoctorButton;
     }
 
-
     @Override
     public HasSelectionHandlers<Item> getAddPatientButton() {
         return addPatientButton;
@@ -426,8 +447,8 @@ public class UserManagerView implements UserManagerPresenter.Display {
         allergyCP.setHeadingText(App.messages.allergy() + ": " + userModel.getCustomerAllergyModels().size());
         allergyGrid.getStore().addAll(userModel.getCustomerAllergyModels());
 
-        surgeryCP.setHeadingText(App.messages.surgery() + ": " + userModel.getCustomerSurgeryModels().size());
-        surgeryGrid.getStore().addAll(userModel.getCustomerSurgeryModels());
+        customerSurgeryCP.setHeadingText(App.messages.surgery() + ": " + userModel.getCustomerSurgeryModels().size());
+        customerSurgeryGrid.getStore().addAll(userModel.getCustomerSurgeryModels());
 
         diseaseCP.setHeadingText(App.messages.disease() + ": " + userModel.getCustomerDiseaseModels().size());
         diseaseGrid.getStore().addAll(userModel.getCustomerDiseaseModels());
@@ -440,39 +461,15 @@ public class UserManagerView implements UserManagerPresenter.Display {
     public void clearDetails() {
         bloodGrid.getStore().clear();
         allergyGrid.getStore().clear();
-        surgeryGrid.getStore().clear();
+        customerSurgeryGrid.getStore().clear();
         diseaseGrid.getStore().clear();
         policeGrid.getStore().clear();
 
         bloodTransfusionCP.setHeadingText(App.messages.bloodTransfusion());
         allergyCP.setHeadingText(App.messages.allergy());
-        surgeryCP.setHeadingText(App.messages.surgery());
+        customerSurgeryCP.setHeadingText(App.messages.surgery());
         diseaseCP.setHeadingText(App.messages.disease());
         policeCP.setHeadingText(App.messages.police());
     }
-
-    private List<UserModel> allGridItems;
-
-    private static final UserModelProperties props = GWT.create(UserModelProperties.class);
-
-    private MenuItem addDoctorButton;
-    private MenuItem addPatientButton;
-
-    private TextButton addButton;
-    private TextButton editButton;
-    private TextButton deleteButton;
-    private TextButton yesDeleteButton;
-    private Grid<UserModel> grid;
-
-    // filter
-    private TextField idFilter;
-    private TextField firstNameFilter;
-    private TextField lastNameFilter;
-    private TextField emailFilter;
-    private TextField sexFilter;
-    private TextField birthDayFilter;
-    private TextField phoneFilter;
-    private TextField bloodGroupFilter;
-    private TextButton gridFilterButton;
 
 }

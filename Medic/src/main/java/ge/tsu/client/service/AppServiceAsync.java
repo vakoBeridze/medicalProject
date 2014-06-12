@@ -32,4 +32,6 @@ public interface AppServiceAsync {
     void loadInsuranceCompanies(AsyncCallback<List<InsuranceCompanyModel>> asyncCallback);
 
     void loadUser(UserModel userModel, AsyncCallback<UserModel> asyncCallback);
+
+    void changePassword(long currentUserId, String newPassword, AsyncCallback<Void> asyncCallback);
 }

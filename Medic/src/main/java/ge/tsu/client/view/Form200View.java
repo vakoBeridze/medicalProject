@@ -26,6 +26,7 @@ import com.sencha.gxt.widget.core.client.event.FocusEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.*;
 import ge.tsu.client.App;
+import ge.tsu.client.images.Images;
 import ge.tsu.client.presenter.Form200Presenter;
 import ge.tsu.shared.*;
 
@@ -82,7 +83,7 @@ public class Form200View implements Form200Presenter.Display {
 
     private void createButtons() {
 
-        saveButton = new TextButton(App.messages.save());
+        saveButton = new TextButton(App.messages.save(), Images.INSTANCE.save());
 
         yesSaveButton = new TextButton();
 
@@ -90,6 +91,8 @@ public class Form200View implements Form200Presenter.Display {
             @Override
             public void onSelect(final SelectEvent event) {
                 ConfirmMessageBox confirmMessageBox = new ConfirmMessageBox(App.messages.confirm(), App.messages.sureSave() + " " + App.messages.formMenu() + " 200 ?");
+                confirmMessageBox.getButton(Dialog.PredefinedButton.YES).setText(App.messages.yes());
+                confirmMessageBox.getButton(Dialog.PredefinedButton.NO).setText(App.messages.no());
                 confirmMessageBox.addDialogHideHandler(new DialogHideEvent.DialogHideHandler() {
                     @Override
                     public void onDialogHide(DialogHideEvent dialogHideEvent) {

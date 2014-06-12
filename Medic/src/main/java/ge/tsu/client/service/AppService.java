@@ -39,6 +39,8 @@ public interface AppService extends RemoteService {
 
     UserModel loadUser(UserModel userModel);
 
+    void changePassword(long currentUserId, String newPassword);
+
     /**
      * Utility class to get the RPC Async interface from client-side code
      */

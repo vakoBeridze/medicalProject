@@ -1,11 +1,14 @@
 package ge.tsu.client.view;
 
+import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.text.shared.SimpleSafeHtmlRenderer;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.cell.core.client.SimpleSafeHtmlCell;
 import com.sencha.gxt.core.client.Style;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.core.client.util.Margins;
@@ -61,6 +64,19 @@ public class MenuView extends Widget implements IsWidget {
         filter.bind(tree.getStore());
         filter.setEmptyText(App.messages.filter());
 
+        SimpleSafeHtmlCell<String> cell = new SimpleSafeHtmlCell<String>(SimpleSafeHtmlRenderer.getInstance(), "click") {
+            @Override
+            public void onBrowserEvent(Context context, Element parent, String value, NativeEvent event, ValueUpdater<String> valueUpdater) {
+                super.onBrowserEvent(context, parent, value, event, valueUpdater);
+                if ("click".equals(event.getType())) {
+                    MenuModel menu = tree.getSelectionModel().getSelectedItem();
+                    if (!menu.isRoot()) {
+                        Util.addTab(menu);
+                    }
+                }
+            }
+        };
+
         tree.getSelectionModel().setSelectionMode(Style.SelectionMode.SINGLE);
         tree.setIconProvider(new IconProvider<MenuModel>() {
             @Override
@@ -68,16 +84,7 @@ public class MenuView extends Widget implements IsWidget {
                 return Util.getMenuIcon(model);
             }
         });
-
-        tree.getSelectionModel().addSelectionHandler(new SelectionHandler<MenuModel>() {
-            @Override
-            public void onSelection(SelectionEvent<MenuModel> menuModelSelectionEvent) {
-                MenuModel menu = menuModelSelectionEvent.getSelectedItem();
-                if (!menu.isRoot()) {
-                    Util.addTab(menu);
-                }
-            }
-        });
+        tree.setCell(cell);
 
         ToolBar toolBar = new ToolBar();
         toolBar.add(filter, new BoxLayoutContainer.BoxLayoutData(new Margins(10)));

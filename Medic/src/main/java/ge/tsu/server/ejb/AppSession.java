@@ -146,4 +146,13 @@ public class AppSession implements AppLocal {
 
         return p;
     }
+
+    @Override
+    public void changePassword(long userId, String newPassword) {
+        Doctor doctor = em.find(Doctor.class, userId);
+        if (doctor != null) {
+            doctor.setPassword(newPassword);
+            em.merge(doctor);
+        }
+    }
 }

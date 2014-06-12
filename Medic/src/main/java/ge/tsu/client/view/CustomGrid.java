@@ -16,6 +16,7 @@ import java.util.List;
  */
 public abstract class CustomGrid<M> {
 
+    private static int INNER_ID = 1;
     private Grid<M> grid;
 
     public CustomGrid() {
@@ -45,7 +46,7 @@ public abstract class CustomGrid<M> {
         ListStore<M> store = new ListStore<M>(new ModelKeyProvider<M>() {
             @Override
             public String getKey(M m) {
-                return String.valueOf(m.hashCode());
+                return getModelKey();
             }
         });
 
@@ -57,6 +58,10 @@ public abstract class CustomGrid<M> {
         grid.getView().setStripeRows(true);
         grid.getView().setColumnLines(true);
         grid.setBorders(false);
+    }
+
+    private String getModelKey() {
+        return String.valueOf(INNER_ID++);
     }
 
     protected abstract String getCustomValue(M model);

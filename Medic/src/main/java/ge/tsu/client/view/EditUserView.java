@@ -14,6 +14,7 @@ import com.sencha.gxt.widget.core.client.form.validator.MaxDateValidator;
 import com.sencha.gxt.widget.core.client.form.validator.MinLengthValidator;
 import com.sencha.gxt.widget.core.client.info.Info;
 import ge.tsu.client.App;
+import ge.tsu.client.images.Images;
 import ge.tsu.client.presenter.EditUserPresenter;
 import ge.tsu.shared.UserModel;
 
@@ -62,7 +63,7 @@ public class EditUserView implements EditUserPresenter.Display {
 
         fillForm();
 
-        saveButton = new TextButton(App.messages.save());
+        saveButton = new TextButton(App.messages.save(), Images.INSTANCE.save());
         panel.addButton(saveButton);
 
         window.add(panel, new MarginData(10));
@@ -164,7 +165,7 @@ public class EditUserView implements EditUserPresenter.Display {
 
         if (this.userModel.isDoctor()) {
             password = new PasswordField();
-            vlc.add(new FieldLabel(password, App.messages.password()), layoutData);
+//            vlc.add(new FieldLabel(password, App.messages.password()), layoutData);
 
             license = new TextField();
             license.setAllowBlank(false);

@@ -51,4 +51,6 @@ public interface AppLocal {
     void savePolice(Police police);
 
     Person loadUser(long id, boolean doctor);
+
+    void changePassword(long userId, String newPassword);
 }

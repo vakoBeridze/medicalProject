@@ -141,4 +141,9 @@ public class AppServiceImpl extends RemoteServiceServlet implements AppService {
         UserModel user = entityToModelHelper.personToUserModelFull(p);
         return user;
     }
+
+    @Override
+    public void changePassword(long currentUserId, String newPassword) {
+        appLocal.changePassword(currentUserId, newPassword);
+    }
 }
