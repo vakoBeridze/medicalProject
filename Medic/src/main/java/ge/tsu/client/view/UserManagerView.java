@@ -2,10 +2,10 @@ package ge.tsu.client.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.text.shared.AbstractSafeHtmlRenderer;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.cell.core.client.SimpleSafeHtmlCell;
 import com.sencha.gxt.core.client.ValueProvider;
@@ -25,13 +25,13 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
+import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
 import com.sencha.gxt.widget.core.client.toolbar.SeparatorToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import ge.tsu.client.App;
 import ge.tsu.client.images.Images;
 import ge.tsu.client.presenter.UserManagerPresenter;
-import ge.tsu.shared.UserModel;
-import ge.tsu.shared.UserModelProperties;
+import ge.tsu.shared.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,6 +41,17 @@ import java.util.List;
  * Created by vako on 29/05/14.
  */
 public class UserManagerView implements UserManagerPresenter.Display {
+
+    private ContentPanel bloodTransfusionCP;
+    private ContentPanel allergyCP;
+    private ContentPanel surgeryCP;
+    private ContentPanel diseaseCP;
+    private ContentPanel policeCP;
+    private Grid<BloodTransfusionModel> bloodGrid;
+    private Grid<CustomerAllergyModel> allergyGrid;
+    private Grid<CustomerSurgeryModel> surgeryGrid;
+    private Grid<CustomerDiseaseModel> diseaseGrid;
+    private Grid<PoliceModel> policeGrid;
 
     @Override
     public Widget asWidget() {
@@ -213,10 +224,73 @@ public class UserManagerView implements UserManagerPresenter.Display {
     }
 
     private Widget initDetailsInfo() {
+        ContentPanel detailsPanel = new ContentPanel();
+        detailsPanel.setHeadingText(App.messages.detailsInfo());
 
-        // TODO
+        AccordionLayoutContainer con = new AccordionLayoutContainer();
+        con.setExpandMode(AccordionLayoutContainer.ExpandMode.SINGLE_FILL);
+        detailsPanel.add(con);
 
-        return new HTML("Details Info");
+        AccordionLayoutContainer.AccordionLayoutAppearance appearance = GWT.<AccordionLayoutContainer.AccordionLayoutAppearance>create(AccordionLayoutContainer.AccordionLayoutAppearance.class);
+
+        bloodTransfusionCP = new ContentPanel(appearance);
+        bloodTransfusionCP.setAnimCollapse(false);
+        con.add(bloodTransfusionCP);
+        bloodGrid = new CustomGrid<BloodTransfusionModel>() {
+            @Override
+            protected String getCustomValue(BloodTransfusionModel model) {
+                return model.getBloodVolume() + " / " + DateTimeFormat.getFormat("dd.MM.yyyy").format(model.getTransfusionDate()) + " / " + model.getComment();
+            }
+        }.getGrid();
+        bloodTransfusionCP.add(bloodGrid);
+
+        allergyCP = new ContentPanel(appearance);
+        allergyCP.setAnimCollapse(false);
+        con.add(allergyCP);
+        allergyGrid = new CustomGrid<CustomerAllergyModel>() {
+            @Override
+            protected String getCustomValue(CustomerAllergyModel model) {
+                return model.getAllergyModel().getName() + " / " + model.getAllergyModel().getComment();
+            }
+        }.getGrid();
+        allergyCP.add(allergyGrid);
+
+        surgeryCP = new ContentPanel(appearance);
+        surgeryCP.setAnimCollapse(false);
+        con.add(surgeryCP);
+        surgeryGrid = new CustomGrid<CustomerSurgeryModel>() {
+            @Override
+            protected String getCustomValue(CustomerSurgeryModel model) {
+                return DateTimeFormat.getFormat("dd.MM.yyyy").format(model.getBeginningDate()) + " / " + model.getSurgeryModel().getSurgeryName() + " / " + model.getComment();
+            }
+        }.getGrid();
+        surgeryCP.addButton(surgeryGrid);
+
+        diseaseCP = new ContentPanel(appearance);
+        diseaseCP.setAnimCollapse(false);
+        con.add(diseaseCP);
+        diseaseGrid = new CustomGrid<CustomerDiseaseModel>() {
+            @Override
+            protected String getCustomValue(CustomerDiseaseModel model) {
+                return DateTimeFormat.getFormat("dd.MM.yyyy").format(model.getDetectionDate()) + " / " + model.getDiseaseModel().getName();
+            }
+        }.getGrid();
+        diseaseCP.add(diseaseGrid);
+
+        policeCP = new ContentPanel(appearance);
+        policeCP.setAnimCollapse(false);
+        con.add(policeCP);
+        policeGrid = new CustomGrid<PoliceModel>() {
+            @Override
+            protected String getCustomValue(PoliceModel model) {
+                return model.getPoliceNumber() + " / " + model.getInsuranceCompanyModel().getName();
+            }
+        }.getGrid();
+        policeCP.add(policeGrid);
+
+        clearDetails();
+
+        return detailsPanel;
     }
 
     private void initGrid() {
@@ -242,12 +316,12 @@ public class UserManagerView implements UserManagerPresenter.Display {
             public String getPath() {
                 return "";
             }
-        }, 30, App.messages.gender());
+        }, 35, App.messages.gender());
         ColumnConfig<UserModel, Date> birthDateCol = new ColumnConfig<UserModel, Date>(props.birthDate(), 50, App.messages.birthday());
         ColumnConfig<UserModel, String> emailAddressCol = new ColumnConfig<UserModel, String>(props.emailAddress(), 50, App.messages.emailAddress());
         ColumnConfig<UserModel, String> phoneNumberCol = new ColumnConfig<UserModel, String>(props.phoneNumber(), 50, App.messages.phoneNumber());
         ColumnConfig<UserModel, Integer> bloodGroupCol = new ColumnConfig<UserModel, Integer>(props.bloodGroup(), 50, App.messages.bloodGroup());
-        ColumnConfig<UserModel, Boolean> doctorCol = new ColumnConfig<UserModel, Boolean>(props.doctor(), 25, App.messages.doctor());
+        ColumnConfig<UserModel, Boolean> doctorCol = new ColumnConfig<UserModel, Boolean>(props.doctor(), 35, App.messages.doctor());
         doctorCol.setCell(new SimpleSafeHtmlCell<Boolean>(new AbstractSafeHtmlRenderer<Boolean>() {
             @Override
             public SafeHtml render(Boolean object) {
@@ -337,6 +411,45 @@ public class UserManagerView implements UserManagerPresenter.Display {
         }
     }
 
+    @Override
+    public SelectionChangedEvent.HasSelectionChangedHandlers<UserModel> getGridSelectionChangeHandler() {
+        return grid.getSelectionModel();
+    }
+
+    @Override
+    public void showDetailsInfo(UserModel userModel) {
+        clearDetails();
+
+        bloodTransfusionCP.setHeadingText(App.messages.bloodTransfusion() + ": " + userModel.getBloodTransfusionModels().size());
+        bloodGrid.getStore().addAll(userModel.getBloodTransfusionModels());
+
+        allergyCP.setHeadingText(App.messages.allergy() + ": " + userModel.getCustomerAllergyModels().size());
+        allergyGrid.getStore().addAll(userModel.getCustomerAllergyModels());
+
+        surgeryCP.setHeadingText(App.messages.surgery() + ": " + userModel.getCustomerSurgeryModels().size());
+        surgeryGrid.getStore().addAll(userModel.getCustomerSurgeryModels());
+
+        diseaseCP.setHeadingText(App.messages.disease() + ": " + userModel.getCustomerDiseaseModels().size());
+        diseaseGrid.getStore().addAll(userModel.getCustomerDiseaseModels());
+
+        policeCP.setHeadingText(App.messages.police() + ": " + userModel.getCustomerPoliceModels().size());
+        policeGrid.getStore().addAll(userModel.getCustomerPoliceModels());
+    }
+
+    @Override
+    public void clearDetails() {
+        bloodGrid.getStore().clear();
+        allergyGrid.getStore().clear();
+        surgeryGrid.getStore().clear();
+        diseaseGrid.getStore().clear();
+        policeGrid.getStore().clear();
+
+        bloodTransfusionCP.setHeadingText(App.messages.bloodTransfusion());
+        allergyCP.setHeadingText(App.messages.allergy());
+        surgeryCP.setHeadingText(App.messages.surgery());
+        diseaseCP.setHeadingText(App.messages.disease());
+        policeCP.setHeadingText(App.messages.police());
+    }
 
     private List<UserModel> allGridItems;
 

@@ -19,18 +19,24 @@ import java.util.List;
 @Table(name = "PERSON")
 public class Person {
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     List<BloodTransfusion> bloodTransfusions = new ArrayList<BloodTransfusion>();
-    @OneToMany(mappedBy = "customer")
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     List<CustomerAllergy> customerAllergies = new ArrayList<CustomerAllergy>();
-    @OneToMany(mappedBy = "customer")
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     List<CustomerSurgery> customerSurgeries = new ArrayList<CustomerSurgery>();
+
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     List<CustomerDisease> customerDiseases = new ArrayList<CustomerDisease>();
+
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     List<Police> customerPolices = new ArrayList<Police>();
+
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     List<CustomerImmunization> customerImmunizations = new ArrayList<CustomerImmunization>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

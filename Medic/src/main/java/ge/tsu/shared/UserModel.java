@@ -3,7 +3,9 @@ package ge.tsu.shared;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by vako on 29/05/14.
@@ -35,6 +37,13 @@ public class UserModel implements IsSerializable, Serializable {
     private String password;
 
     private boolean doctor;
+
+    List<BloodTransfusionModel> bloodTransfusionModels = new ArrayList<BloodTransfusionModel>();
+    List<CustomerAllergyModel> customerAllergyModels = new ArrayList<CustomerAllergyModel>();
+    List<CustomerSurgeryModel> customerSurgeryModels = new ArrayList<CustomerSurgeryModel>();
+    List<CustomerDiseaseModel> customerDiseaseModels = new ArrayList<CustomerDiseaseModel>();
+    List<PoliceModel> customerPoliceModels = new ArrayList<PoliceModel>();
+//    List<CustomerImmunization> customerImmunizations = new ArrayList<CustomerImmunization>();
 
 
     public UserModel() {
@@ -182,6 +191,46 @@ public class UserModel implements IsSerializable, Serializable {
 
     public void setLicense(String license) {
         this.license = license;
+    }
+
+    public List<BloodTransfusionModel> getBloodTransfusionModels() {
+        return bloodTransfusionModels;
+    }
+
+    public void setBloodTransfusionModels(List<BloodTransfusionModel> bloodTransfusionModels) {
+        this.bloodTransfusionModels = bloodTransfusionModels;
+    }
+
+    public List<CustomerAllergyModel> getCustomerAllergyModels() {
+        return customerAllergyModels;
+    }
+
+    public void setCustomerAllergyModels(List<CustomerAllergyModel> customerAllergyModels) {
+        this.customerAllergyModels = customerAllergyModels;
+    }
+
+    public List<CustomerSurgeryModel> getCustomerSurgeryModels() {
+        return customerSurgeryModels;
+    }
+
+    public void setCustomerSurgeryModels(List<CustomerSurgeryModel> customerSurgeryModels) {
+        this.customerSurgeryModels = customerSurgeryModels;
+    }
+
+    public List<CustomerDiseaseModel> getCustomerDiseaseModels() {
+        return customerDiseaseModels;
+    }
+
+    public void setCustomerDiseaseModels(List<CustomerDiseaseModel> customerDiseaseModels) {
+        this.customerDiseaseModels = customerDiseaseModels;
+    }
+
+    public List<PoliceModel> getCustomerPoliceModels() {
+        return customerPoliceModels;
+    }
+
+    public void setCustomerPoliceModels(List<PoliceModel> customerPoliceModels) {
+        this.customerPoliceModels = customerPoliceModels;
     }
 
     @Override

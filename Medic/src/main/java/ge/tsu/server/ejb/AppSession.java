@@ -63,8 +63,8 @@ public class AppSession implements AppLocal {
 
     @Override
     public void deleteUser(Person person) {
-        Person branch = em.find(Person.class, person.getId());
-        em.remove(branch);
+        Person p = em.find(Person.class, person.getId());
+        em.remove(p);
     }
 
     @Override
@@ -132,5 +132,18 @@ public class AppSession implements AppLocal {
     @Override
     public void savePolice(Police police) {
         em.merge(police);
+    }
+
+    @Override
+    public Person loadUser(long id, boolean doctor) {
+        Person p = em.find(Person.class, id);
+        p.getBloodTransfusions().isEmpty();
+        p.getCustomerAllergies().isEmpty();
+        p.getCustomerSurgeries().isEmpty();
+        p.getCustomerDiseases().isEmpty();
+        p.getCustomerPolices().isEmpty();
+        p.getCitizenship().isEmpty();
+
+        return p;
     }
 }

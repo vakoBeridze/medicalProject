@@ -37,6 +37,8 @@ public interface AppService extends RemoteService {
 
     List<InsuranceCompanyModel> loadInsuranceCompanies();
 
+    UserModel loadUser(UserModel userModel);
+
     /**
      * Utility class to get the RPC Async interface from client-side code
      */

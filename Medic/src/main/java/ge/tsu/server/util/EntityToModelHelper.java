@@ -3,9 +3,14 @@ package ge.tsu.server.util;
 import ge.tsu.server.entities.Doctor;
 import ge.tsu.server.entities.InsuranceCompany;
 import ge.tsu.server.entities.Person;
+import ge.tsu.server.entities.Police;
 import ge.tsu.server.entities.medfacts.Allergy;
 import ge.tsu.server.entities.medfacts.Disease;
 import ge.tsu.server.entities.medfacts.Surgery;
+import ge.tsu.server.entities.medwork.BloodTransfusion;
+import ge.tsu.server.entities.medwork.CustomerAllergy;
+import ge.tsu.server.entities.medwork.CustomerDisease;
+import ge.tsu.server.entities.medwork.CustomerSurgery;
 import ge.tsu.shared.*;
 
 import java.io.Serializable;
@@ -21,8 +26,12 @@ import java.util.Set;
  */
 public class EntityToModelHelper implements Serializable {
 
-    private ModelHelper<UserModel, Person> personModelHelper = new ModelHelper<UserModel, Person>();
+    //    private ModelHelper<UserModel, Person> personModelHelper = new ModelHelper<UserModel, Person>();
     private ModelHelper<DiseaseModel, Disease> diseaseModelHelper = new ModelHelper<DiseaseModel, Disease>();
+    private ModelHelper<BloodTransfusionModel, BloodTransfusion> bloodModelHelper = new ModelHelper<BloodTransfusionModel, BloodTransfusion>();
+    private ModelHelper<CustomerDiseaseModel, CustomerDisease> customerDiseaseModelHelper = new ModelHelper<CustomerDiseaseModel, CustomerDisease>();
+    private ModelHelper<PoliceModel, Police> policeModelHelper = new ModelHelper<PoliceModel, Police>();
+    private ModelHelper<CustomerSurgeryModel, CustomerSurgery> customerSurgeryModelHelper = new ModelHelper<CustomerSurgeryModel, CustomerSurgery>();
 
     public List<UserModel> personsToUserModels(Set<? extends Person> persons) {
 
@@ -63,20 +72,20 @@ public class EntityToModelHelper implements Serializable {
 
     public UserModel personToUserModel(Person person) {
         UserModel userModel = new UserModel();
-        personModelHelper.toModel(userModel, person);
-//        userModel.setId(person.getId());
-//        userModel.setUserName(person.getEmail());
-//        userModel.setFirstName(person.getFirstName());
-//        userModel.setLastName(person.getLastName());
-//        userModel.setFatherName(person.getFatherName());
-//        userModel.setGender(person.getGender());
-//        userModel.setEmail(person.getEmail());
-//        userModel.setDoctor(false);
-//        userModel.setPn(person.getPn());
-//        userModel.setPhoneNumber(person.getPhoneNumber());
-//        userModel.setBloodGroup(person.getBloodGroup());
-//        userModel.setBirthDate(person.getBirthDate());
-//        userModel.setProfessionAndJob(person.getProfessionAndJob());
+//        personModelHelper.toModel(userModel, person);
+        userModel.setId(person.getId());
+        userModel.setUserName(person.getEmail());
+        userModel.setFirstName(person.getFirstName());
+        userModel.setLastName(person.getLastName());
+        userModel.setFatherName(person.getFatherName());
+        userModel.setGender(person.getGender());
+        userModel.setEmail(person.getEmail());
+        userModel.setDoctor(false);
+        userModel.setPn(person.getPn());
+        userModel.setPhoneNumber(person.getPhoneNumber());
+        userModel.setBloodGroup(person.getBloodGroup());
+        userModel.setBirthDate(person.getBirthDate());
+        userModel.setProfessionAndJob(person.getProfessionAndJob());
 
         return userModel;
     }
@@ -134,5 +143,90 @@ public class EntityToModelHelper implements Serializable {
             models.add(new InsuranceCompanyModel(company.getId(), company.getName()));
         }
         return models;
+    }
+
+    public UserModel personToUserModelFull(Person person) {
+        UserModel model = personToUserModel(person);
+        model.setBloodTransfusionModels(bloodTransfusionsToModels(person.getBloodTransfusions()));
+        model.setCustomerAllergyModels(customerAllergiesToModels(person.getCustomerAllergies()));
+        model.setCustomerSurgeryModels(customerSurgeriesToModels(person.getCustomerSurgeries()));
+        model.setCustomerDiseaseModels(customerDiseasesToModels(person.getCustomerDiseases()));
+        model.setCustomerPoliceModels(customerPolicesToModels(person.getCustomerPolices()));
+        return model;
+    }
+
+    private List<BloodTransfusionModel> bloodTransfusionsToModels(List<BloodTransfusion> bloodTransfusions) {
+        List<BloodTransfusionModel> models = new ArrayList<BloodTransfusionModel>();
+
+        for (BloodTransfusion bloodTransfusion : bloodTransfusions) {
+            BloodTransfusionModel model = new BloodTransfusionModel();
+            model.setIssuerModel(personToUserModel(bloodTransfusion.getIssuer()));
+            model.setCustomerModel(personToUserModel(bloodTransfusion.getCustomer()));
+            bloodModelHelper.toModel(model, bloodTransfusion);
+
+            models.add(model);
+        }
+
+        return models;
+    }
+
+    private List<CustomerAllergyModel> customerAllergiesToModels(List<CustomerAllergy> customerAllergies) {
+        List<CustomerAllergyModel> models = new ArrayList<CustomerAllergyModel>();
+
+        for (CustomerAllergy customerAllergy : customerAllergies) {
+            CustomerAllergyModel model = new CustomerAllergyModel();
+            model.setId(customerAllergy.getId());
+            model.setUserModel(personToUserModel(customerAllergy.getCustomer()));
+            model.setAllergyModel(allergyToModel(customerAllergy.getAllergy()));
+
+            models.add(model);
+        }
+        return models;
+    }
+
+    private List<CustomerSurgeryModel> customerSurgeriesToModels(List<CustomerSurgery> customerSurgeries) {
+        List<CustomerSurgeryModel> models = new ArrayList<CustomerSurgeryModel>();
+
+        for (CustomerSurgery customerSurgery : customerSurgeries) {
+            CustomerSurgeryModel model = new CustomerSurgeryModel();
+            customerSurgeryModelHelper.toModel(model, customerSurgery);
+            model.setCustomerModel(personToUserModel(customerSurgery.getCustomer()));
+            model.setSurgeryModel(surgeryToModel(customerSurgery.getSurgery()));
+
+            models.add(model);
+        }
+        return models;
+    }
+
+    private List<CustomerDiseaseModel> customerDiseasesToModels(List<CustomerDisease> customerDiseases) {
+        List<CustomerDiseaseModel> models = new ArrayList<CustomerDiseaseModel>();
+
+        for (CustomerDisease customerDisease : customerDiseases) {
+            CustomerDiseaseModel model = new CustomerDiseaseModel();
+            customerDiseaseModelHelper.toModel(model, customerDisease);
+            model.setCustomerModel(personToUserModel(customerDisease.getCustomer()));
+            model.setDiseaseModel(diseaseToModel(customerDisease.getDisease()));
+
+            models.add(model);
+        }
+        return models;
+    }
+
+    private List<PoliceModel> customerPolicesToModels(List<Police> polices) {
+        List<PoliceModel> models = new ArrayList<PoliceModel>();
+
+        for (Police police : polices) {
+            PoliceModel model = new PoliceModel();
+            policeModelHelper.toModel(model, police);
+            model.setCustomerModel(personToUserModel(police.getCustomer()));
+            model.setInsuranceCompanyModel(insuranceCompanyToModel(police.getCompany()));
+
+            models.add(model);
+        }
+        return models;
+    }
+
+    private InsuranceCompanyModel insuranceCompanyToModel(InsuranceCompany company) {
+        return new InsuranceCompanyModel(company.getId(), company.getName());
     }
 }

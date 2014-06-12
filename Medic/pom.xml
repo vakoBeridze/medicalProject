@@ -34,13 +34,13 @@
                 of artifacts. Here we use the jboss-javaee-6.0-with tools stack (you can read this as
                 the JBoss stack of the Java EE 6 APIs, with some extras tools for your project, such
                 as Arquillian for testing) -->
-<!--             <dependency> -->
-<!--                 <groupId>org.jboss.bom</groupId> -->
-<!--                 <artifactId>jboss-javaee-6.0-with-tools</artifactId> -->
-<!--                 <version>${version.org.jboss.bom}</version> -->
-<!--                 <type>pom</type> -->
-<!--                 <scope>import</scope> -->
-<!--             </dependency> -->
+            <!--             <dependency> -->
+            <!--                 <groupId>org.jboss.bom</groupId> -->
+            <!--                 <artifactId>jboss-javaee-6.0-with-tools</artifactId> -->
+            <!--                 <version>${version.org.jboss.bom}</version> -->
+            <!--                 <type>pom</type> -->
+            <!--                 <scope>import</scope> -->
+            <!--             </dependency> -->
         </dependencies>
     </dependencyManagement>
 
@@ -115,7 +115,7 @@
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.15</version>
+            <version>1.2.16</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.sun.jdmk</groupId>

@@ -30,4 +30,6 @@ public interface AppServiceAsync {
     void loadDiseases(boolean chronicDisease, AsyncCallback<List<DiseaseModel>> asyncCallback);
 
     void loadInsuranceCompanies(AsyncCallback<List<InsuranceCompanyModel>> asyncCallback);
+
+    void loadUser(UserModel userModel, AsyncCallback<UserModel> asyncCallback);
 }

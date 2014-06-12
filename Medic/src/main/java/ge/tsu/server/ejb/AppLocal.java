@@ -49,4 +49,6 @@ public interface AppLocal {
     List<InsuranceCompany> loadInsuranceCompanies();
 
     void savePolice(Police police);
+
+    Person loadUser(long id, boolean doctor);
 }

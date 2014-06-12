@@ -12,6 +12,7 @@ import ge.tsu.server.entities.medfacts.Surgery;
 import ge.tsu.server.util.EntityToModelHelper;
 import ge.tsu.server.util.ModelToEntityHelper;
 import ge.tsu.shared.*;
+import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
@@ -20,6 +21,8 @@ import java.util.Set;
 
 @SuppressWarnings("serial")
 public class AppServiceImpl extends RemoteServiceServlet implements AppService {
+
+    Logger logger = Logger.getLogger(getClass());
 
     EntityToModelHelper entityToModelHelper = new EntityToModelHelper();
     ModelToEntityHelper modelToEntityHelper = new ModelToEntityHelper();
@@ -130,5 +133,12 @@ public class AppServiceImpl extends RemoteServiceServlet implements AppService {
 
         List<InsuranceCompany> companies = appLocal.loadInsuranceCompanies();
         return entityToModelHelper.insuranceCompaniesToModels(companies);
+    }
+
+    @Override
+    public UserModel loadUser(UserModel userModel) {
+        Person p = appLocal.loadUser(userModel.getId(), userModel.isDoctor());
+        UserModel user = entityToModelHelper.personToUserModelFull(p);
+        return user;
     }
 }

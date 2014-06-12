@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.menu.Item;
+import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
 import ge.tsu.client.App;
 import ge.tsu.client.service.AppService;
 import ge.tsu.client.view.EditUserView;
@@ -27,6 +28,19 @@ public class UserManagerPresenter implements Presenter {
     }
 
     private void bind() {
+
+        display.getGridSelectionChangeHandler().addSelectionChangedHandler(new SelectionChangedEvent.SelectionChangedHandler<UserModel>() {
+            @Override
+            public void onSelectionChanged(SelectionChangedEvent<UserModel> event) {
+                UserModel selectedUser = event.getSource().getSelectedItem();
+                if (selectedUser != null) {
+                    loadUserDetails(selectedUser);
+                } else {
+                    display.clearDetails();
+                }
+            }
+        });
+
         display.getAddDoctorButton().addSelectionHandler(new SelectionHandler<Item>() {
             @Override
             public void onSelection(SelectionEvent<Item> itemSelectionEvent) {
@@ -71,6 +85,20 @@ public class UserManagerPresenter implements Presenter {
             @Override
             public void onSelect(SelectEvent selectEvent) {
                 display.filter();
+            }
+        });
+    }
+
+    private void loadUserDetails(UserModel userModel) {
+        AppService.Util.getInstance().loadUser(userModel, new AsyncCallback<UserModel>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                App.logError(throwable);
+            }
+
+            @Override
+            public void onSuccess(UserModel userModel) {
+                display.showDetailsInfo(userModel);
             }
         });
     }
@@ -162,6 +190,12 @@ public class UserManagerPresenter implements Presenter {
         HasSelectionHandlers<Item> getAddPatientButton();
 
         void setLoadMask(boolean mask);
+
+        SelectionChangedEvent.HasSelectionChangedHandlers<UserModel> getGridSelectionChangeHandler();
+
+        void showDetailsInfo(UserModel userModel);
+
+        void clearDetails();
     }
 
 }

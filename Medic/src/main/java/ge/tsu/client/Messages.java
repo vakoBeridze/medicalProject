@@ -174,4 +174,10 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
     String genetic();
 
     String sureSave();
+
+    String disease();
+
+    String police();
+
+    String detailsInfo();
 }
