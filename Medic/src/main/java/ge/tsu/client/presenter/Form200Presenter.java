@@ -1,5 +1,8 @@
 package ge.tsu.client.presenter;
 
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.event.FocusEvent;
@@ -45,6 +48,15 @@ public class Form200Presenter implements Presenter {
             }
         });
 
+        display.getComboBoxHandler().addValueChangeHandler(new ValueChangeHandler<UserModel>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<UserModel> userModelValueChangeEvent) {
+                UserModel model = userModelValueChangeEvent.getValue();
+                display.fillValues(model);
+                loadDetails(model);
+            }
+        });
+
         display.getBloodTransfusion().addFocusHandler(new FocusEvent.FocusHandler() {
             @Override
             public void onFocus(FocusEvent focusEvent) {
@@ -84,6 +96,10 @@ public class Form200Presenter implements Presenter {
                 chooser.loadData();
             }
         });
+    }
+
+    private void loadDetails(UserModel model) {
+        // TODO
     }
 
     private void doSave() {
@@ -191,5 +207,9 @@ public class Form200Presenter implements Presenter {
         List<CustomerDiseaseModel> getCustomerDiseases();
 
         PoliceModel getPoliceModel();
+
+        HasValueChangeHandlers<UserModel> getComboBoxHandler();
+
+        void fillValues(UserModel model);
     }
 }

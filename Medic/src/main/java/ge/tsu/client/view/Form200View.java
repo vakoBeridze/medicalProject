@@ -1,8 +1,7 @@
 package ge.tsu.client.view;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -399,6 +398,49 @@ public class Form200View implements Form200Presenter.Display {
         return null;
     }
 
+    @Override
+    public HasValueChangeHandlers<UserModel> getComboBoxHandler() {
+        return usersCombo;
+    }
+
+    @Override
+    public void fillValues(UserModel userModel) {
+        if (userModel != null) {
+            firstName.setValue(userModel.getFirstName());
+            lastName.setValue(userModel.getLastName());
+            maleRadio.setValue(userModel.getGender() == 1);
+            femaleRadio.setValue(userModel.getGender() != 1);
+            phoneNumber.setValue(userModel.getPhoneNumber());
+            birthDate.setValue(userModel.getBirthDate());
+            pn.setValue(userModel.getPn());
+            professionAndJob.setValue(userModel.getProfessionAndJob());
+            bloodGroup.setValue(userModel.getBloodGroup() == null ? null : userModel.getBloodGroup().toString());
+            rhFactory.setValue(userModel.getRhFactory() == null ? null : userModel.getRhFactory().toString());
+        } else {
+            firstName.clear();
+            lastName.clear();
+            maleRadio.setValue(true);
+            femaleRadio.setValue(false);
+            phoneNumber.clear();
+            birthDate.clear();
+            pn.clear();
+            professionAndJob.clear();
+            bloodGroup.clear();
+            rhFactory.clear();
+
+//            allergy.setData("data", null);
+            allergy.clear();
+//            surgery.setData("data", null);
+            surgery.clear();
+//            infectionDiseases.setData("data", null);
+            insuranceCompany.clear();
+//            chronicDiseases.setData("data", null);
+            chronicDiseases.clear();
+            insuranceCompany.clear();
+            policeNumber.clear();
+        }
+    }
+
     private void createForm() {
 
         int cw = (FORM_WIDTH / 2) - 80;
@@ -422,25 +464,6 @@ public class Form200View implements Form200Presenter.Display {
             @Override
             public String getLabel(UserModel model) {
                 return model.getFirstName() + " " + model.getLastName() + " / " + model.getPn();
-            }
-        });
-
-        usersCombo.addValueChangeHandler(new ValueChangeHandler<UserModel>() {
-
-            @Override
-            public void onValueChange(ValueChangeEvent<UserModel> event) {
-                // TODO check null-s
-                UserModel userModel = event.getValue();
-                firstName.setValue(userModel.getFirstName());
-                lastName.setValue(userModel.getLastName());
-                maleRadio.setValue(userModel.getGender() == 1);
-                femaleRadio.setValue(userModel.getGender() != 1);
-                phoneNumber.setValue(userModel.getPhoneNumber());
-                birthDate.setValue(userModel.getBirthDate());
-                pn.setValue(userModel.getPn());
-                professionAndJob.setValue(userModel.getProfessionAndJob());
-                bloodGroup.setValue(userModel.getBloodGroup() == null ? null : userModel.getBloodGroup().toString());
-                rhFactory.setValue(userModel.getRhFactory() == null ? null : userModel.getRhFactory().toString());
             }
         });
         usersCombo.setAllowBlank(true);

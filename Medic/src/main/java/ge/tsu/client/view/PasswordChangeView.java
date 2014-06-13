@@ -38,7 +38,7 @@ public class PasswordChangeView implements PasswordChangePresenter.Display {
         window.setModal(true);
         window.setBlinkModal(true);
         window.setAnimCollapse(true);
-        window.setSize("300px", "150px");
+        window.setSize("300px", "170px");
 
         VerticalLayoutContainer vlc = new VerticalLayoutContainer();
 

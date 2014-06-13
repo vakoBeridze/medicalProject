@@ -12,7 +12,7 @@
 <body style="padding: 0; margin: 0; background-color: #d7f4ff;">
 
 <div style="    height: 500px;    width: 250px;    margin: 0 auto;    background-color: #002A4B;    padding: 100px;">
-    <img src="http://vamekh.byethost4.com/tumbochka/logo_small.png"/>
+    <img src="images/logo_new.png"/>
 
     <div style="    margin-bottom: 50px;    width: 230px;    color: #5e98c5;    font-size: 22;    text-align: center;">Welcome to Medic</div>
     <form action='j_security_check' id="loginForm" method="post" autocomplete="on">
