@@ -32,25 +32,35 @@ public interface AppLocal {
 
     Doctor getUserByUserName(String login);
 
-    BloodTransfusion saveTransfusion(BloodTransfusion bloodTransfusion);
+    BloodTransfusion saveTransfusion(long userId, BloodTransfusion bloodTransfusion);
 
     List<Allergy> loadAllergies();
 
-    void saveCustomerAllergies(List<CustomerAllergy> customerAllergies);
+    void saveCustomerAllergies(long userModel, List<CustomerAllergy> customerAllergies);
 
     List<Surgery> loadSurgeries();
 
-    void saveCustomerSurgeries(List<CustomerSurgery> customerSurgeries);
+    void saveCustomerSurgeries(long userModel, List<CustomerSurgery> customerSurgeries);
 
     List<Disease> loadDiseases(boolean chronicDisease);
 
-    void saveCustomerDiseases(List<CustomerDisease> customerDiseases);
+    void saveCustomerDiseases(long userId, List<CustomerDisease> customerDiseases);
 
     List<InsuranceCompany> loadInsuranceCompanies();
 
-    void savePolice(Police police);
+    void savePolice(long userId, Police police);
 
     Person loadUser(long id, boolean doctor);
 
     void changePassword(long userId, String newPassword);
+
+    void clearTransfusion(long userId);
+
+    void clearCustomerAllergies(long userId);
+
+    void clearCustomerSurgeries(long userId);
+
+    void clearCustomerDiseases(long userId);
+
+    void clearPolice(long userId);
 }

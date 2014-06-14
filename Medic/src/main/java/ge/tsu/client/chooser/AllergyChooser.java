@@ -15,6 +15,7 @@ import ge.tsu.client.presenter.Form200Presenter;
 import ge.tsu.client.service.AppService;
 import ge.tsu.shared.AllergyModel;
 import ge.tsu.shared.AllergyModelProperties;
+import ge.tsu.shared.CustomerAllergyModel;
 
 import java.util.List;
 
@@ -43,7 +44,9 @@ public class AllergyChooser extends Chooser {
                 // TODO
                 comboBox.finishEditing();
                 if (comboBox.getValue() != null) {
-                    display.addAllergy(false, comboBox.getValue());
+                    CustomerAllergyModel customerAllergyModel = new CustomerAllergyModel();
+                    customerAllergyModel.setAllergyModel(comboBox.getValue());
+                    display.addAllergy(false, customerAllergyModel);
                     window.hide();
                 }
             }

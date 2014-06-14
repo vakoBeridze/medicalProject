@@ -11,7 +11,7 @@
                 <tbody>
                 <tr>
                     <td align="center" width="100%"><img border="0" alt="Company's LOGO"
-                                                         src="<%=request.getContextPath()%>\images\medic.jpg">
+                                                         src="images/medic.jpg">
                     </td>
                 </tr>
                 </tbody>

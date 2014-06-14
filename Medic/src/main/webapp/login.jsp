@@ -14,14 +14,16 @@
 <div style="    height: 500px;    width: 250px;    margin: 0 auto;    background-color: #002A4B;    padding: 100px;">
     <img src="images/logo_new.png"/>
 
-    <div style="    margin-bottom: 50px;    width: 230px;    color: #5e98c5;    font-size: 22;    text-align: center;">Welcome to Medic</div>
+    <div style="    margin-bottom: 50px;    width: 230px;    color: #5e98c5;    font-size: 22px;    text-align: center;">
+        Welcome to Medic
+    </div>
     <form action='j_security_check' id="loginForm" method="post" autocomplete="on">
         <input id="j_username" name="j_username" type="text" placeholder="Email"
                style="	width: 230px;  margin-bottom: 15px;  border: 2px solid #3e7cad;  border-radius: 8px;  color: #186099;  font-size: 17px;    padding: 8px;  background-color: #d7f4ff; "><br>
         <input id="j_password" name="j_password" type="password" placeholder="password"
                style="	width: 230px;  margin-bottom: 15px;  border: 2px solid #3e7cad;  border-radius: 8px;  color: #186099;  font-size: 17px;    padding: 8px;  background-color: #d7f4ff; "><br>
         <input type="submit" id="submit" value="Log In"
-               style="	width: 250px; height: 25px;font-size: 17px;  height: 35px;  border: 1px solid #000;  border-radius: 8px;  color: #245582;  cursor: pointer; background-color: #7AD1F1; "><br>
+               style="	width: 250px; font-size: 17px;  height: 35px;  border: 1px solid #000;  border-radius: 8px;  color: #245582;  cursor: pointer; background-color: #7AD1F1; "><br>
     </form>
 </div>
 

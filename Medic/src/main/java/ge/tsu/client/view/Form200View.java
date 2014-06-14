@@ -64,6 +64,7 @@ public class Form200View implements Form200Presenter.Display {
     private TextButton saveButton;
     private TextButton yesSaveButton;
     private ComboBox<UserModel> usersCombo;
+    private VerticalLayoutContainer vlc;
 
     @Override
     public Widget asWidget() {
@@ -107,6 +108,7 @@ public class Form200View implements Form200Presenter.Display {
     @Override
     public void setComboData(List<UserModel> userModels) {
         usersStore.addAll(userModels);
+        usersCombo.focus();
     }
 
     @Override
@@ -158,7 +160,7 @@ public class Form200View implements Form200Presenter.Display {
 
     @Override
     public void clearBloodTransfusion() {
-        bloodTransfusion.clear();
+        bloodTransfusion.setValue(null);
         bloodTransfusion.setData("transfusionDate", null);
         bloodTransfusion.setData("bloodVolume", null);
         bloodTransfusion.setData("comment", null);
@@ -201,30 +203,35 @@ public class Form200View implements Form200Presenter.Display {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void addAllergy(boolean clear, AllergyModel model) {
+    public void addAllergy(boolean clear, CustomerAllergyModel model) {
         if (clear) {
             allergy.setValue(null);
             allergy.setData("data", null);
         } else {
-            ArrayList<AllergyModel> allergyModels = new ArrayList<AllergyModel>();
+            ArrayList<CustomerAllergyModel> customerAllergyModels = new ArrayList<CustomerAllergyModel>();
             Object data = allergy.getData("data");
+            model.setUserModel(usersCombo.getValue());
             if (data == null) {
-                allergyModels.add(model);
-                allergy.setData("data", allergyModels);
+                customerAllergyModels.add(model);
+                allergy.setData("data", customerAllergyModels);
             } else {
-                allergyModels = (ArrayList<AllergyModel>) data;
-                if (!allergyModels.contains(model)) {
-                    allergyModels.add(model);
-                    allergy.setData("data", allergyModels);
+                customerAllergyModels = (ArrayList<CustomerAllergyModel>) data;
+                if (!customerAllergyModels.contains(model)) {
+                    customerAllergyModels.add(model);
+                    allergy.setData("data", customerAllergyModels);
                 }
             }
             // update field value
-            String value = "";
-            for (AllergyModel allergyModel : allergyModels) {
-                value = value.concat(allergyModel.getName()).concat(", ");
-            }
-            allergy.setValue(value.substring(0, value.length() - 2));
+            updateAllergyValue(customerAllergyModels);
         }
+    }
+
+    private void updateAllergyValue(List<CustomerAllergyModel> customerAllergyModels) {
+        String value = " ";
+        for (CustomerAllergyModel customerAllergyModel : customerAllergyModels) {
+            value = value.concat(customerAllergyModel.getAllergyModel().getName()).concat(", ");
+        }
+        allergy.setValue(value.substring(0, value.length() - 2));
     }
 
     @Override
@@ -257,6 +264,9 @@ public class Form200View implements Form200Presenter.Display {
     @SuppressWarnings("unchecked")
     @Override
     public List<CustomerAllergyModel> getCustomerAllergyModels() {
+
+        return (ArrayList<CustomerAllergyModel>) allergy.getData("data");
+        /*
         if (allergy.getData("data") != null) {
             ArrayList<AllergyModel> allergyModels = (ArrayList<AllergyModel>) allergy.getData("data");
             List<CustomerAllergyModel> customerAllergyModels = new ArrayList<CustomerAllergyModel>();
@@ -269,6 +279,7 @@ public class Form200View implements Form200Presenter.Display {
             return customerAllergyModels.isEmpty() ? null : customerAllergyModels;
         }
         return null;
+        */
     }
 
     @SuppressWarnings("unchecked")
@@ -293,12 +304,16 @@ public class Form200View implements Form200Presenter.Display {
                 }
             }
             // update field value
-            String value = "";
-            for (CustomerSurgeryModel customerSurgeryModel : customerSurgeryModels) {
-                value = value.concat(customerSurgeryModel.getSurgeryModel().getSurgeryName() + " - " + customerSurgeryModel.getComment()).concat(", ");
-            }
-            surgery.setValue(value.substring(0, value.length() - 2));
+            updateSurgeryValue(customerSurgeryModels);
         }
+    }
+
+    private void updateSurgeryValue(List<CustomerSurgeryModel> customerSurgeryModels) {
+        String value = "  ";
+        for (CustomerSurgeryModel customerSurgeryModel : customerSurgeryModels) {
+            value = value.concat(customerSurgeryModel.getSurgeryModel().getSurgeryName() + " - " + customerSurgeryModel.getComment()).concat(", ");
+        }
+        surgery.setValue(value.substring(0, value.length() - 2));
     }
 
     @SuppressWarnings("unchecked")
@@ -329,12 +344,16 @@ public class Form200View implements Form200Presenter.Display {
                 }
             }
             // update field value
-            String value = "";
-            for (CustomerDiseaseModel customerDiseasesModel : customerDiseaseModels) {
-                value = value.concat(customerDiseasesModel.getDiseaseModel().getName()).concat(", ");
-            }
-            infectionDiseases.setValue(value.substring(0, value.length() - 2));
+            updateInfectionDiseases(customerDiseaseModels);
         }
+    }
+
+    private void updateInfectionDiseases(List<CustomerDiseaseModel> customerDiseaseModels) {
+        String value = "  ";
+        for (CustomerDiseaseModel customerDiseasesModel : customerDiseaseModels) {
+            value = value.concat(customerDiseasesModel.getDiseaseModel().getName()).concat(", ");
+        }
+        infectionDiseases.setValue(value.substring(0, value.length() - 2));
     }
 
     @SuppressWarnings("unchecked")
@@ -359,12 +378,16 @@ public class Form200View implements Form200Presenter.Display {
                 }
             }
             // update field value
-            String value = "";
-            for (CustomerDiseaseModel customerDiseasesModel : customerDiseaseModels) {
-                value = value.concat(customerDiseasesModel.getDiseaseModel().getName()).concat(", ");
-            }
-            chronicDiseases.setValue(value.substring(0, value.length() - 2));
+            updateChronicDisease(customerDiseaseModels);
         }
+    }
+
+    private void updateChronicDisease(List<CustomerDiseaseModel> customerDiseaseModels) {
+        String value = "  ";
+        for (CustomerDiseaseModel customerDiseasesModel : customerDiseaseModels) {
+            value = value.concat(customerDiseasesModel.getDiseaseModel().getName()).concat(", ");
+        }
+        chronicDiseases.setValue(value.substring(0, value.length() - 2));
     }
 
     @SuppressWarnings("unchecked")
@@ -404,7 +427,7 @@ public class Form200View implements Form200Presenter.Display {
     }
 
     @Override
-    public void fillValues(UserModel userModel) {
+    public void fillDetails(UserModel userModel) {
         if (userModel != null) {
             firstName.setValue(userModel.getFirstName());
             lastName.setValue(userModel.getLastName());
@@ -441,6 +464,50 @@ public class Form200View implements Form200Presenter.Display {
         }
     }
 
+    @Override
+    public void fillFullDetails(UserModel model) {
+        /*List<AllergyModel> allergyModels = new ArrayList<AllergyModel>();
+        for (CustomerAllergyModel customerAllergyModel : model.getCustomerAllergyModels()) {
+            allergyModels.add(customerAllergyModel.getAllergyModel());
+        }*/
+        allergy.setData("data", model.getCustomerAllergyModels());
+        updateAllergyValue(model.getCustomerAllergyModels());
+
+        surgery.setData("data", model.getCustomerSurgeryModels());
+        updateSurgeryValue(model.getCustomerSurgeryModels());
+
+        List<CustomerDiseaseModel> infectionCDMs = new ArrayList<CustomerDiseaseModel>();
+        List<CustomerDiseaseModel> chronicCDMs = new ArrayList<CustomerDiseaseModel>();
+        for (CustomerDiseaseModel cdm : model.getCustomerDiseaseModels()) {
+            if (cdm.getDiseaseModel().isInfection()) {
+                infectionCDMs.add(cdm);
+            }
+            if (cdm.getDiseaseModel().isChronic()) {
+                chronicCDMs.add(cdm);
+            }
+        }
+        infectionDiseases.setData("data", infectionCDMs);
+        updateInfectionDiseases(infectionCDMs);
+
+        chronicDiseases.setData("data", chronicCDMs);
+        updateChronicDisease(chronicCDMs);
+    }
+
+    @Override
+    public boolean checkUserSelectedAndScroll() {
+        if (usersCombo.getValue() != null) {
+            return true;
+        } else {
+            usersCombo.validate(true);
+            return false;
+        }
+    }
+
+    @Override
+    public UserModel getUserModel() {
+        return usersCombo.getValue();
+    }
+
     private void createForm() {
 
         int cw = (FORM_WIDTH / 2) - 80;
@@ -466,7 +533,7 @@ public class Form200View implements Form200Presenter.Display {
                 return model.getFirstName() + " " + model.getLastName() + " / " + model.getPn();
             }
         });
-        usersCombo.setAllowBlank(true);
+        usersCombo.setAllowBlank(false);
         usersCombo.setForceSelection(true);
         usersCombo.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
         usersCombo.setWidth(rw);

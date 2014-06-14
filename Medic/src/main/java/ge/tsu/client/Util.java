@@ -4,8 +4,13 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.TabItemConfig;
 import ge.tsu.client.images.Images;
-import ge.tsu.client.presenter.*;
-import ge.tsu.client.view.*;
+import ge.tsu.client.presenter.Form100Presenter;
+import ge.tsu.client.presenter.Form200Presenter;
+import ge.tsu.client.presenter.Presenter;
+import ge.tsu.client.presenter.UserManagerPresenter;
+import ge.tsu.client.view.Form100View;
+import ge.tsu.client.view.Form200View;
+import ge.tsu.client.view.UserManagerView;
 import ge.tsu.shared.MenuModel;
 
 import java.util.HashMap;
@@ -21,33 +26,23 @@ public class Util {
     public static Map<Menu, Widget> openTabs = new HashMap<Menu, Widget>();
 
     public static ImageResource getMenuIcon(MenuModel menu) {
+
+        if (menu.isRoot())
+            return null;
         ImageResource icon = null;
         switch (menu.getMenu()) {
             case USER_MANAGER: {
                 icon = Images.INSTANCE.userManager();
                 break;
             }
-            case FORM_100: {
-                icon = Images.INSTANCE.form100();
-                break;
-            }
-            case FORM_200: {
+            case FORM_200_a: {
                 icon = Images.INSTANCE.form200();
                 break;
             }
-            case FORM_300: {
-                icon = Images.INSTANCE.form300();
+            default: {
+                icon = Images.INSTANCE.form();
                 break;
             }
-            case FORM_400: {
-                icon = Images.INSTANCE.form400();
-                break;
-            }
-            case FORM_500: {
-                icon = Images.INSTANCE.form500();
-                break;
-            }
-
         }
         return icon;
     }
@@ -65,29 +60,14 @@ public class Util {
                     widget = ((UserManagerPresenter) presenter).getDisplay().asWidget();
                     break;
                 }
-                case FORM_100: {
-                    presenter = new Form100Presenter(new Form100View());
-                    widget = ((Form100Presenter) presenter).getDisplay().asWidget();
-                    break;
-                }
-                case FORM_200: {
+                case FORM_200_a: {
                     presenter = new Form200Presenter(new Form200View());
                     widget = ((Form200Presenter) presenter).getDisplay().asWidget();
                     break;
                 }
-                case FORM_300: {
-                    presenter = new Form300Presenter(new Form300View());
-                    widget = ((Form300Presenter) presenter).getDisplay().asWidget();
-                    break;
-                }
-                case FORM_400: {
-                    presenter = new Form400Presenter(new Form400View());
-                    widget = ((Form400Presenter) presenter).getDisplay().asWidget();
-                    break;
-                }
-                case FORM_500: {
-                    presenter = new Form500Presenter(new Form500View());
-                    widget = ((Form500Presenter) presenter).getDisplay().asWidget();
+                default: {
+                    presenter = new Form100Presenter(new Form100View());
+                    widget = ((Form100Presenter) presenter).getDisplay().asWidget();
                     break;
                 }
             }

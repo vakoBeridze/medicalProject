@@ -98,6 +98,7 @@ public class ModelToEntityHelper {
         List<CustomerAllergy> customerAllergies = new ArrayList<CustomerAllergy>();
         for (CustomerAllergyModel customerAllergyModel : customerAllergyModels) {
             CustomerAllergy customerAllergy = new CustomerAllergy();
+            customerAllergy.setId(customerAllergyModel.getId());
             customerAllergy.setAllergy(allergyModelToEntity(customerAllergyModel.getAllergyModel()));
             customerAllergy.setCustomer(userModelToPerson(customerAllergyModel.getUserModel()));
             customerAllergies.add(customerAllergy);

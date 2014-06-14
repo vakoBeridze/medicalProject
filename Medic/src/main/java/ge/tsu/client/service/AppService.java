@@ -27,7 +27,7 @@ public interface AppService extends RemoteService {
 
     UserModel loadCurrentUser();
 
-    void saveForm200a(BloodTransfusionModel transfusionModel, List<CustomerAllergyModel> customerAllergyModels, List<CustomerSurgeryModel> customerSurgeryModels, List<CustomerDiseaseModel> customerDiseaseModels, PoliceModel policeModel);
+    void saveForm200a(UserModel userModel, BloodTransfusionModel transfusionModel, List<CustomerAllergyModel> customerAllergyModels, List<CustomerSurgeryModel> customerSurgeryModels, List<CustomerDiseaseModel> customerDiseaseModels, PoliceModel policeModel);
 
     List<AllergyModel> loadAllergies();
 

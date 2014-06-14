@@ -52,7 +52,7 @@ public class Form200Presenter implements Presenter {
             @Override
             public void onValueChange(ValueChangeEvent<UserModel> userModelValueChangeEvent) {
                 UserModel model = userModelValueChangeEvent.getValue();
-                display.fillValues(model);
+                display.fillDetails(model);
                 loadDetails(model);
             }
         });
@@ -60,51 +60,75 @@ public class Form200Presenter implements Presenter {
         display.getBloodTransfusion().addFocusHandler(new FocusEvent.FocusHandler() {
             @Override
             public void onFocus(FocusEvent focusEvent) {
-                BloodTransfusionChooser chooser = new BloodTransfusionChooser(display);
-                chooser.setData(display.getBloodTransfusionDate(), display.getBloodTransfusionVolume(), display.getBloodTransfusionComment());
+                if (userSelected()) {
+                    BloodTransfusionChooser chooser = new BloodTransfusionChooser(display);
+                    chooser.setData(display.getBloodTransfusionDate(), display.getBloodTransfusionVolume(), display.getBloodTransfusionComment());
+                }
             }
         });
 
         display.getAllergy().addFocusHandler(new FocusEvent.FocusHandler() {
             @Override
             public void onFocus(FocusEvent focusEvent) {
-                AllergyChooser chooser = new AllergyChooser(display);
-                chooser.loadData();
+                if (userSelected()) {
+                    AllergyChooser chooser = new AllergyChooser(display);
+                    chooser.loadData();
+                }
             }
         });
 
         display.getSurgery().addFocusHandler(new FocusEvent.FocusHandler() {
             @Override
             public void onFocus(FocusEvent focusEvent) {
-                SurgeryChooser chooser = new SurgeryChooser(display);
-                chooser.loadData();
+                if (userSelected()) {
+                    SurgeryChooser chooser = new SurgeryChooser(display);
+                    chooser.loadData();
+                }
             }
         });
 
         display.getInfectionDiseases().addFocusHandler(new FocusEvent.FocusHandler() {
             @Override
             public void onFocus(FocusEvent focusEvent) {
-                DiseaseChooser chooser = new DiseaseChooser(display, false);
-                chooser.loadData();
+                if (userSelected()) {
+                    DiseaseChooser chooser = new DiseaseChooser(display, false);
+                    chooser.loadData();
+                }
             }
         });
 
         display.getChronicDiseases().addFocusHandler(new FocusEvent.FocusHandler() {
             @Override
             public void onFocus(FocusEvent focusEvent) {
-                DiseaseChooser chooser = new DiseaseChooser(display, true);
-                chooser.loadData();
+                if (userSelected()) {
+                    DiseaseChooser chooser = new DiseaseChooser(display, true);
+                    chooser.loadData();
+                }
             }
         });
     }
 
-    private void loadDetails(UserModel model) {
-        // TODO
+    private boolean userSelected() {
+        return display.checkUserSelectedAndScroll();
+    }
+
+    private void loadDetails(UserModel selectedUser) {
+        AppService.Util.getInstance().loadUser(selectedUser, new AsyncCallback<UserModel>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                App.logError(throwable);
+            }
+
+            @Override
+            public void onSuccess(UserModel model) {
+                display.fillFullDetails(model);
+            }
+        });
     }
 
     private void doSave() {
         display.setSavingMask(true);
-        AppService.Util.getInstance().saveForm200a(display.getBloodTransfusionModel(), display.getCustomerAllergyModels(), display.getCustomerSurgeryModels(), display.getCustomerDiseases(), display.getPoliceModel(), new AsyncCallback<Void>() {
+        AppService.Util.getInstance().saveForm200a(display.getUserModel(), display.getBloodTransfusionModel(), display.getCustomerAllergyModels(), display.getCustomerSurgeryModels(), display.getCustomerDiseases(), display.getPoliceModel(), new AsyncCallback<Void>() {
             @Override
             public void onFailure(Throwable throwable) {
                 App.logError(throwable);
@@ -186,7 +210,7 @@ public class Form200Presenter implements Presenter {
 
         void clearForm();
 
-        void addAllergy(boolean clear, AllergyModel model);
+        void addAllergy(boolean clear, CustomerAllergyModel model);
 
         void setSavingMask(boolean mask);
 
@@ -210,6 +234,12 @@ public class Form200Presenter implements Presenter {
 
         HasValueChangeHandlers<UserModel> getComboBoxHandler();
 
-        void fillValues(UserModel model);
+        void fillDetails(UserModel model);
+
+        void fillFullDetails(UserModel model);
+
+        boolean checkUserSelectedAndScroll();
+
+        UserModel getUserModel();
     }
 }

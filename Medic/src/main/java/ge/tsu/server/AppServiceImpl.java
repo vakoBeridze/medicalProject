@@ -92,22 +92,33 @@ public class AppServiceImpl extends RemoteServiceServlet implements AppService {
     }
 
     @Override
-    public void saveForm200a(BloodTransfusionModel transfusionModel, List<CustomerAllergyModel> customerAllergyModels, List<CustomerSurgeryModel> customerSurgeryModels, List<CustomerDiseaseModel> customerDiseaseModels, PoliceModel policeModel) {
+    public void saveForm200a(UserModel userModel, BloodTransfusionModel transfusionModel, List<CustomerAllergyModel> customerAllergyModels, List<CustomerSurgeryModel> customerSurgeryModels, List<CustomerDiseaseModel> customerDiseaseModels, PoliceModel policeModel) {
 
         if (transfusionModel != null)
-            appLocal.saveTransfusion(modelToEntityHelper.transfusionModelToEntity(transfusionModel));
+            appLocal.saveTransfusion(userModel.getId(), modelToEntityHelper.transfusionModelToEntity(transfusionModel));
+        else
+            appLocal.clearTransfusion(userModel.getId());
 
         if (customerAllergyModels != null)
-            appLocal.saveCustomerAllergies(modelToEntityHelper.customerAllergyModelsToEntities(customerAllergyModels));
+            appLocal.saveCustomerAllergies(userModel.getId(), modelToEntityHelper.customerAllergyModelsToEntities(customerAllergyModels));
+        else
+            appLocal.clearCustomerAllergies(userModel.getId());
 
         if (customerSurgeryModels != null)
-            appLocal.saveCustomerSurgeries(modelToEntityHelper.customerSurgeryModelsToEntities(customerSurgeryModels));
+            appLocal.saveCustomerSurgeries(userModel.getId(), modelToEntityHelper.customerSurgeryModelsToEntities(customerSurgeryModels));
+        else
+            appLocal.clearCustomerSurgeries(userModel.getId());
 
         if (customerDiseaseModels != null)
-            appLocal.saveCustomerDiseases(modelToEntityHelper.customerDiseaseModelsToEntities(customerDiseaseModels));
+            appLocal.saveCustomerDiseases(userModel.getId(), modelToEntityHelper.customerDiseaseModelsToEntities(customerDiseaseModels));
+        else
+            appLocal.clearCustomerDiseases(userModel.getId());
 
         if (policeModel != null)
-            appLocal.savePolice(modelToEntityHelper.policeModelToEntity(policeModel));
+            appLocal.savePolice(userModel.getId(), modelToEntityHelper.policeModelToEntity(policeModel));
+        else
+            appLocal.clearPolice(userModel.getId());
+
     }
 
     @Override

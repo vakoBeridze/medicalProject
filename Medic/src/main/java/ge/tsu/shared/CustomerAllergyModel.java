@@ -50,13 +50,13 @@ public class CustomerAllergyModel implements Serializable {
 
         CustomerAllergyModel that = (CustomerAllergyModel) o;
 
-        if (id != that.id) return false;
+        if (allergyModel != null ? !allergyModel.equals(that.allergyModel) : that.allergyModel != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return allergyModel != null ? allergyModel.hashCode() : 0;
     }
 }

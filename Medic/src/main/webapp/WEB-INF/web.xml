@@ -16,6 +16,10 @@
         <url-pattern>/App/appService</url-pattern>
     </servlet-mapping>
 
+    <session-config>
+        <session-timeout>-1</session-timeout>
+    </session-config>
+
     <!-- Default page to serve -->
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
@@ -46,7 +50,4 @@
     <security-role>
         <role-name>medical.web.user</role-name>
     </security-role>
-
-    <!--TODO set session timeout-->
-
 </web-app>

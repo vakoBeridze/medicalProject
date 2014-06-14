@@ -165,7 +165,8 @@ public class EditUserView implements EditUserPresenter.Display {
 
         if (this.userModel.isDoctor()) {
             password = new PasswordField();
-//            vlc.add(new FieldLabel(password, App.messages.password()), layoutData);
+            if (userModel.getId() == 0)
+                vlc.add(new FieldLabel(password, App.messages.password()), layoutData);
 
             license = new TextField();
             license.setAllowBlank(false);

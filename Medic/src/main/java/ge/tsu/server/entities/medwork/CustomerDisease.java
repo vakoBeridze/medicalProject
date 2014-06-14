@@ -186,4 +186,21 @@ public class CustomerDisease {
     public void setVisit(CustomerVisit visit) {
         this.visit = visit;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CustomerDisease that = (CustomerDisease) o;
+
+        if (disease != null ? !disease.equals(that.disease) : that.disease != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return disease != null ? disease.hashCode() : 0;
+    }
 }

@@ -75,7 +75,7 @@ public class AppSession implements AppLocal {
     }
 
     @Override
-    public BloodTransfusion saveTransfusion(BloodTransfusion bloodTransfusion) {
+    public BloodTransfusion saveTransfusion(long userId, BloodTransfusion bloodTransfusion) {
         return em.merge(bloodTransfusion);
     }
 
@@ -86,7 +86,8 @@ public class AppSession implements AppLocal {
     }
 
     @Override
-    public void saveCustomerAllergies(List<CustomerAllergy> customerAllergies) {
+    public void saveCustomerAllergies(long userId, List<CustomerAllergy> customerAllergies) {
+        clearCustomerAllergies(userId);
         for (CustomerAllergy customerAllergy : customerAllergies) {
             em.merge(customerAllergy);
         }
@@ -99,7 +100,8 @@ public class AppSession implements AppLocal {
     }
 
     @Override
-    public void saveCustomerSurgeries(List<CustomerSurgery> customerSurgeries) {
+    public void saveCustomerSurgeries(long userId, List<CustomerSurgery> customerSurgeries) {
+        clearCustomerSurgeries(userId);
         for (CustomerSurgery customerSurgery : customerSurgeries) {
             em.merge(customerSurgery);
         }
@@ -117,7 +119,8 @@ public class AppSession implements AppLocal {
     }
 
     @Override
-    public void saveCustomerDiseases(List<CustomerDisease> customerDiseases) {
+    public void saveCustomerDiseases(long userId, List<CustomerDisease> customerDiseases) {
+        clearCustomerDiseases(userId);
         for (CustomerDisease customerDisease : customerDiseases) {
             em.merge(customerDisease);
         }
@@ -130,7 +133,7 @@ public class AppSession implements AppLocal {
     }
 
     @Override
-    public void savePolice(Police police) {
+    public void savePolice(long userId, Police police) {
         em.merge(police);
     }
 
@@ -154,5 +157,39 @@ public class AppSession implements AppLocal {
             doctor.setPassword(newPassword);
             em.merge(doctor);
         }
+    }
+
+    @Override
+    public void clearTransfusion(long userId) {
+        // TODO
+    }
+
+    @Override
+    public void clearCustomerAllergies(long userId) {
+        Query query = em.createQuery("DELETE from CustomerAllergy ca WHERE ca.customer.id=:userId");
+        query.setParameter("userId", userId);
+        query.executeUpdate();
+    }
+
+    @Override
+    public void clearCustomerSurgeries(long userId) {
+        Query query = em.createQuery("DELETE from CustomerSurgery c WHERE c.customer.id=:userId");
+        query.setParameter("userId", userId);
+        query.executeUpdate();
+    }
+
+    @Override
+    public void clearCustomerDiseases(long userId) {
+        Query query = em.createQuery("DELETE from CustomerDisease c WHERE c.customer.id=:userId");
+        query.setParameter("userId", userId);
+        query.executeUpdate();
+
+    }
+
+    @Override
+    public void clearPolice(long userId) {
+//        Query query = em.createQuery("DELETE from CustomerDisease c WHERE c.customer.id=:userId");
+//        query.setParameter("userId", userId);
+//        query.executeUpdate();
     }
 }

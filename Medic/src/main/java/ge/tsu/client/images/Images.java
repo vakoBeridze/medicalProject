@@ -15,8 +15,8 @@ public interface Images extends ClientBundle {
     @Source("user_medical_female.png")
     ImageResource userManager();
 
-    @Source("document_editing.png")
-    ImageResource form100();
+    @Source("document.png")
+    ImageResource form();
 
     @Source("document_green.png")
     ImageResource form200();

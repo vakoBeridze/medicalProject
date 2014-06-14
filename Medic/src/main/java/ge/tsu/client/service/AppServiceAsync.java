@@ -21,7 +21,7 @@ public interface AppServiceAsync {
 
     void loadCurrentUser(AsyncCallback<UserModel> asyncCallback);
 
-    void saveForm200a(BloodTransfusionModel transfusionModel, List<CustomerAllergyModel> customerAllergyModels, List<CustomerSurgeryModel> customerSurgeryModels, List<CustomerDiseaseModel> customerDiseaseModels, PoliceModel policeModel, AsyncCallback<Void> asyncCallback);
+    void saveForm200a(UserModel userModel, BloodTransfusionModel transfusionModel, List<CustomerAllergyModel> customerAllergyModels, List<CustomerSurgeryModel> customerSurgeryModels, List<CustomerDiseaseModel> customerDiseaseModels, PoliceModel policeModel, AsyncCallback<Void> asyncCallback);
 
     void loadAllergies(AsyncCallback<List<AllergyModel>> asyncCallback);
 
