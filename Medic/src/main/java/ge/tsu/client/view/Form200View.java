@@ -198,7 +198,7 @@ public class Form200View implements Form200Presenter.Display {
 
     @Override
     public void clearForm() {
-        usersCombo.clear();
+        fillOrClearDetails(null);
     }
 
     @Override
@@ -427,7 +427,7 @@ public class Form200View implements Form200Presenter.Display {
     }
 
     @Override
-    public void fillDetails(UserModel userModel) {
+    public void fillOrClearDetails(UserModel userModel) {
         if (userModel != null) {
             firstName.setValue(userModel.getFirstName());
             lastName.setValue(userModel.getLastName());
@@ -450,6 +450,8 @@ public class Form200View implements Form200Presenter.Display {
             professionAndJob.clear();
             bloodGroup.clear();
             rhFactory.clear();
+
+            bloodTransfusion.clear();
 
 //            allergy.setData("data", null);
             allergy.clear();

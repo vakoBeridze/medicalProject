@@ -52,7 +52,7 @@ public class Form200Presenter implements Presenter {
             @Override
             public void onValueChange(ValueChangeEvent<UserModel> userModelValueChangeEvent) {
                 UserModel model = userModelValueChangeEvent.getValue();
-                display.fillDetails(model);
+                display.fillOrClearDetails(model);
                 loadDetails(model);
             }
         });
@@ -113,17 +113,19 @@ public class Form200Presenter implements Presenter {
     }
 
     private void loadDetails(UserModel selectedUser) {
-        AppService.Util.getInstance().loadUser(selectedUser, new AsyncCallback<UserModel>() {
-            @Override
-            public void onFailure(Throwable throwable) {
-                App.logError(throwable);
-            }
+        if (selectedUser != null) {
+            AppService.Util.getInstance().loadUser(selectedUser, new AsyncCallback<UserModel>() {
+                @Override
+                public void onFailure(Throwable throwable) {
+                    App.logError(throwable);
+                }
 
-            @Override
-            public void onSuccess(UserModel model) {
-                display.fillFullDetails(model);
-            }
-        });
+                @Override
+                public void onSuccess(UserModel model) {
+                    display.fillFullDetails(model);
+                }
+            });
+        }
     }
 
     private void doSave() {
@@ -234,7 +236,7 @@ public class Form200Presenter implements Presenter {
 
         HasValueChangeHandlers<UserModel> getComboBoxHandler();
 
-        void fillDetails(UserModel model);
+        void fillOrClearDetails(UserModel model);
 
         void fillFullDetails(UserModel model);
 
