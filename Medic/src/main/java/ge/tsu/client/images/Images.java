@@ -19,13 +19,13 @@ public interface Images extends ClientBundle {
     ImageResource form();
 
     @Source("document_green.png")
-    ImageResource form200();
+    ImageResource formGreen();
 
     @Source("document_black.png")
     ImageResource form300();
 
     @Source("document_red.png")
-    ImageResource form400();
+    ImageResource formRed();
 
     @Source("document_yellow.png")
     ImageResource form500();
@@ -67,4 +67,27 @@ public interface Images extends ClientBundle {
 
     @Source("home.html")
     TextResource about();
+
+    @Source("form200-1.png")
+    ImageResource form200_1();
+
+    @Source("form200-2.png")
+    ImageResource form200_2();
+
+    @Source("form200-3.png")
+    ImageResource form200_3();
+
+    @Source("form200-4.png")
+    ImageResource form200_4();
+
+    @Source("form200-5.png")
+    ImageResource form200_5();
+
+    @Source("form200-6.png")
+    ImageResource form200_6();
+
+
+    @Source("form200-8.png")
+    ImageResource form200_8();
+
 }

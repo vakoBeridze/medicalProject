@@ -3,13 +3,13 @@ package ge.tsu.client.presenter;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Created by vako on 29/05/14.
+ * Created by vako on 19/06/14.
  */
-public class Form300Presenter implements Presenter {
+public class Form200_1Presenter implements Presenter {
 
     private Display display;
 
-    public Form300Presenter(Display display) {
+    public Form200_1Presenter(Display display) {
         this.display = display;
     }
 
@@ -25,5 +25,7 @@ public class Form300Presenter implements Presenter {
     @Override
     public void go() {
         // TODO
+
+
     }
 }

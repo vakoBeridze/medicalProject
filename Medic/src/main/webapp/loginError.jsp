@@ -14,8 +14,8 @@
 <div style="    height: 500px;    width: 250px;    margin: 0 auto;    background-color: #002A4B;    padding: 100px;">
     <img src="images/logo_new.png"/>
 
-    <div style="    margin-bottom: 50px;    width: 230px;    color: #c59d2e;    font-size: 22px;    text-align: center;">
-        Invalid email or password
+    <div style="    margin-bottom: 50px;    width: 250px;    color: #c59d2e;    font-size: 20px;    text-align: center;">
+    Invalid email or password
     </div>
     <form action='j_security_check' id="loginForm" method="post" autocomplete="on">
         <input id="j_username" name="j_username" type="text" placeholder="Email"

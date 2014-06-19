@@ -4,13 +4,8 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.TabItemConfig;
 import ge.tsu.client.images.Images;
-import ge.tsu.client.presenter.Form100Presenter;
-import ge.tsu.client.presenter.Form200Presenter;
-import ge.tsu.client.presenter.Presenter;
-import ge.tsu.client.presenter.UserManagerPresenter;
-import ge.tsu.client.view.Form100View;
-import ge.tsu.client.view.Form200View;
-import ge.tsu.client.view.UserManagerView;
+import ge.tsu.client.presenter.*;
+import ge.tsu.client.view.*;
 import ge.tsu.shared.MenuModel;
 
 import java.util.HashMap;
@@ -35,12 +30,23 @@ public class Util {
                 icon = Images.INSTANCE.userManager();
                 break;
             }
-            case FORM_200_a: {
-                icon = Images.INSTANCE.form200();
+            case FORM_200_a:
+            case FORM_200_7_a: {
+                icon = Images.INSTANCE.form();
+                break;
+            }
+            case FORM_200_1_a:
+            case FORM_200_2_a:
+            case FORM_200_3_a:
+            case FORM_200_4_a:
+            case FORM_200_5_a:
+            case FORM_200_6_a:
+            case FORM_200_8_a: {
+                icon = Images.INSTANCE.formGreen();
                 break;
             }
             default: {
-                icon = Images.INSTANCE.form();
+                icon = Images.INSTANCE.formRed();
                 break;
             }
         }
@@ -63,6 +69,46 @@ public class Util {
                 case FORM_200_a: {
                     presenter = new Form200Presenter(new Form200View());
                     widget = ((Form200Presenter) presenter).getDisplay().asWidget();
+                    break;
+                }
+                case FORM_200_7_a: {
+                    presenter = new Form200_7Presenter(new Form200_7View());
+                    widget = ((Form200_7Presenter) presenter).getDisplay().asWidget();
+                    break;
+                }
+                case FORM_200_1_a: {
+                    presenter = new Form200_1Presenter(new Form200_1View());
+                    widget = ((Form200_1Presenter) presenter).getDisplay().asWidget();
+                    break;
+                }
+                case FORM_200_2_a: {
+                    presenter = new Form200_2Presenter(new Form200_2View());
+                    widget = ((Form200_2Presenter) presenter).getDisplay().asWidget();
+                    break;
+                }
+                case FORM_200_3_a: {
+                    presenter = new Form200_3Presenter(new Form200_3View());
+                    widget = ((Form200_3Presenter) presenter).getDisplay().asWidget();
+                    break;
+                }
+                case FORM_200_4_a: {
+                    presenter = new Form200_4Presenter(new Form200_4View());
+                    widget = ((Form200_4Presenter) presenter).getDisplay().asWidget();
+                    break;
+                }
+                case FORM_200_5_a: {
+                    presenter = new Form200_5Presenter(new Form200_5View());
+                    widget = ((Form200_5Presenter) presenter).getDisplay().asWidget();
+                    break;
+                }
+                case FORM_200_6_a: {
+                    presenter = new Form200_6Presenter(new Form200_6View());
+                    widget = ((Form200_6Presenter) presenter).getDisplay().asWidget();
+                    break;
+                }
+                case FORM_200_8_a: {
+                    presenter = new Form200_8Presenter(new Form200_8View());
+                    widget = ((Form200_8Presenter) presenter).getDisplay().asWidget();
                     break;
                 }
                 default: {
