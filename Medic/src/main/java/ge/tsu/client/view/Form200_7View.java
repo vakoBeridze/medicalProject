@@ -154,7 +154,7 @@ public class Form200_7View implements Form200_7Presenter.Display {
         signature = new TextField();
         signature.setWidth(cw);
 //        signature.setToolTip(App.messages.fillsAutomatically());
-        con.add(new FieldLabel(signature, App.messages.bloodGroup()), new AbstractHtmlLayoutContainer.HtmlData(".sign"));
+        con.add(new FieldLabel(signature, App.messages.signature()), new AbstractHtmlLayoutContainer.HtmlData(".sign"));
 
 
         ListStore<UserModel> doctorsStore = new ListStore<UserModel>(props.id());
@@ -169,7 +169,7 @@ public class Form200_7View implements Form200_7Presenter.Display {
         doctorsCombo.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
         doctorsCombo.setWidth(cw);
         doctorsCombo.setEmptyText(App.messages.select() + " " + App.messages.doctor());
-        con.add(new FieldLabel(doctorsCombo, App.messages.insuranceCompany()), new AbstractHtmlLayoutContainer.HtmlData(".doctor"));
+        con.add(new FieldLabel(doctorsCombo, App.messages.doctor()), new AbstractHtmlLayoutContainer.HtmlData(".doctor"));
 
 
         // need to call after everything is constructed
