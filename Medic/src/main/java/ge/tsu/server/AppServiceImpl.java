@@ -96,8 +96,8 @@ public class AppServiceImpl extends RemoteServiceServlet implements AppService {
 
         if (transfusionModel != null)
             appLocal.saveTransfusion(userModel.getId(), modelToEntityHelper.transfusionModelToEntity(transfusionModel));
-        else
-            appLocal.clearTransfusion(userModel.getId());
+//        else
+//            appLocal.clearTransfusion(userModel.getId());
 
         if (customerAllergyModels != null)
             appLocal.saveCustomerAllergies(userModel.getId(), modelToEntityHelper.customerAllergyModelsToEntities(customerAllergyModels));
@@ -116,8 +116,8 @@ public class AppServiceImpl extends RemoteServiceServlet implements AppService {
 
         if (policeModel != null)
             appLocal.savePolice(userModel.getId(), modelToEntityHelper.policeModelToEntity(policeModel));
-        else
-            appLocal.clearPolice(userModel.getId());
+//        else
+//            appLocal.clearPolice(userModel.getId());
 
     }
 

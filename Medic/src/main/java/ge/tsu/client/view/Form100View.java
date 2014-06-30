@@ -15,7 +15,7 @@ public class Form100View implements Form100Presenter.Display {
     public Widget asWidget() {
 
         CenterLayoutContainer center = new CenterLayoutContainer();
-        center.add(new Image(Images.INSTANCE.logo()));
+        center.add(new Image(Images.INSTANCE.comingSoon()));
         return center;
     }
 }

@@ -63,6 +63,12 @@ public class AppSession implements AppLocal {
 
     @Override
     public void deleteUser(Person person) {
+        clearCustomerAllergies(person.getId());
+        clearCustomerDiseases(person.getId());
+        clearCustomerSurgeries(person.getId());
+        clearTransfusion(person.getId());
+        clearPolice(person.getId());
+
         Person p = em.find(Person.class, person.getId());
         em.remove(p);
     }
@@ -161,7 +167,9 @@ public class AppSession implements AppLocal {
 
     @Override
     public void clearTransfusion(long userId) {
-        // TODO
+        Query query = em.createQuery("DELETE from BloodTransfusion bt WHERE bt.customer.id=:userId");
+        query.setParameter("userId", userId);
+        query.executeUpdate();
     }
 
     @Override
@@ -188,8 +196,8 @@ public class AppSession implements AppLocal {
 
     @Override
     public void clearPolice(long userId) {
-//        Query query = em.createQuery("DELETE from CustomerDisease c WHERE c.customer.id=:userId");
-//        query.setParameter("userId", userId);
-//        query.executeUpdate();
+        Query query = em.createQuery("DELETE from Police c WHERE c.customer.id=:userId");
+        query.setParameter("userId", userId);
+        query.executeUpdate();
     }
 }

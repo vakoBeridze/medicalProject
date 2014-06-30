@@ -9,8 +9,8 @@ public interface Images extends ClientBundle {
 
     public Images INSTANCE = GWT.create(Images.class);
 
-    @Source("logo.png")
-    ImageResource logo();
+    @Source("coming_soon.png")
+    ImageResource comingSoon();
 
     @Source("user_medical_female.png")
     ImageResource userManager();
