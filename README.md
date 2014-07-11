@@ -5,7 +5,7 @@ medicalProject
 
 ===========
 
-http://217.147.230.49:8080/Medic
+http://medic.tsu.ge/Medic
 
 ===========
 
