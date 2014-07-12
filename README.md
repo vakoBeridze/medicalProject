@@ -5,8 +5,8 @@ medicalProject
 
 ===========
 
-http://medic.tsu.ge
-user: sa
+<h4> http://medic.tsu.ge <br> </h4>
+user: sa  <br>
 pass: sa
 
 ===========
